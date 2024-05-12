@@ -84,5 +84,6 @@ dependencies {
     implementation("io.insert-koin:koin-android:3.5.0")
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.08.00"))
     testImplementation("junit:junit:4.13.2")
+    implementation ("androidx.navigation:navigation-compose:2.5.3")
 
 }

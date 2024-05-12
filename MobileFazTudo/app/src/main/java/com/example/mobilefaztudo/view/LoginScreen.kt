@@ -1,4 +1,4 @@
-package com.example.mobilefaztudo
+package com.example.mobilefaztudo.view
 
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
@@ -15,17 +15,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import kotlinx.coroutines.launch
-import androidx.compose.material3.Snackbar
+import androidx.navigation.NavController
+import com.example.mobilefaztudo.viewModel.LoginViewModel
 
 
 @Composable
-fun LoginScreen(loginViewModel: LoginViewModel = viewModel()) {
+fun LoginScreen(loginViewModel: LoginViewModel = viewModel(), navController: NavController) {
     // Define os estados dos campos de email e senha
     var email by remember  { mutableStateOf("") }
     var senha by remember  { mutableStateOf("") }
@@ -79,6 +78,18 @@ fun LoginScreen(loginViewModel: LoginViewModel = viewModel()) {
                 .padding(vertical = 16.dp)
         ) {
             Text("Entrar")
+        }
+
+        Button(
+            onClick = {
+                Log.d("LOGIN", "CLIQUEI NO BOTÃO CADASTRO")
+                navController.navigate("cadastro1")
+                      },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp)
+        ) {
+            Text("Não tenho conta")
         }
     }
 

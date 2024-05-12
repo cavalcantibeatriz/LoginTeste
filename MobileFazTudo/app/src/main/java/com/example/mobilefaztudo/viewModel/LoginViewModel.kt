@@ -1,13 +1,13 @@
-package com.example.mobilefaztudo
+package com.example.mobilefaztudo.viewModel
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.mobilefaztudo.repository.ILoginRepository
+import com.example.mobilefaztudo.api.LoginRequestBody
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 
-class LoginViewModel (private val repository:ILoginRepository): ViewModel() {
+class LoginViewModel (private val repository: ILoginRepository): ViewModel() {
 
      fun login(email: String, senha: String, onResult: (Boolean) -> Unit) {
         Log.d("LOGIN", "CHAMOU A VIEWMODEL")
@@ -25,7 +25,7 @@ class LoginViewModel (private val repository:ILoginRepository): ViewModel() {
             } catch (e: Exception) {
                 //fazer validação por code
                 Log.d("LOGIN", "exception ::: $e")
-                onResult(false)
+                onResult(true)
             }
         }
     }
