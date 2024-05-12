@@ -16,6 +16,7 @@ import com.example.mobilefaztudo.view.CadastroContratanteEtapa2
 import com.example.mobilefaztudo.view.CadastroPrestadorEtapa2
 import com.example.mobilefaztudo.view.CadastroScreenEtapa1
 import com.example.mobilefaztudo.view.LoginScreen
+import com.example.mobilefaztudo.view.SplashScreen
 import com.example.mobilefaztudo.viewModel.CadastroContratanteViewModel
 import com.example.mobilefaztudo.viewModel.CadastroPrestadorViewModel
 import com.example.mobilefaztudo.viewModel.LoginViewModel
@@ -41,11 +42,13 @@ class MainActivity : ComponentActivity() {
         setContent {
             MobileFazTudoTheme {
                 val navController = rememberNavController()
-                NavHost(navController = navController, startDestination = "login"){
+                NavHost(navController = navController, startDestination = "splash"){
                     composable(route = "login"){ LoginScreen(loginViewModel,navController) }
                     composable(route = "cadastro1"){ CadastroScreenEtapa1(navController) }
                     composable(route = "cadastro2C"){ CadastroContratanteEtapa2(contratanteViewModel,navController) }
                     composable(route = "cadastro2P"){ CadastroPrestadorEtapa2(prestadorViewModel,navController) }
+                    composable(route = "splash"){ SplashScreen(navController) }
+
                 }
             }
         }

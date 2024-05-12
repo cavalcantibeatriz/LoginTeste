@@ -30,12 +30,15 @@ class CadastroContratanteViewModel (private val repository :ICadastroContratante
                 )
                 if (response.isSuccessful) {
                     onResult(true)
+                    Log.d("CADASTRO-CONTRATANTE", "SUCESSO")
+
                 } else {
                     onResult(false)
+                    Log.d("CADASTRO-CONTRATANTE", "ALGUM DADO INSERIDO ERRADO")
                 }
             } catch (e: Exception) {
                 Log.d("CADASTRO-CONTRATANTE", "exception ::: $e")
-                onResult(true)
+                onResult(false)
             }
         }
          }

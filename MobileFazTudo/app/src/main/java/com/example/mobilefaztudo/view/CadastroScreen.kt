@@ -90,7 +90,9 @@ fun CadastroContratanteEtapa2(cadastroContratanteViewModel: CadastroContratanteV
     var senha by remember { mutableStateOf("") }
     var proUser by remember { mutableStateOf(false) }
 
-    var showModal by remember { mutableStateOf(false) }
+    var showModalSuccess by remember { mutableStateOf(false) }
+    var showModalError by remember { mutableStateOf(false) }
+
 
     Log.d(
         "CADASTRO",
@@ -149,7 +151,7 @@ fun CadastroContratanteEtapa2(cadastroContratanteViewModel: CadastroContratanteV
         TextField(
             value = dt_nascimento,
             onValueChange = { dt_nascimento = it },
-            label = { Text("dt_nascimento") },
+            label = { Text("Data de nascimento") },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp)
@@ -176,8 +178,13 @@ fun CadastroContratanteEtapa2(cadastroContratanteViewModel: CadastroContratanteV
             onClick = {
                 Log.d("CADASTRO", "CLIQUEI NO BOTÃO")
                 cadastroContratanteViewModel.registerContractor(
-                    name, lastName, cpf, dt_nascimento,cep, logradouro, state, city, phone, email, senha, proUser) { onResult ->
-                    showModal = onResult
+                    name, lastName, cpf, dt_nascimento,cep, logradouro, state, city, phone, email, senha, proUser) {
+                    onResult ->
+                    if(onResult){
+                        showModalSuccess = true
+                    }else{
+                        showModalError =true
+                    }
                 }
 
             },
@@ -189,20 +196,41 @@ fun CadastroContratanteEtapa2(cadastroContratanteViewModel: CadastroContratanteV
             Text("Cadastrar")
         }
     }
-    if (showModal) {
+    if (showModalSuccess) {
         Log.d("CADASTRO", "CHAMOU O MODAL")
         AlertDialog(
             onDismissRequest = {
                 // Fechar o modal ao clicar fora
-                showModal = false
+                showModalSuccess = false
             },
-            title = { Text("Mensagem") },
-            text = { Text("Eba! cadastro realizado com sucesso") },
+            title = { Text("Eba!") },
+            text = { Text("Parece que seu cadastro foi realizado com sucesso!\n\nVamos te direcionar para o login!")},
             confirmButton = {
                 Button(onClick = {
                     // Fechar o modal ao clicar no botão OK
-                    showModal = false
+                    showModalSuccess = false
                     navController.navigate("login")
+                }) {
+                    Text("OK")
+                }
+            }
+        )
+    }
+
+    if (showModalError) {
+        Log.d("CADASTRO", "CHAMOU O MODAL")
+        AlertDialog(
+            onDismissRequest = {
+                // Fechar o modal ao clicar fora
+                showModalSuccess = false
+            },
+            title = { Text("Oops") },
+            text = { Text("Epa! Parece que houve algum erro ao te cadastrar :(\n\nTente novamente em alguns instantes.") },
+            confirmButton = {
+                Button(onClick = {
+                    // Fechar o modal ao clicar no botão OK
+                    showModalSuccess = false
+                    navController.navigate("cadastro1")
                 }) {
                     Text("OK")
                 }
@@ -241,12 +269,12 @@ fun CadastroPrestadorEtapa2(cadastroPrestadorViewModel: CadastroPrestadorViewMod
         }
     }
 
-    Log.d(
-        "CADASTRO",
-        "Dados a serem enviados::: $name, $lastName, $email, $cpf, $cep, $dt_nascimento, $logradouro, $city, $state, $phone, $senha, $selectedCategory"
-    )
+    Log.d("CADASTRO", "Dados a serem enviados::: $name, $lastName, $email, $cpf, $cep, $dt_nascimento, $logradouro, $city, $state, $phone, $senha, $selectedCategory")
     Log.d("CADASTRO", "SELECTED_CATEGORY::: $selectedCategoryName")
-    var showModal by remember { mutableStateOf(false) }
+
+    var showModalSuccess by remember { mutableStateOf(false) }
+    var showModalError by remember { mutableStateOf(false) }
+
     var expanded by remember { mutableStateOf(false) }
     var textFieldSize by remember { mutableStateOf(androidx.compose.ui.geometry.Size.Zero) }
 
@@ -301,7 +329,7 @@ fun CadastroPrestadorEtapa2(cadastroPrestadorViewModel: CadastroPrestadorViewMod
         TextField(
             value = dt_nascimento,
             onValueChange = { dt_nascimento = it },
-            label = { Text("dt_nascimento") },
+            label = { Text("Data de nascimento") },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp)
@@ -368,8 +396,13 @@ fun CadastroPrestadorEtapa2(cadastroPrestadorViewModel: CadastroPrestadorViewMod
             onClick = {
                 Log.d("CADASTRO", "CLIQUEI NO BOTÃO")
                 cadastroPrestadorViewModel.registerProvider(
-                    name, lastName, cpf, dt_nascimento,cep, logradouro, state, city, phone, email, senha, selectedCategory) { onResult ->
-                    showModal = onResult
+                    name, lastName, cpf, dt_nascimento,cep, logradouro, state, city, phone, email, senha, selectedCategory) {
+                    onResult ->
+                    if(onResult){
+                        showModalSuccess = true
+                    }else{
+                        showModalError =true
+                    }
                 }
             },
             modifier = Modifier
@@ -380,20 +413,41 @@ fun CadastroPrestadorEtapa2(cadastroPrestadorViewModel: CadastroPrestadorViewMod
             Text("Cadastrar")
         }
     }
-    if (showModal) {
+    if (showModalSuccess) {
         Log.d("CADASTRO", "CHAMOU O MODAL")
         AlertDialog(
             onDismissRequest = {
                 // Fechar o modal ao clicar fora
-                showModal = false
+                showModalSuccess = false
             },
-            title = { Text("Mensagem") },
-            text = { Text("Eba! cadastro realizado com sucesso") },
+            title = { Text("Eba!") },
+            text = { Text("Parece que seu cadastro foi realizado com sucesso!\n\nVamos te direcionar para o login!")},
             confirmButton = {
                 Button(onClick = {
                     // Fechar o modal ao clicar no botão OK
-                    showModal = false
+                    showModalSuccess = false
                     navController.navigate("login")
+                }) {
+                    Text("OK")
+                }
+            }
+        )
+    }
+
+    if (showModalError) {
+        Log.d("CADASTRO", "CHAMOU O MODAL")
+        AlertDialog(
+            onDismissRequest = {
+                // Fechar o modal ao clicar fora
+                showModalSuccess = false
+            },
+            title = { Text("Oops") },
+            text = { Text("Epa! Parece que houve algum erro ao te cadastrar :(\n\nTente novamente em alguns instantes.") },
+            confirmButton = {
+                Button(onClick = {
+                    // Fechar o modal ao clicar no botão OK
+                    showModalSuccess = false
+                    navController.navigate("cadastro1")
                 }) {
                     Text("OK")
                 }
