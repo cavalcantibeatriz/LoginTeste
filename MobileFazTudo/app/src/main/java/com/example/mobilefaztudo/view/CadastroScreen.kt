@@ -1,18 +1,26 @@
 package com.example.mobilefaztudo.view
 
 import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -26,57 +34,110 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.faztudo_mb.ui.theme.screens.components.BackgroundRegister
+import com.example.faztudo_mb.ui.theme.screens.components.InputWithIcon
+import com.example.faztudo_mb.ui.theme.screens.components.imagem
+import com.example.mobilefaztudo.R
 import com.example.mobilefaztudo.api.Category
+import com.example.mobilefaztudo.ui.theme.laranjaBtn
 import com.example.mobilefaztudo.viewModel.CadastroContratanteViewModel
 import com.example.mobilefaztudo.viewModel.CadastroPrestadorViewModel
+
 @Composable
 fun CadastroScreenEtapa1(navController: NavController) {
-
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
+            .background(color = Color(0xFF6D90D1))
+            .padding(50.dp),
+        verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Campo de contratar
+        // Top image
+        Image(
+            painter = painterResource(id = R.drawable.icone_cadastro),
+            contentDescription = "Top Image",
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(100.dp)
+        )
+        Image(
+            painter = painterResource(id = R.drawable.etapa_1_cadastro),
+            contentDescription = "Top Image",
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(100.dp)
+        )
+        Text(
+            text = "Informações de trabalho",
+            modifier = Modifier.height(50.dp),
+            style = TextStyle(
+                fontSize = 24.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = Color.White,
+                fontStyle = FontStyle.Italic
+            )
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
+
         Button(
             onClick = {
                 navController.navigate("cadastro2C")
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 16.dp)
-                .background(Color.Magenta)
+                .height(100.dp)
+                .padding(vertical = 25.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = laranjaBtn,
+                contentColor = Color.White
+            )
         ) {
-            Text("Quero contratar")
+            Text(
+                "Quero contratar", style = TextStyle(fontSize = 24.sp, fontWeight = FontWeight.Bold)
+            )
         }
+        Spacer(modifier = Modifier.height(16.dp))
 
-        // Campo de trabalhar
         Button(
             onClick = {
                 navController.navigate("cadastro2P")
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 16.dp)
-                .background(Color.Red)
+                .height(100.dp)
+                .padding(vertical = 25.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = laranjaBtn,
+                contentColor = Color.White
+            )
         ) {
-            Text("Quero trabalhar")
+            Text(
+                "Quero trabalhar",
+                style = TextStyle(fontSize = 24.sp, fontWeight = FontWeight.Bold)
+            )
         }
-
     }
-
 }
 
 @Composable
-fun CadastroContratanteEtapa2(cadastroContratanteViewModel: CadastroContratanteViewModel ,navController: NavController) {
+fun CadastroContratanteEtapa2(
+    cadastroContratanteViewModel: CadastroContratanteViewModel,
+    navController: NavController
+) {
     var name by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
@@ -99,101 +160,148 @@ fun CadastroContratanteEtapa2(cadastroContratanteViewModel: CadastroContratanteV
         "Dados a serem enviados::: $name, $lastName, $email, $cpf, $cep, $dt_nascimento, $logradouro, $city, $state, $phone, $senha, $proUser"
     )
 
+    BackgroundRegister(backgroundImageResId = imagem)
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
+            .background(color = Color(0xFF6D90D1))
+            .padding(50.dp),
+        verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Campo de email
-        TextField(
+        Image(
+            painter = painterResource(id = R.drawable.icone_cadastro),
+            contentDescription = "Top Image",
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(100.dp)
+        )
+        Image(
+            painter = painterResource(id = R.drawable.etapa_2_cadastro),
+            contentDescription = "Top Image",
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(100.dp)
+        )
+        Text(
+            text = "Suas informações",
+            modifier = Modifier.height(50.dp),
+            style = TextStyle(
+                fontSize = 24.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = Color.White,
+                fontStyle = FontStyle.Italic
+            )
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        InputWithIcon(
+            icon = Icons.Default.Person,
+            placeholder = "Nome",
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 10.dp),
             value = name,
-            onValueChange = { name = it },
-            label = { Text("Nome") },
+            onValueChange = { name = it }
+        )
+        InputWithIcon(
+            icon = Icons.Default.Person,
+            placeholder = "Sobrenome",
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp)
-        )
-
-        TextField(
+                .padding(vertical = 8.dp),
             value = lastName,
-            onValueChange = { lastName = it },
-            label = { Text("Sobrenome") },
+            onValueChange = { lastName = it }
+        )
+        InputWithIcon(
+            icon = Icons.Default.Person,
+            placeholder = "E-mail",
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp)
-        )
-        TextField(
+                .padding(vertical = 8.dp),
             value = email,
-            onValueChange = { email = it },
-            label = { Text("Email") },
+            onValueChange = { email = it }
+        )
+        InputWithIcon(
+            icon = Icons.Default.Person,
+            placeholder = "CPF",
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp)
-        )
-        TextField(
+                .padding(vertical = 8.dp),
             value = cpf,
-            onValueChange = { cpf = it },
-            label = { Text("CPF") },
+            onValueChange = { cpf = it }
+        )
+        InputWithIcon(
+            icon = Icons.Default.Person,
+            placeholder = "CEP",
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp)
-        )
-        TextField(
+                .padding(vertical = 8.dp),
             value = cep,
-            onValueChange = { cep = it },
-            label = { Text("CEP") },
+            onValueChange = { cep = it }
+        )
+        InputWithIcon(
+            icon = Icons.Default.Person,
+            placeholder = "Data de nascimento",
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp)
-        )
-        TextField(
+                .padding(vertical = 8.dp),
             value = dt_nascimento,
-            onValueChange = { dt_nascimento = it },
-            label = { Text("Data de nascimento") },
+            onValueChange = { dt_nascimento = it }
+        )
+        InputWithIcon(
+            icon = Icons.Default.Person,
+            placeholder = "Telefone",
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp)
-        )
-        TextField(
+                .padding(vertical = 8.dp),
             value = phone,
-            onValueChange = { phone = it },
-            label = { Text("Telefone") },
+            onValueChange = { phone = it }
+        )
+        InputWithIcon(
+            icon = Icons.Default.Person,
+            placeholder = "Senha",
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp)
-        )
-        TextField(
+                .padding(vertical = 8.dp),
             value = senha,
-            onValueChange = { senha = it },
-            label = { Text("Senha") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp)
+            onValueChange = { senha = it }
         )
-
-        // Botão de login
+        Spacer(modifier = Modifier.height(50.dp))
         Button(
             onClick = {
                 Log.d("CADASTRO", "CLIQUEI NO BOTÃO")
                 cadastroContratanteViewModel.registerContractor(
-                    name, lastName, cpf, dt_nascimento,cep, logradouro, state, city, phone, email, senha, proUser) {
-                    onResult ->
-                    if(onResult){
+                    name,
+                    lastName,
+                    cpf,
+                    dt_nascimento,
+                    cep,
+                    logradouro,
+                    state,
+                    city,
+                    phone,
+                    email,
+                    senha,
+                    proUser
+                ) { onResult ->
+                    if (onResult) {
                         showModalSuccess = true
-                    }else{
-                        showModalError =true
+                    } else {
+                        showModalError = true
                     }
                 }
-
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 16.dp)
-                .background(Color.Green)
+                .height(100.dp)
+                .padding(vertical = 25.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = laranjaBtn,
+                contentColor = Color.White
+            )
         ) {
-            Text("Cadastrar")
+            Text("Continuar", style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold))
         }
     }
     if (showModalSuccess) {
@@ -204,7 +312,7 @@ fun CadastroContratanteEtapa2(cadastroContratanteViewModel: CadastroContratanteV
                 showModalSuccess = false
             },
             title = { Text("Eba!") },
-            text = { Text("Parece que seu cadastro foi realizado com sucesso!\n\nVamos te direcionar para o login!")},
+            text = { Text("Parece que seu cadastro foi realizado com sucesso!\n\nVamos te direcionar para o login!") },
             confirmButton = {
                 Button(onClick = {
                     // Fechar o modal ao clicar no botão OK
@@ -240,7 +348,10 @@ fun CadastroContratanteEtapa2(cadastroContratanteViewModel: CadastroContratanteV
 }
 
 @Composable
-fun CadastroPrestadorEtapa2(cadastroPrestadorViewModel: CadastroPrestadorViewModel = viewModel(), navController: NavController) {
+fun CadastroPrestadorEtapa2(
+    cadastroPrestadorViewModel: CadastroPrestadorViewModel = viewModel(),
+    navController: NavController
+) {
     var name by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
@@ -252,7 +363,7 @@ fun CadastroPrestadorEtapa2(cadastroPrestadorViewModel: CadastroPrestadorViewMod
     var state by remember { mutableStateOf("SP") }
     var phone by remember { mutableStateOf("") }
     var senha by remember { mutableStateOf("") }
-    var selectedCategory by remember{ mutableStateOf(Category(id=6,name="Todos")) }
+    var selectedCategory by remember { mutableStateOf(Category(id = 6, name = "Todos")) }
 
     val categories =
         listOf("Mecânica", "Hidráulica", "Limpeza", "Elétrica", "Obras Gerais", "Todos")
@@ -269,7 +380,10 @@ fun CadastroPrestadorEtapa2(cadastroPrestadorViewModel: CadastroPrestadorViewMod
         }
     }
 
-    Log.d("CADASTRO", "Dados a serem enviados::: $name, $lastName, $email, $cpf, $cep, $dt_nascimento, $logradouro, $city, $state, $phone, $senha, $selectedCategory")
+    Log.d(
+        "CADASTRO",
+        "Dados a serem enviados::: $name, $lastName, $email, $cpf, $cep, $dt_nascimento, $logradouro, $city, $state, $phone, $senha, $selectedCategory"
+    )
     Log.d("CADASTRO", "SELECTED_CATEGORY::: $selectedCategoryName")
 
     var showModalSuccess by remember { mutableStateOf(false) }
@@ -396,12 +510,23 @@ fun CadastroPrestadorEtapa2(cadastroPrestadorViewModel: CadastroPrestadorViewMod
             onClick = {
                 Log.d("CADASTRO", "CLIQUEI NO BOTÃO")
                 cadastroPrestadorViewModel.registerProvider(
-                    name, lastName, cpf, dt_nascimento,cep, logradouro, state, city, phone, email, senha, selectedCategory) {
-                    onResult ->
-                    if(onResult){
+                    name,
+                    lastName,
+                    cpf,
+                    dt_nascimento,
+                    cep,
+                    logradouro,
+                    state,
+                    city,
+                    phone,
+                    email,
+                    senha,
+                    selectedCategory
+                ) { onResult ->
+                    if (onResult) {
                         showModalSuccess = true
-                    }else{
-                        showModalError =true
+                    } else {
+                        showModalError = true
                     }
                 }
             },
@@ -421,7 +546,7 @@ fun CadastroPrestadorEtapa2(cadastroPrestadorViewModel: CadastroPrestadorViewMod
                 showModalSuccess = false
             },
             title = { Text("Eba!") },
-            text = { Text("Parece que seu cadastro foi realizado com sucesso!\n\nVamos te direcionar para o login!")},
+            text = { Text("Parece que seu cadastro foi realizado com sucesso!\n\nVamos te direcionar para o login!") },
             confirmButton = {
                 Button(onClick = {
                     // Fechar o modal ao clicar no botão OK
@@ -453,5 +578,203 @@ fun CadastroPrestadorEtapa2(cadastroPrestadorViewModel: CadastroPrestadorViewMod
                 }
             }
         )
+    }
+}
+
+
+
+@Composable
+fun TelaCategorias() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = Color(0xFF6D90D1))
+            .padding(50.dp),
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.icone_cadastro),
+            contentDescription = "Top Image",
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(100.dp)
+        )
+        Image(
+            painter = painterResource(id = R.drawable.etapa_1_cadastro),
+            contentDescription = "Top Image",
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(100.dp)
+        )
+        Text(
+            text = "Defina sua categoria",
+            modifier = Modifier.height(50.dp),
+            style = TextStyle(
+                fontSize = 24.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = Color.White,
+                fontStyle = FontStyle.Italic
+            ),
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            BotaoIcone(Icons.Default.Lock, "Botão 1")
+            Spacer(modifier = Modifier.width(10.dp))
+            BotaoIcone(Icons.Default.Lock, "Botão 2")
+            Spacer(modifier = Modifier.width(10.dp))
+            BotaoIcone(Icons.Default.Lock, "Botão 3")
+        }
+        Spacer(modifier = Modifier.height(16.dp)) // Espaçamento entre as linhas de botões
+
+        // Linha 2
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            BotaoIcone(Icons.Default.Lock, "Botão 4")
+            BotaoIcone(Icons.Default.Lock, "Botão 5")
+            BotaoIcone(Icons.Default.Lock, "Botão 6")
+        }
+        Button(
+            onClick = {},
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(100.dp)
+                .padding(vertical = 25.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = laranjaBtn,
+                contentColor = Color.White
+            )
+        ) {
+            Text(
+                "Cadastrar",
+                style = TextStyle(
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            )
+        }
+    }
+
+
+
+
+
+}
+
+
+@Composable
+fun TelaSenhaContratante() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = Color(0xFF6D90D1))
+            .padding(50.dp),
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.icone_cadastro),
+            contentDescription = "Top Image",
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(100.dp)
+        )
+        Image(
+            painter = painterResource(id = R.drawable.etapa_3_cadastro),
+            contentDescription = "Top Image",
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(100.dp)
+        )
+        Text(
+            text = "Defina sua senha",
+            modifier = Modifier.height(50.dp),
+            style = TextStyle(
+                fontSize = 24.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = Color.White,
+                fontStyle = FontStyle.Italic
+            )
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        InputWithIcon(
+            icon = Icons.Default.Lock,
+            placeholder = "Senha",
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 10.dp),
+            value = "",
+            onValueChange = { }
+        )
+        InputWithIcon(
+            icon = Icons.Default.Lock,
+            placeholder = "Confirme sua senha",
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+            value = "",
+            onValueChange = { }
+        )
+        Spacer(modifier = Modifier.height(50.dp))
+        Button(
+            onClick = {
+//                Log.d("CADASTRO", "CLIQUEI NO BOTÃO")
+//                cadastroContratanteViewModel.registerContractor(
+//                    name, lastName, cpf, dt_nascimento,cep, logradouro, state, city, phone, email, senha, proUser) {
+//                        onResult ->
+//                    if(onResult){
+//                        showModalSuccess = true
+//                    }else{
+//                        showModalError =true
+//                    }
+//                }
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(100.dp)
+                .padding(vertical = 25.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = laranjaBtn,
+                contentColor = Color.White
+            )
+        ) {
+            Text(
+                "Cadastrar",
+                style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
+
+                )
+        }
+    }
+}
+
+
+@Composable
+fun BotaoIcone(icon: ImageVector, texto: String) {
+    Button(
+        onClick = {},
+        modifier = Modifier
+            .height(80.dp)
+            .width(80.dp), // Definindo um tamanho fixo para os botões
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color.White, // Cor de fundo dos botões
+            contentColor = Color.Black
+        )
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = "Ícone",  // Corrigindo para especificar o tipo de ícone
+                tint = Color.Unspecified // Remove o tingimento automático para manter a cor original do ícone
+            )
+
+            Text(texto, style = TextStyle(fontSize = 12.sp))
+        }
     }
 }
