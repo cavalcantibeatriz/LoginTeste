@@ -48,7 +48,7 @@ import com.example.mobilefaztudo.viewModel.LoginViewModel
 @Preview
 @Composable
 fun LoginScreen(
-//    loginViewModel: LoginViewModel = viewModel(), navController: NavController
+    loginViewModel: LoginViewModel = viewModel(), navController: NavController
 ) {
     // Define os estados dos campos de email e senha
     var email by remember { mutableStateOf("") }
@@ -107,11 +107,11 @@ fun LoginScreen(
         // Botão de login
         Button(
             onClick = {
-//                Log.d("LOGIN", "CLIQUEI NO BOTÃO")
-////                loginViewModel.login(email, senha){ onResult ->
-////                    // Mostrar modal se o login for bem-sucedido
-////                    showModal = onResult
-////                }
+                Log.d("LOGIN", "CLIQUEI NO BOTÃO")
+                loginViewModel.login(email, senha){ onResult ->
+                    // Mostrar modal se o login for bem-sucedido
+                    showModal = onResult
+                }
             },
             modifier = Modifier
                 .width(250.dp)
@@ -131,7 +131,7 @@ fun LoginScreen(
         Button(
             onClick = {
                 Log.d("LOGIN", "CLIQUEI NO BOTÃO CADASTRO")
-//                navController.navigate("cadastro1")
+                navController.navigate("cadastro1")
             },
             modifier = Modifier
                 .width(350.dp)

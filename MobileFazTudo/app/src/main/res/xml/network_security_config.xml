@@ -3,12 +3,12 @@
 
     <domain-config cleartextTrafficPermitted="true">
 <!--        Insira seu ip fixo aqui-->
-        <domain includeSubdomains="true">192.168.15.8</domain>
+        <domain includeSubdomains="true">192.168.0.122</domain>
     </domain-config>
 
     <base-config cleartextTrafficPermitted="true">
         <trust-anchors>
-            <certificates src="system" />
+            <certificates src="system"/>
         </trust-anchors>
     </base-config>
 
