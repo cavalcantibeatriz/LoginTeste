@@ -45,7 +45,6 @@ import com.example.mobilefaztudo.ui.theme.salmaoBtn
 import com.example.mobilefaztudo.ui.theme.salmaoRosadoBtn
 import com.example.mobilefaztudo.viewModel.LoginViewModel
 
-@Preview
 @Composable
 fun LoginScreen(
     loginViewModel: LoginViewModel = viewModel(), navController: NavController
