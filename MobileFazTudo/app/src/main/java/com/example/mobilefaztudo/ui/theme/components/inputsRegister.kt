@@ -66,11 +66,11 @@ fun InputWithIcon(
                         contentAlignment = Alignment.BottomStart
                     ) {
                         if (value.isEmpty()) {
-                        Text(                            
+                        Text(
                             text = placeholder,
                             style = TextStyle(
                                 fontSize = 16.sp,
-                                color = Color.Gray
+                                color = Color.White
                             )
                         )
                     }
