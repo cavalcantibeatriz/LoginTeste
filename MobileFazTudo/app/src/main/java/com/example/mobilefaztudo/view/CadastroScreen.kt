@@ -37,6 +37,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -469,6 +470,14 @@ fun CadastroPrestadorEtapa2(
     var expanded by remember { mutableStateOf(false) }
     var textFieldSize by remember { mutableStateOf(androidx.compose.ui.geometry.Size.Zero) }
 
+//    bt1
+    var isClicked by remember { mutableStateOf(false) }
+    val buttonColor = if (isClicked) Color.Green else Color(0xFFF1A58D)
+
+    val buttons = listOf("Mecânica", "Hidráulica", "Limpeza", "Elétrica", "Obras", "Todos")
+    val buttonStates = remember { mutableStateListOf(false, false, false,false,false,false) }
+
+
     if (exibirCategorias) {
         BackgroundRegister(backgroundImageResId = imagem)
         Column(
@@ -508,7 +517,6 @@ fun CadastroPrestadorEtapa2(
             Box(
                 modifier = Modifier
                     .height(390.dp)
-                    .border(3.dp, Color.Red)
             ) {
                 Column(
                     modifier = Modifier
@@ -516,14 +524,14 @@ fun CadastroPrestadorEtapa2(
                     verticalArrangement = Arrangement.SpaceBetween  // Espaçamento entre os botões
                 ) {
                     Button(
-                        onClick = { Category(id = 1, name = "Mecânica") },
+                        onClick = { category = Category(id = 1, name = "Mecânica"); buttonStates[0] = !buttonStates[0] },
                          modifier = Modifier
                             .fillMaxWidth()
                             .padding(2.dp)
-                            .height(50.dp),
+                            .height(40.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFFF1A58D), // Cor laranja
-                            contentColor = Color.Black          // Cor do texto
+                            containerColor = if (buttonStates[0])Color(0xFFF1A58D) else Color(0xFFE08A84),  // Cor do botão que muda ao clicar
+                            contentColor = Color.Black     // Cor do texto
                         )
                     ) {
                         Text(
@@ -534,13 +542,13 @@ fun CadastroPrestadorEtapa2(
                         )
                     }
                     Button(
-                        onClick = { Category(id = 2, name = "Hidráulica") },
+                        onClick = { category=Category(id = 2, name = "Hidráulica"); buttonStates[1] = !buttonStates[1]},
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(2.dp)
-                            .height(50.dp),
+                            .height(40.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFFF1A58D), // Cor laranja
+                            containerColor = if (buttonStates[1])Color(0xFFF1A58D) else Color(0xFFE08A84), // Cor laranja
                             contentColor = Color.Black          // Cor do texto
                         )
                     ) {
@@ -552,12 +560,12 @@ fun CadastroPrestadorEtapa2(
                         )
                     }
                     Button(
-                        onClick = { Category(id = 3, name = "Limpeza") },
+                        onClick = { category=Category(id = 3, name = "Limpeza");buttonStates[2] = !buttonStates[2]},
                         modifier = Modifier
                             .fillMaxWidth().padding(2.dp)
-                            .height(50.dp),
+                            .height(40.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFFF1A58D), // Cor laranja
+                            containerColor = if (buttonStates[2]) Color(0xFFF1A58D) else Color(0xFFE08A84), // Cor laranja
                             contentColor = Color.Black          // Cor do texto
                         )
                     ) {
@@ -570,12 +578,12 @@ fun CadastroPrestadorEtapa2(
                         )
                     }
                     Button(
-                        onClick = { Category(id = 4, name = "Elétrica") },
+                        onClick = { category=Category(id = 4, name = "Elétrica");buttonStates[3] = !buttonStates[3]},
                         modifier = Modifier
                             .fillMaxWidth().padding(2.dp)
-                            .height(50.dp),
+                            .height(40.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFFF1A58D), // Cor laranja
+                            containerColor = if (buttonStates[3]) Color(0xFFF1A58D) else Color(0xFFE08A84), // Cor laranja
                             contentColor = Color.Black          // Cor do texto
                         )
                     ) {
@@ -588,12 +596,12 @@ fun CadastroPrestadorEtapa2(
                         )
                     }
                     Button(
-                        onClick = { Category(id = 5, name = "Obras") },
+                        onClick = { category=Category(id = 5, name = "Obras");buttonStates[4] = !buttonStates[4]},
                         modifier = Modifier
                             .fillMaxWidth().padding(2.dp)
-                            .height(50.dp),
+                            .height(40.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFFF1A58D), // Cor laranja
+                            containerColor = if (buttonStates[4]) Color(0xFFF1A58D) else Color(0xFFE08A84), // Cor laranja
                             contentColor = Color.Black          // Cor do texto
                         )
                     ) {
@@ -606,12 +614,12 @@ fun CadastroPrestadorEtapa2(
                         )
                     }
                     Button(
-                        onClick = { Category(id = 6, name = "Todos") },
+                        onClick = { category=Category(id = 6, name = "Todos");buttonStates[5] = !buttonStates[5] },
                         modifier = Modifier
                             .fillMaxWidth().padding(2.dp)
-                            .height(50.dp),
+                            .height(40.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFFF1A58D), // Cor laranja
+                            containerColor = if (buttonStates[5]) Color(0xFFF1A58D) else Color(0xFFE08A84), // Cor laranja
                             contentColor = Color.Black          // Cor do texto
                         )
                     ) {
