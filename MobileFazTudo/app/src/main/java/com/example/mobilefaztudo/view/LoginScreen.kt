@@ -58,7 +58,9 @@ fun LoginScreen(
 
     Log.d("LOGIN", "$email + $senha")
 
-    var showModal by remember { mutableStateOf(false) }
+    var showModalSuccess by remember { mutableStateOf(false) }
+    var showModalError by remember { mutableStateOf(false) }
+
     BackgroundRegister(backgroundImageResId = imagem)
 
     // Layout da tela de login
@@ -108,8 +110,11 @@ fun LoginScreen(
             onClick = {
                 Log.d("LOGIN", "CLIQUEI NO BOTÃO")
                 loginViewModel.login(email, senha){ onResult ->
-                    // Mostrar modal se o login for bem-sucedido
-                    showModal = onResult
+                    if (onResult) {
+                        showModalSuccess = true
+                    } else {
+                        showModalError = true
+                    }
                 }
             },
             modifier = Modifier
@@ -145,19 +150,40 @@ fun LoginScreen(
         }
     }
 
-    if (showModal) {
+    if (showModalSuccess) {
         Log.d("LOGIN", "CHAMOU O MODAL")
         AlertDialog(
             onDismissRequest = {
                 // Fechar o modal ao clicar fora
-                showModal = false
+                showModalSuccess = false
             },
             title = { Text("Mensagem") },
             text = { Text("Eba! Login realizado") },
             confirmButton = {
                 Button(onClick = {
                     // Fechar o modal ao clicar no botão OK
-                    showModal = false
+                    showModalSuccess = false
+                }) {
+                    Text("OK")
+                }
+            }
+        )
+    }
+
+    if (showModalError) {
+        Log.d("CADASTRO", "CHAMOU O MODAL")
+        AlertDialog(
+            onDismissRequest = {
+                // Fechar o modal ao clicar fora
+                showModalError = false
+            },
+            title = { Text("Oops") },
+            text = { Text("Epa! Parece que houve algum erro ao tentar entrar em sua conta :(\n\nTente novamente em alguns instantes.") },
+            confirmButton = {
+                Button(onClick = {
+                    // Fechar o modal ao clicar no botão OK
+                    showModalError = false
+                    navController.navigate("cadastro1")
                 }) {
                     Text("OK")
                 }

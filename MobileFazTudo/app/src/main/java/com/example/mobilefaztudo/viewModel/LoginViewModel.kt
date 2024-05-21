@@ -25,7 +25,7 @@ class LoginViewModel (private val repository: ILoginRepository): ViewModel() {
             } catch (e: Exception) {
                 //fazer validação por code
                 Log.d("LOGIN", "exception ::: $e")
-                onResult(true)
+                onResult(false)
             }
         }
     }

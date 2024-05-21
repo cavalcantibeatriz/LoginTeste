@@ -160,6 +160,7 @@ fun CadastroContratanteEtapa2(
     var state by remember { mutableStateOf("SP") }
     var phone by remember { mutableStateOf("") }
     var senha by remember { mutableStateOf("") }
+    var confirmarSenha by remember { mutableStateOf("") }
     var proUser by remember { mutableStateOf(false) }
 
     var showModalSuccess by remember { mutableStateOf(false) }
@@ -344,8 +345,8 @@ fun CadastroContratanteEtapa2(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp),
-                value = "",
-                onValueChange = { }
+                value = confirmarSenha,
+                onValueChange = { confirmarSenha = it}
             )
             Spacer(modifier = Modifier.height(5 .dp))
             Box(
@@ -455,6 +456,7 @@ fun CadastroPrestadorEtapa2(
     var state by remember { mutableStateOf("SP") }
     var phone by remember { mutableStateOf("") }
     var senha by remember { mutableStateOf("") }
+    var confirmarSenha by remember { mutableStateOf("") }
     var category by remember { mutableStateOf(Category(id = 6, name = "Todos")) }
 
     var exibirCamposSenha by remember { mutableStateOf(false) }
@@ -826,14 +828,12 @@ fun CadastroPrestadorEtapa2(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 10.dp),
-                value = "",
-                onValueChange = {  }
+                value = confirmarSenha,
+                onValueChange = { confirmarSenha = it }
             )
             Box(
                 modifier = Modifier
                     .height(290.dp)
-//                    .border(2.dp, Color.Red)  // Adiciona uma borda cinza de 1 dp ao redor do Box
-//                    .padding(3.dp),  // Adiciona um padding interno para que o texto não fique colado na borda
             ){
                 Text(
                     text =  "A senha deve conter letras, números e caracteres especiais!\n\n- Evite sequências númericas\n- Evite sua data de nascimento\n- Evite seu telefone",
@@ -912,14 +912,14 @@ fun CadastroPrestadorEtapa2(
         AlertDialog(
             onDismissRequest = {
                 // Fechar o modal ao clicar fora
-                showModalSuccess = false
+                showModalError = false
             },
             title = { Text("Oops") },
             text = { Text("Epa! Parece que houve algum erro ao te cadastrar :(\n\nTente novamente em alguns instantes.") },
             confirmButton = {
                 Button(onClick = {
                     // Fechar o modal ao clicar no botão OK
-                    showModalSuccess = false
+                    showModalError = false
                     navController.navigate("cadastro1")
                 }) {
                     Text("OK")
