@@ -44,7 +44,7 @@ fun DemandCard(
                 )
 
             )
-            .padding(top = 24.dp, bottom = 17.dp),
+            .padding(top = 20.dp, bottom = 17.dp),
         contentAlignment = Alignment.Center
 
     ) {
