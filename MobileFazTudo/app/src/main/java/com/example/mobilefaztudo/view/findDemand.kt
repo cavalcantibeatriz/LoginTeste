@@ -1,12 +1,9 @@
 package com.example.mobilefaztudo.view
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,18 +14,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.materialIcon
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.traceEventEnd
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -44,7 +36,7 @@ import com.example.faztudo_mb.ui.theme.screens.components_new.TopBar
 import com.example.mobilefaztudo.R
 
 @Composable
-fun ShowProviders() {
+fun ShowDemands() {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -75,7 +67,7 @@ fun ShowProviders() {
                 ) {
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Encontre prestadores",
+                        text = "Encontre demandas",
                         fontSize = 30.sp,
                         style = TextStyle(
                             fontWeight = FontWeight.Bold,
@@ -128,6 +120,6 @@ fun ShowProviders() {
 
 @Preview
 @Composable
-fun ShowProvidersPreview() {
-    ShowProviders()
+fun ShowDemandsPreview() {
+    ShowDemands()
 }
