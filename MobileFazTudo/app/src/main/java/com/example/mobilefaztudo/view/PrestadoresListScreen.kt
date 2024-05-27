@@ -24,27 +24,24 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.faztudo_mb.ui.theme.screens.components.BackgroundRegister
-import com.example.faztudo_mb.ui.theme.screens.components.BoldTilte
 import com.example.faztudo_mb.ui.theme.screens.components.imagem
-import com.example.faztudo_mb.ui.theme.screens.components_new.DemandCard
 import com.example.faztudo_mb.ui.theme.screens.components_new.NavBarHome
 import com.example.faztudo_mb.ui.theme.screens.components_new.PrestadorCard
 import com.example.faztudo_mb.ui.theme.screens.components_new.TopBar
 import com.example.mobilefaztudo.R
 
 @Composable
-fun ShowProviders() {
+fun encontrePrestadores(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
     ) {
         BackgroundRegister(backgroundImageResId = imagem)
-
         Column(
             modifier = Modifier
                 .fillMaxSize(),
@@ -57,9 +54,7 @@ fun ShowProviders() {
                 verticalArrangement = Arrangement.Top
             ) {
                 TopBar()
-                Spacer(modifier = Modifier.height(16.dp)) // Adiciona espaço entre a TopBar e o texto
-
-                // Linha para ícone de filtro e texto
+                Spacer(modifier = Modifier.height(16.dp))
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
@@ -86,8 +81,6 @@ fun ShowProviders() {
                         )
                     }
                     Spacer(modifier = Modifier.width(8.dp))
-
-
                 }
                 Spacer(modifier = Modifier.padding(10.dp))
                 Box(
@@ -109,18 +102,10 @@ fun ShowProviders() {
                     }
                 }
             }
-
             NavBarHome(
                 modifier = Modifier
                     .fillMaxWidth()
             )
         }
     }
-}
-
-
-@Preview
-@Composable
-fun ShowProvidersPreview() {
-    ShowProviders()
 }

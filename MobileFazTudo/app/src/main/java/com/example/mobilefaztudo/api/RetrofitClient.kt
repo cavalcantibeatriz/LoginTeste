@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit
 object RetrofitClient {
     //Insira seu ip fixo aqui e mude também no arquivo res/xml/network_security_config.xml
     // 54.88.187.162
-    private const val BASE_URL = "http://192.168.159.198:8080/"
+    private const val BASE_URL = "http://192.168.0.124:8080/"
     private const val CONNECT_TIMEOUT = 30
     private const val CONTENT_TYPE_JSON = "application/json"
 

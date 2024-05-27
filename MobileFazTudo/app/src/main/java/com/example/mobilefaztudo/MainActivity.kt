@@ -7,7 +7,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.mobilefaztudo.api.CadastroPrestadorResponse
 import com.example.mobilefaztudo.repository.LoginRepository
 import com.example.mobilefaztudo.repository.RegisterContractorRepository
 import com.example.mobilefaztudo.repository.RegisterProviderRepository
@@ -18,6 +17,8 @@ import com.example.mobilefaztudo.view.CadastroPrestadorEtapa2
 import com.example.mobilefaztudo.view.CadastroScreenEtapa1
 import com.example.mobilefaztudo.view.LoginScreen
 import com.example.mobilefaztudo.view.SplashScreen
+import com.example.mobilefaztudo.view.encontreDemandas
+import com.example.mobilefaztudo.view.encontrePrestadores
 import com.example.mobilefaztudo.viewModel.CadastroContratanteViewModel
 import com.example.mobilefaztudo.viewModel.CadastroPrestadorViewModel
 import com.example.mobilefaztudo.viewModel.LoginViewModel
@@ -50,6 +51,8 @@ class MainActivity : ComponentActivity() {
                     composable(route = "cadastro2C"){ CadastroContratanteEtapa2(contratanteViewModel,navController) }
                     composable(route = "cadastro2P"){ CadastroPrestadorEtapa2(prestadorViewModel,navController) }
                     composable(route = "splash"){ SplashScreen(navController) }
+                    composable(route = "encontrePrestadores"){ encontrePrestadores(navController)}
+                    composable(route = "encontreDemandas"){ encontreDemandas(navController)}
 
                 }
             }

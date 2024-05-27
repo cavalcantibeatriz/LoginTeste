@@ -34,7 +34,6 @@ class SharedPreferencesHelper(context: Context) {
         sharedPreferences.edit().putString("role", user.role).apply()
         sharedPreferences.edit().putInt("category_id", user.category.id).apply()
         sharedPreferences.edit().putString("category_name", user.category.name).apply()
-
     }
 }
 
