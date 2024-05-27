@@ -11,6 +11,7 @@ import com.example.mobilefaztudo.api.CadastroPrestadorResponse
 import com.example.mobilefaztudo.repository.LoginRepository
 import com.example.mobilefaztudo.repository.RegisterContractorRepository
 import com.example.mobilefaztudo.repository.RegisterProviderRepository
+import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
 import com.example.mobilefaztudo.ui.theme.MobileFazTudoTheme
 import com.example.mobilefaztudo.view.CadastroContratanteEtapa2
 import com.example.mobilefaztudo.view.CadastroPrestadorEtapa2
@@ -29,7 +30,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val repositoryL = LoginRepository()
-        loginViewModel = LoginViewModel(repositoryL)
+        val sharedPreferencesHelper = SharedPreferencesHelper(applicationContext)
+        loginViewModel = LoginViewModel(repositoryL, sharedPreferencesHelper)
 
         val repositoryC = RegisterContractorRepository()
         contratanteViewModel = CadastroContratanteViewModel(repositoryC)
