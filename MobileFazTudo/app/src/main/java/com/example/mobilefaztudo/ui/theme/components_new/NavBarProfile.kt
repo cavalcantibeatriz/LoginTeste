@@ -68,7 +68,7 @@ fun NavBarProfile(modifier: Modifier = Modifier) {
             ) {
                 Image(
 
-                    painter = painterResource(id = com.example.mobilefaztudo.R.drawable.vector),
+                    painter = painterResource(id = com.example.mobilefaztudo.R.drawable.home),
                     contentDescription = "perfil-icon 1",
                     modifier = Modifier.size(width = 45.dp, height = 45.dp)
                         .align(Alignment.Center),
