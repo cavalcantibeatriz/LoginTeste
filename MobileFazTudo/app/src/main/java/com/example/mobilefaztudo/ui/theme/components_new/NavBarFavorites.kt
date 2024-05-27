@@ -66,7 +66,7 @@ fun NavBarFavorites(modifier: Modifier = Modifier) {
             ) {
                 Image(
 
-                    painter = painterResource(id = R.drawable.vector),
+                    painter = painterResource(id = R.drawable.home),
                     contentDescription = "perfil-icon 1",
                     modifier = Modifier.size(width = 45.dp, height = 45.dp)
                         .align(Alignment.Center),

@@ -44,7 +44,7 @@ fun DemandCard(
                 )
 
             )
-            .padding(top = 24.dp, bottom = 17.dp),
+            .padding(top = 20.dp, bottom = 17.dp),
         contentAlignment = Alignment.Center
 
     ) {
@@ -66,7 +66,7 @@ fun DemandCard(
             Spacer(modifier = modifier.width(20.dp))
             Column (modifier = modifier){
                 Text(
-                    text = "Bruna Ferraz",
+                    text = "Obras Gerais",
                     fontWeight = FontWeight.Bold,
                     //fontFamily = FontFamily(Font(R.font.poppins))
                     fontSize = 22.sp
