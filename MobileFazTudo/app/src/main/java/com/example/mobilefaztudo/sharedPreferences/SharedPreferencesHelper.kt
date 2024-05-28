@@ -1,7 +1,6 @@
 package com.example.mobilefaztudo.sharedPreferences
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.compose.ui.platform.LocalContext
 import com.example.mobilefaztudo.api.User
 import com.google.gson.Gson
 
@@ -14,6 +13,7 @@ class SharedPreferencesHelper(context: Context) {
     }
     fun saveUserData(user: User) {
         val userJson = Gson().toJson(user)
+        val categoryJson = Gson().toJson(user.category)
         sharedPreferences.edit().putString("JSON", userJson).apply()
         sharedPreferences.edit().putInt("id", user.id).apply()
         sharedPreferences.edit().putString("nome", user.name).apply()
@@ -32,8 +32,31 @@ class SharedPreferencesHelper(context: Context) {
         sharedPreferences.edit().putString("city", user.city).apply()
         sharedPreferences.edit().putString("senha", user.senha).apply()
         sharedPreferences.edit().putString("role", user.role).apply()
-        sharedPreferences.edit().putInt("category_id", user.category.id).apply()
-        sharedPreferences.edit().putString("category_name", user.category.name).apply()
+        sharedPreferences.edit().putString("categoryJson", categoryJson).apply()
+        sharedPreferences.edit().putString("categoryName", user.category?.name).apply()
+    }
+
+    fun sessionStorage(){
+        var nome = sharedPreferences.getString("nome", "")
+        var sobrenome = sharedPreferences.getString("sobrenome", "")
+        var id = sharedPreferences.getInt("id", 0)
+        var dt_cadastro = sharedPreferences.getString("dt_cadastro", "")
+        var image_profile = sharedPreferences.getString("image_profile", "")
+        var phone = sharedPreferences.getString("phone", "")
+        var proUser = sharedPreferences.getBoolean("proUser", false)
+        var email = sharedPreferences.getString("email", "")
+        var username = sharedPreferences.getString("username", "")
+        var descricao = sharedPreferences.getString("descricao", "")
+        var cpf = sharedPreferences.getString("cpf", "")
+        var cep = sharedPreferences.getString("cep", "")
+        var logradouro = sharedPreferences.getString("logradouro", "")
+        var state = sharedPreferences.getString("state", "")
+        var city = sharedPreferences.getString("city", "")
+        var senha = sharedPreferences.getString("senha", "")
+        var role = sharedPreferences.getString("role", "")
+        var JSON = sharedPreferences.getString("JSON", "")
+        var categoryJson = sharedPreferences.getString("categoryJson", null)
+        var categoryName = sharedPreferences.getString("categoryName", null)
     }
 }
 

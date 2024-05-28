@@ -1,5 +1,7 @@
 package com.example.mobilefaztudo.view
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -33,6 +35,7 @@ import androidx.navigation.NavController
 import com.example.faztudo_mb.ui.theme.screens.components.BackgroundRegister
 import com.example.faztudo_mb.ui.theme.screens.components.imagem
 import com.example.mobilefaztudo.R
+import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
 import com.example.mobilefaztudo.ui.theme.laranjaBtn
 import com.example.mobilefaztudo.ui.theme.salmaoRosadoBtn
 import com.example.mobilefaztudo.viewModel.LoginViewModel
@@ -81,9 +84,18 @@ fun LoginScreen(loginViewModel: LoginViewModel = viewModel(), navController: Nav
         Button(
             onClick = {
                 Log.d("LOGIN", "CLIQUEI NO BOTÃO")
-                loginViewModel.login(email, senha) { onResult ->
+                loginViewModel.login(email, senha) { onResult, category ->
                     if (onResult) {
-                        showModalSuccess = true
+                        if (category?.name == null ){
+                            showModalSuccess = true
+                            //navegar
+                            Log.d("LOGIN", "redirecionar contratante")
+                        }else{
+                            showModalSuccess = true
+                            //navegar
+                            Log.d("LOGIN", "redirecionar prestador")
+                        }
+
                     } else {
                         showModalError = true
                     }
@@ -114,6 +126,7 @@ fun LoginScreen(loginViewModel: LoginViewModel = viewModel(), navController: Nav
             )
         }
     }
+
     if (showModalSuccess) {
         Log.d("LOGIN", "CHAMOU O MODAL")
         AlertDialog(

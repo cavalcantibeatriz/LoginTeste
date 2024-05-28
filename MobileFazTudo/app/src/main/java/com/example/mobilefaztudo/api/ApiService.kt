@@ -44,7 +44,7 @@ data class User(
     val descricao: String?,
     val image_profile: String?,
     val role: String?,
-    val category: Category,
+    val category: Category?,
     val proUser: Boolean,
     val password: String,
     val enabled: Boolean,
