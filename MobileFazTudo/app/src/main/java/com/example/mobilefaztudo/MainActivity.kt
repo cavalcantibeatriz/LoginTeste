@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.mobilefaztudo.repository.ListProviders
 import com.example.mobilefaztudo.repository.LoginRepository
 import com.example.mobilefaztudo.repository.RegisterContractorRepository
 import com.example.mobilefaztudo.repository.RegisterProviderRepository
@@ -21,6 +22,7 @@ import com.example.mobilefaztudo.view.encontreDemandas
 import com.example.mobilefaztudo.view.encontrePrestadores
 import com.example.mobilefaztudo.viewModel.CadastroContratanteViewModel
 import com.example.mobilefaztudo.viewModel.CadastroPrestadorViewModel
+import com.example.mobilefaztudo.viewModel.ListPrestadoresViewModel
 import com.example.mobilefaztudo.viewModel.LoginViewModel
 
 
@@ -28,6 +30,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var prestadorViewModel: CadastroPrestadorViewModel
     private lateinit var contratanteViewModel: CadastroContratanteViewModel
+    private lateinit var listPrestadoresViewModel: ListPrestadoresViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val repositoryL = LoginRepository()
@@ -40,6 +43,9 @@ class MainActivity : ComponentActivity() {
         val repositoryP = RegisterProviderRepository()
         prestadorViewModel = CadastroPrestadorViewModel(repositoryP)
 
+        val repositoryListP = ListProviders()
+        listPrestadoresViewModel = ListPrestadoresViewModel(repositoryListP, sharedPreferencesHelper)
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
@@ -51,7 +57,7 @@ class MainActivity : ComponentActivity() {
                     composable(route = "cadastro2C"){ CadastroContratanteEtapa2(contratanteViewModel,navController) }
                     composable(route = "cadastro2P"){ CadastroPrestadorEtapa2(prestadorViewModel,navController) }
                     composable(route = "splash"){ SplashScreen(navController) }
-                    composable(route = "encontrePrestadores"){ encontrePrestadores(navController)}
+                    composable(route = "encontrePrestadores"){ encontrePrestadores(navController, listPrestadoresViewModel)}
                     composable(route = "encontreDemandas"){ encontreDemandas(navController)}
 
                 }

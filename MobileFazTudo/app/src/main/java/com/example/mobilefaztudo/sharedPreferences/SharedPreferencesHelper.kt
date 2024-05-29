@@ -36,10 +36,17 @@ class SharedPreferencesHelper(context: Context) {
         sharedPreferences.edit().putString("categoryName", user.category?.name).apply()
     }
 
+    fun getIdUser() : Int {
+        return sharedPreferences.getInt("id", 0)
+    }
+
+    fun getAuthToken() : String {
+        return sharedPreferences.getString("authToken","").toString()
+    }
+
     fun sessionStorage(){
         var nome = sharedPreferences.getString("nome", "")
         var sobrenome = sharedPreferences.getString("sobrenome", "")
-        var id = sharedPreferences.getInt("id", 0)
         var dt_cadastro = sharedPreferences.getString("dt_cadastro", "")
         var image_profile = sharedPreferences.getString("image_profile", "")
         var phone = sharedPreferences.getString("phone", "")

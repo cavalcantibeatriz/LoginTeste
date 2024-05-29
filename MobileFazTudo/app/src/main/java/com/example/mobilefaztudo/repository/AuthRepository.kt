@@ -8,6 +8,7 @@ import com.example.mobilefaztudo.api.CadastroPrestadorResponse
 import com.example.mobilefaztudo.api.LoginRequestBody
 import com.example.mobilefaztudo.api.LoginResponse
 import com.example.mobilefaztudo.api.RetrofitClient
+import com.example.mobilefaztudo.api.User
 import retrofit2.Response
 
 class LoginRepository : ILoginRepository {
@@ -34,5 +35,29 @@ class RegisterContractorRepository : ICadastroContratanteRepository {
             .create(ApiService::class.java)
 
         return api.registerContractor(body)
+    }
+}
+
+class PostFavorite : IPostFavoriteRepository {
+    override suspend fun postFavorite(idContratante: Int, idUser: Int): Response<Unit> {
+        val api = RetrofitClient.getInstance()
+            .create(ApiService::class.java)
+        return api.postFavorite(idContratante,idUser)
+    }
+}
+
+class DeleteFavorite : IDeleteFavoriteRepository {
+    override suspend fun deleteFavorite(idContratante: Int, idUser: Int): Response<Unit> {
+        val api = RetrofitClient.getInstance()
+            .create(ApiService::class.java)
+        return api.deleteFavorite(idContratante,idUser)
+    }
+}
+
+class ListProviders : IListProvidersRepository{
+    override suspend fun listProviders(authToken: String): Response<List<User>> {
+        val api = RetrofitClient.getInstance()
+            .create(ApiService::class.java)
+        return api.listProviders("Bearer $authToken")
     }
 }

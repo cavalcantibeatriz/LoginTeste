@@ -90,10 +90,12 @@ fun LoginScreen(loginViewModel: LoginViewModel = viewModel(), navController: Nav
                             showModalSuccess = true
                             //navegar
                             Log.d("LOGIN", "redirecionar contratante")
+                            navController.navigate("encontrePrestadores")
                         }else{
                             showModalSuccess = true
                             //navegar
                             Log.d("LOGIN", "redirecionar prestador")
+                            navController.navigate("encontreDemandas")
                         }
 
                     } else {

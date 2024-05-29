@@ -6,8 +6,10 @@ import com.example.mobilefaztudo.api.CadastroPrestadorBody
 import com.example.mobilefaztudo.api.CadastroPrestadorResponse
 import com.example.mobilefaztudo.api.LoginRequestBody
 import com.example.mobilefaztudo.api.LoginResponse
+import com.example.mobilefaztudo.api.User
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.Path
 
 interface ILoginRepository {
     suspend fun login(@Body body: LoginRequestBody): Response<LoginResponse>
@@ -19,4 +21,22 @@ interface ICadastroPrestadorRepository {
 
 interface ICadastroContratanteRepository {
     suspend fun registerContractor(@Body body: CadastroContratanteBody): Response<CadastroContratanteResponse>
+}
+
+interface IPostFavoriteRepository {
+    suspend fun postFavorite(
+        @Path("idContratante") idContratante: Int,
+        @Path("idUser") idUser: Int
+    ): Response<Unit>
+}
+
+interface IDeleteFavoriteRepository {
+    suspend fun deleteFavorite(
+        @Path("idContratante") idContratante: Int,
+        @Path("idUser") idUser: Int
+    ): Response<Unit>
+}
+
+interface IListProvidersRepository {
+    suspend fun listProviders(authToken: String): Response<List<User>>
 }
