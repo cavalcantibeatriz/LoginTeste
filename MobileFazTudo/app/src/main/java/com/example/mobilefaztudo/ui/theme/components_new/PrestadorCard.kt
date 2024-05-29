@@ -28,16 +28,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mobilefaztudo.R
-
+import com.example.mobilefaztudo.api.User
 
 
 @Composable
-fun PrestadorCard(
-
-
-
-    modifier: Modifier = Modifier)
-{
+fun PrestadorCard(modifier: Modifier = Modifier, prestador: User) {
     val (currentImage, setCurrentImage) = remember { mutableStateOf(R.drawable.image_63) }
     fun toggleImage() {
         if (currentImage == R.drawable.image_63) {
@@ -57,11 +52,9 @@ fun PrestadorCard(
                     bottomEnd = 20.dp,
                     bottomStart = 20.dp
                 )
-
             )
             .padding(top = 24.dp, bottom = 17.dp),
         contentAlignment = Alignment.Center
-
     ) {
         Row (modifier = modifier
             .background(
@@ -73,26 +66,24 @@ fun PrestadorCard(
                     bottomStart = 20.dp
                 ))){
             Image(modifier = modifier,
-                painter = painterResource(id = R.drawable.rectangle_71),
+                painter = painterResource(id = R.drawable.img_profile_default),
                 contentDescription = "Botao de Voltar"
             )
             Spacer(modifier = modifier.width(20.dp))
             Column (modifier = modifier){
                 Text(
-                    text = "Bruna Ferraz",
+                    text = prestador.name,
                     fontWeight = FontWeight.Bold,
                     //fontFamily = FontFamily(Font(R.font.poppins))
                     fontSize = 22.sp
                 )
                 Spacer(modifier = Modifier.height(3.dp))
-                Text(text = "Especialista em Obras \n" +
-                        "Gerais")
+                Text(text = "Especialista em ${prestador.category?.name}")
             Row (
                 modifier = modifier
                     .padding(start = 100.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-
                 Image(
                     painter = painterResource(id = currentImage),
                     contentDescription = "Imagem Alternável",
@@ -104,15 +95,8 @@ fun PrestadorCard(
                     painter = painterResource(id = R.drawable.visualizar_1),
                     contentDescription = "Botao de Voltar"
                 )
-
             }
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun PrestadorCardPreview(){
-    PrestadorCard()
 }

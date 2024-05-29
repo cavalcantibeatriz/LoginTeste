@@ -1,5 +1,7 @@
 package com.example.mobilefaztudo.view
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -33,6 +35,7 @@ import androidx.navigation.NavController
 import com.example.faztudo_mb.ui.theme.screens.components.BackgroundRegister
 import com.example.faztudo_mb.ui.theme.screens.components.imagem
 import com.example.mobilefaztudo.R
+import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
 import com.example.mobilefaztudo.ui.theme.laranjaBtn
 import com.example.mobilefaztudo.ui.theme.salmaoRosadoBtn
 import com.example.mobilefaztudo.viewModel.LoginViewModel
@@ -46,40 +49,86 @@ fun LoginScreen(loginViewModel: LoginViewModel = viewModel(), navController: Nav
     var showModalError by remember { mutableStateOf(false) }
 
     BackgroundRegister(backgroundImageResId = imagem)
-    Column(modifier = Modifier.fillMaxSize().padding(16.dp),
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally) {
-        Image(painter = painterResource(id = R.drawable.logofaztudo___copia_1),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.logofaztudo___copia_1),
             contentDescription = null, // A descrição do conteúdo é opcional
-            modifier = Modifier.fillMaxWidth().height(150.dp),
-            alignment = Alignment.Center)
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(150.dp),
+            alignment = Alignment.Center
+        )
         Spacer(modifier = Modifier.height(50.dp))
-        TextField(value = email,
+        TextField(
+            value = email,
             onValueChange = { email = it },
             label = { Text("Email") },
-            modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp))
-        TextField(value = senha,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp)
+        )
+        TextField(
+            value = senha,
             onValueChange = { senha = it },
             label = { Text("Senha") },
-            modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp))
-        Button(onClick = {Log.d("LOGIN", "CLIQUEI NO BOTÃO")
-                loginViewModel.login(email, senha){ onResult ->
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp)
+        )
+        Button(
+            onClick = {
+                Log.d("LOGIN", "CLIQUEI NO BOTÃO")
+                loginViewModel.login(email, senha) { onResult, category ->
                     if (onResult) {
-                        showModalSuccess = true
+                        if (category?.name == null ){
+                            showModalSuccess = true
+                            //navegar
+                            Log.d("LOGIN", "redirecionar contratante")
+                            navController.navigate("encontrePrestadores")
+                        }else{
+                            showModalSuccess = true
+                            //navegar
+                            Log.d("LOGIN", "redirecionar prestador")
+                            navController.navigate("encontreDemandas")
+                        }
+
                     } else {
                         showModalError = true
                     }
-                }},
-            modifier = Modifier.width(250.dp).height(100.dp).padding(vertical = 25.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = laranjaBtn,contentColor = Color.White)
-        ) {Text("Entrar",style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold)) }
-        Button(onClick = { Log.d("LOGIN", "CLIQUEI NO BOTÃO CADASTRO")
-                navController.navigate("cadastro1")},
-            modifier = Modifier.width(350.dp).padding(vertical = 16.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = salmaoRosadoBtn)) {
-            Text("Não tenho uma conta",style = TextStyle(fontSize = 17.sp, fontWeight = FontWeight.Bold))
+                }
+            },
+            modifier = Modifier
+                .width(250.dp)
+                .height(100.dp)
+                .padding(vertical = 25.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = laranjaBtn,
+                contentColor = Color.White
+            )
+        ) { Text("Entrar", style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold)) }
+        Button(
+            onClick = {
+                Log.d("LOGIN", "CLIQUEI NO BOTÃO CADASTRO")
+                navController.navigate("cadastro1")
+            },
+            modifier = Modifier
+                .width(350.dp)
+                .padding(vertical = 16.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = salmaoRosadoBtn)
+        ) {
+            Text(
+                "Não tenho uma conta",
+                style = TextStyle(fontSize = 17.sp, fontWeight = FontWeight.Bold)
+            )
         }
     }
+
     if (showModalSuccess) {
         Log.d("LOGIN", "CHAMOU O MODAL")
         AlertDialog(

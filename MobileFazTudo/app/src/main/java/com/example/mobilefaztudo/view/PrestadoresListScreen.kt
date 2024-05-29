@@ -18,32 +18,46 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.faztudo_mb.ui.theme.screens.components.BackgroundRegister
-import com.example.faztudo_mb.ui.theme.screens.components.BoldTilte
 import com.example.faztudo_mb.ui.theme.screens.components.imagem
-import com.example.faztudo_mb.ui.theme.screens.components_new.DemandCard
 import com.example.faztudo_mb.ui.theme.screens.components_new.NavBarHome
+import com.example.faztudo_mb.ui.theme.screens.components_new.PrestadorCard
 import com.example.faztudo_mb.ui.theme.screens.components_new.TopBar
 import com.example.mobilefaztudo.R
+import com.example.mobilefaztudo.api.User
+import com.example.mobilefaztudo.viewModel.ListPrestadoresViewModel
 
 @Composable
-fun ShowDemands() {
+fun encontrePrestadores(navController: NavController, viewModel: ListPrestadoresViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+
+    val listPrestadores by viewModel.listPrestadores.observeAsState(initial = emptyList())
+
+    LaunchedEffect(Unit){
+        viewModel.listarPrestadores()
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
     ) {
         BackgroundRegister(backgroundImageResId = imagem)
-
         Column(
             modifier = Modifier
                 .fillMaxSize(),
@@ -56,9 +70,7 @@ fun ShowDemands() {
                 verticalArrangement = Arrangement.Top
             ) {
                 TopBar()
-                Spacer(modifier = Modifier.height(16.dp)) // Adiciona espaço entre a TopBar e o texto
-
-                // Linha para ícone de filtro e texto
+                Spacer(modifier = Modifier.height(16.dp))
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
@@ -67,7 +79,7 @@ fun ShowDemands() {
                 ) {
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Encontre demandas",
+                        text = "Encontre prestadores",
                         fontSize = 30.sp,
                         style = TextStyle(
                             fontWeight = FontWeight.Bold,
@@ -85,8 +97,6 @@ fun ShowDemands() {
                         )
                     }
                     Spacer(modifier = Modifier.width(8.dp))
-
-
                 }
                 Spacer(modifier = Modifier.padding(10.dp))
                 Box(
@@ -101,25 +111,17 @@ fun ShowDemands() {
 //                            .border(3.dp, Color.Red),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        for (i in 0..10) {
-                            DemandCard()
+                        listPrestadores.forEach { prestador ->
+                            PrestadorCard(prestador = prestador)
                             Spacer(modifier = Modifier.padding(10.dp))
                         }
                     }
                 }
             }
-
             NavBarHome(
                 modifier = Modifier
                     .fillMaxWidth()
             )
         }
     }
-}
-
-
-@Preview
-@Composable
-fun ShowDemandsPreview() {
-    ShowDemands()
 }
