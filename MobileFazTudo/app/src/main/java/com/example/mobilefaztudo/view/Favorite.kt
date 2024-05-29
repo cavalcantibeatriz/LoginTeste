@@ -31,13 +31,14 @@ import com.example.faztudo_mb.ui.theme.screens.components.BackgroundRegister
 import com.example.faztudo_mb.ui.theme.screens.components.BoldTilte
 import com.example.faztudo_mb.ui.theme.screens.components.imagem
 import com.example.faztudo_mb.ui.theme.screens.components_new.DemandCard
+import com.example.faztudo_mb.ui.theme.screens.components_new.NavBarFavorites
 import com.example.faztudo_mb.ui.theme.screens.components_new.NavBarHome
 import com.example.faztudo_mb.ui.theme.screens.components_new.PrestadorCard
 import com.example.faztudo_mb.ui.theme.screens.components_new.TopBar
 import com.example.mobilefaztudo.R
 
 @Composable
-fun ShowProviders() {
+fun ShowFavorites() {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -68,7 +69,7 @@ fun ShowProviders() {
                 ) {
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Encontre prestadores",
+                        text = "Favoritos",
                         fontSize = 30.sp,
                         style = TextStyle(
                             fontWeight = FontWeight.Bold,
@@ -110,7 +111,10 @@ fun ShowProviders() {
                 }
             }
 
-            
+            NavBarFavorites(
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
         }
     }
 }
@@ -118,6 +122,6 @@ fun ShowProviders() {
 
 @Preview
 @Composable
-fun ShowProvidersPreview() {
-    ShowProviders()
+fun ShowFavoritesPreview() {
+    ShowFavorites()
 }
