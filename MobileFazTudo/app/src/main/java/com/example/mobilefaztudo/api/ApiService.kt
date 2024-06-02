@@ -21,18 +21,32 @@ interface ApiService {
 
     @DELETE("favorite/{idContratante}/{idUser}")
     suspend fun deleteFavorite(
+        @Header("Authorization") authToken: String,
         @Path("idContratante") idContratante: Int,
         @Path("idUser") idUser: Int
     ): Response<Unit>
 
     @POST("favorite/{idContratante}/{idUser}")
     suspend fun postFavorite(
+        @Header("Authorization") authToken: String,
         @Path("idContratante") idContratante: Int,
         @Path("idUser") idUser: Int
     ): Response<Unit>
 
+    @POST("proposta/criar/{idDemanda}/{idUser}")
+    suspend fun enviarMensagem(
+        @Header("Authorization") authToken: String,
+        @Path("idDemanda") idDemanda: Int,
+        @Path("idUser") idUser: Int,
+        @Body body: MensagemRequest
+        ): Response<Unit>
+
     @GET("search/")
         suspend fun listProviders(@Header("Authorization") authToken: String): Response<List<User>>
+
+    @GET("post/all")
+    suspend fun listDemandas(@Header("Authorization") authToken: String): Response<List<Demanda>>
+
 }
 
 data class LoginRequestBody(
@@ -164,3 +178,23 @@ data class Category(
     val id: Int,
     val name: String
 )
+
+data class Demanda(
+    val id: Int,
+    val fkContractor: Int,
+    val fkProvider: Int,
+    val descricao: String,
+    val avaliacao: String,
+    val status: String,
+    val categoria: Int,
+    val rating: Int,
+    val dataCriacao: String,
+    val dataDeConclusao : String?,
+    val data: String?
+)
+
+data class MensagemRequest(
+    val mensagem: String,
+    val post: Demanda,
+    val prestador: User
+    )

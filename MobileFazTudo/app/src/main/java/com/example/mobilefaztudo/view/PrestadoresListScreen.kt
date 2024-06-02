@@ -41,10 +41,13 @@ import com.example.faztudo_mb.ui.theme.screens.components_new.PrestadorCard
 import com.example.faztudo_mb.ui.theme.screens.components_new.TopBar
 import com.example.mobilefaztudo.R
 import com.example.mobilefaztudo.api.User
+import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
 import com.example.mobilefaztudo.viewModel.ListPrestadoresViewModel
 
 @Composable
-fun encontrePrestadores(navController: NavController, viewModel: ListPrestadoresViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+fun encontrePrestadores(
+    navController: NavController,
+    viewModel: ListPrestadoresViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
 
     val listPrestadores by viewModel.listPrestadores.observeAsState(initial = emptyList())
 

@@ -1,5 +1,6 @@
 package com.example.mobilefaztudo.view
 
+import android.content.SharedPreferences
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,6 +19,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,9 +37,19 @@ import com.example.faztudo_mb.ui.theme.screens.components_new.DemandCard
 import com.example.faztudo_mb.ui.theme.screens.components_new.NavBarHome
 import com.example.faztudo_mb.ui.theme.screens.components_new.TopBar
 import com.example.mobilefaztudo.R
+import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
+import com.example.mobilefaztudo.viewModel.ListDemandasViewModel
+import com.example.mobilefaztudo.viewModel.ListPrestadoresViewModel
 
 @Composable
-fun encontreDemandas(navController: NavController) {
+fun encontreDemandas(
+    navController: NavController,
+    viewModel: ListDemandasViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+    ) {
+    val listDemandas by viewModel.listDemandas.observeAsState(initial = emptyList())
+    LaunchedEffect(Unit){
+        viewModel.listarDemandas()
+    }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -95,8 +109,8 @@ fun encontreDemandas(navController: NavController) {
 //                            .border(3.dp, Color.Red),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        for (i in 0..10) {
-                            DemandCard()
+                        listDemandas.forEach { demanda ->
+                            DemandCard(demanda = demanda)
                             Spacer(modifier = Modifier.padding(10.dp))
                         }
                     }

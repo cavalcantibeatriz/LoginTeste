@@ -10,7 +10,10 @@ import com.example.mobilefaztudo.repository.ILoginRepository
 import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
 import kotlinx.coroutines.launch
 
-class ListPrestadoresViewModel(private val repository: IListProvidersRepository, private val sharedPreferencesHelper: SharedPreferencesHelper): ViewModel() {
+class ListPrestadoresViewModel(
+    private val repository: IListProvidersRepository,
+    private val sharedPreferencesHelper: SharedPreferencesHelper)
+    : ViewModel() {
 
     val listPrestadores = MutableLiveData<List<User>>()
 

@@ -5,8 +5,10 @@ import com.example.mobilefaztudo.api.CadastroContratanteBody
 import com.example.mobilefaztudo.api.CadastroContratanteResponse
 import com.example.mobilefaztudo.api.CadastroPrestadorBody
 import com.example.mobilefaztudo.api.CadastroPrestadorResponse
+import com.example.mobilefaztudo.api.Demanda
 import com.example.mobilefaztudo.api.LoginRequestBody
 import com.example.mobilefaztudo.api.LoginResponse
+import com.example.mobilefaztudo.api.MensagemRequest
 import com.example.mobilefaztudo.api.RetrofitClient
 import com.example.mobilefaztudo.api.User
 import retrofit2.Response
@@ -39,18 +41,18 @@ class RegisterContractorRepository : ICadastroContratanteRepository {
 }
 
 class PostFavorite : IPostFavoriteRepository {
-    override suspend fun postFavorite(idContratante: Int, idUser: Int): Response<Unit> {
+    override suspend fun postFavorite(authToken: String,idContratante: Int, idUser: Int): Response<Unit> {
         val api = RetrofitClient.getInstance()
             .create(ApiService::class.java)
-        return api.postFavorite(idContratante,idUser)
+        return api.postFavorite("Bearer $authToken",idContratante,idUser)
     }
 }
 
 class DeleteFavorite : IDeleteFavoriteRepository {
-    override suspend fun deleteFavorite(idContratante: Int, idUser: Int): Response<Unit> {
+    override suspend fun deleteFavorite(authToken: String, idContratante: Int, idUser: Int): Response<Unit> {
         val api = RetrofitClient.getInstance()
             .create(ApiService::class.java)
-        return api.deleteFavorite(idContratante,idUser)
+        return api.deleteFavorite("Bearer $authToken", idContratante,idUser)
     }
 }
 
@@ -59,5 +61,27 @@ class ListProviders : IListProvidersRepository{
         val api = RetrofitClient.getInstance()
             .create(ApiService::class.java)
         return api.listProviders("Bearer $authToken")
+    }
+}
+
+class ListDemandasRepository : IListDemandasRepository{
+    override suspend fun listDemandas(authToken: String): Response<List<Demanda>> {
+        val api = RetrofitClient.getInstance()
+            .create(ApiService::class.java)
+        return api.listDemandas("Bearer $authToken")
+    }
+}
+
+class EnviarMensagemRepository: IEnviarMensagemRepository{
+
+    override suspend fun enviarMensagem(
+        authToken: String,
+        idDemanda: Int,
+        idUser: Int,
+        body: MensagemRequest
+    ): Response<Unit> {
+        val api = RetrofitClient.getInstance()
+            .create(ApiService::class.java)
+        return api.enviarMensagem("Bearer $authToken", idDemanda, idUser, body)
     }
 }
