@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -115,13 +116,19 @@ fun DemandCard(
                         bottomEnd = 20.dp,
                         bottomStart = 20.dp
                     )
-                )
+                ),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                modifier = modifier,
-                painter = painterResource(id = R.drawable.rectangle_71__1_),
-                contentDescription = "Botao de Voltar"
-            )
+            if (demanda.data === null){
+                Image(
+                    modifier = modifier,
+                    painter = painterResource(id = R.drawable.rectangle_71__1_),
+                    contentDescription = "Botao de Voltar"
+                )
+            }else{
+                demanda.data?.let{ Base64Image(base64String = it, modifier.width(100.dp))}
+            }
+
             Spacer(modifier = modifier.width(20.dp))
             Column(modifier = modifier) {
                 Text(
@@ -131,10 +138,13 @@ fun DemandCard(
                     fontSize = 22.sp
                 )
                 Spacer(modifier = Modifier.height(3.dp))
-                Text(text = demanda.descricao)
+                Text(text = demanda.descricao,
+                    modifier = modifier.width(180.dp).height(50.dp),
+                    maxLines = Int.MAX_VALUE,
+                    overflow = TextOverflow.Clip)
                 Row(
                     modifier = modifier
-                        .padding(start = 120.dp),
+                        .padding(start = 140.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Image(
@@ -156,7 +166,7 @@ fun DemandCard(
             title = { Text("Eba!") },
             text = {
                 Column {
-                    Text("Parece que você quer demonstrar interesse!")
+                    Text("Parece que você quer demonstrar interesse nesta demanda!")
                     Spacer(modifier = Modifier.height(8.dp))
                     TextField(
                         value = mensagemTexto,

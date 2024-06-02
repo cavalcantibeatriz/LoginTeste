@@ -118,7 +118,8 @@ fun PrestadorCard(
                     topEnd = 20.dp,
                     bottomEnd = 20.dp,
                     bottomStart = 20.dp
-                ))){
+                )),
+            verticalAlignment = Alignment.CenterVertically){
             if (prestador.image_profile === null){
                 Image(modifier = modifier.width(100.dp),
                     painter = painterResource(R.drawable.img_profile_default),
