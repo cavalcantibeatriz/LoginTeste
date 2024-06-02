@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -135,10 +136,14 @@ fun PrestadorCard(
                     fontSize = 22.sp
                 )
                 Spacer(modifier = Modifier.height(3.dp))
-                Text(text = "Especialista em ${prestador.category?.name}")
+                Text(
+                    text = "Especialista em ${prestador.category?.name}",
+                    modifier = modifier.width(180.dp),
+                    maxLines = Int.MAX_VALUE,
+                    overflow = TextOverflow.Clip)
             Row (
                 modifier = modifier
-                    .padding(start = 100.dp),
+                    .padding(start = 140.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
