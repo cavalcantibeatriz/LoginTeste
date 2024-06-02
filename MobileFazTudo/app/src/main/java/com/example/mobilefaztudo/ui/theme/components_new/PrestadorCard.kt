@@ -1,5 +1,7 @@
 package com.example.faztudo_mb.ui.theme.screens.components_new
 
+import android.graphics.BitmapFactory
+import android.util.Base64
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,6 +25,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.BitmapPainter
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -31,7 +37,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mobilefaztudo.R
 import com.example.mobilefaztudo.api.User
 import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
-
+import java.io.ByteArrayInputStream
 
 
 @Composable
@@ -44,7 +50,7 @@ fun PrestadorCard(
     val (currentImage, setCurrentImage) = remember { mutableStateOf(R.drawable.image_63) }
 
 //    val idUser = sharedPreferencesHelper.getIdUser()
-    val idUser = 12
+//    val idUser = 12
 
     var showModalError by remember { mutableStateOf(false) }
     var showModalSuccess by remember { mutableStateOf(false) }
@@ -87,6 +93,7 @@ fun PrestadorCard(
 //            }
         }
     }
+
     Box(
         modifier = modifier
             .width(350.dp)
@@ -111,10 +118,14 @@ fun PrestadorCard(
                     bottomEnd = 20.dp,
                     bottomStart = 20.dp
                 ))){
-            Image(modifier = modifier,
-                painter = painterResource(id = R.drawable.img_profile_default),
-                contentDescription = "Botao de Voltar"
-            )
+            if (prestador.image_profile === null){
+                Image(modifier = modifier.width(100.dp),
+                    painter = painterResource(R.drawable.img_profile_default),
+                    contentDescription = "Botao de Voltar"
+                )
+            }else {
+                prestador.image_profile?.let { Base64Image(base64String = it, modifier = modifier.width(100.dp)) }
+            }
             Spacer(modifier = modifier.width(20.dp))
             Column (modifier = modifier){
                 Text(
@@ -203,4 +214,30 @@ fun PrestadorCard(
         )
     }
 
+}
+
+fun Base64ToPainter(base64String :String) : Painter?{
+    return try {
+        val decodedString = Base64.decode(base64String, Base64.DEFAULT)
+        val bitmap = BitmapFactory.decodeStream(ByteArrayInputStream(decodedString))
+        bitmap?.let {
+            BitmapPainter(it.asImageBitmap())
+        }
+    }catch (e:Exception){
+        e.printStackTrace()
+        null
+    }
+}
+@Composable
+fun Base64Image(base64String :String, modifier: Modifier = Modifier){
+    val imagePainter: Painter? = remember { Base64ToPainter(base64String) }
+
+    imagePainter?.let {
+        Image(
+            modifier = modifier,
+            painter = it,
+            contentDescription = "Imagem em base64")
+    }?:run{
+
+    }
 }
