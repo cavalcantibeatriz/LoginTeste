@@ -64,7 +64,7 @@ fun PrestadorCard(
 //                try {
 //                    if (onResult) {
 //                        Log.d("EXIBIR", "FAVORITAR OK")
-//                        showModalSuccess = true
+                        showModalSuccess = true
 //                    } else {
 //                        Log.d("EXIBIR", "FAVORITAR falha")
 //                        showModalError = true
@@ -80,7 +80,7 @@ fun PrestadorCard(
 //                try {
 //                    if (onResult) {
 //                        Log.d("EXIBIR", "FAVORITAR OK")
-//                        showModalSuccessD = true
+                        showModalSuccessD = true
 //                    } else {
 //                        Log.d("EXIBIR", "FAVORITAR falha")
 //                        showModalError = true
@@ -167,14 +167,14 @@ fun PrestadorCard(
         AlertDialog(
             onDismissRequest = {
                 // Fechar o modal ao clicar fora
-                showModalSuccess = false
+                showModalSuccessD = false
             },
             title = { Text("Ixi...") },
-            text = { Text("Você desfavoritou o perfil de ${prestador.name}  :(") },
+            text = { Text("Você desfavoritou o perfil de ${prestador.name} :(") },
             confirmButton = {
                 Button(onClick = {
                     // Fechar o modal ao clicar no botão OK
-                    showModalSuccess = false
+                    showModalSuccessD = false
                 }) {
                     Text("OK")
                 }
