@@ -48,6 +48,7 @@ import com.example.faztudo_mb.ui.theme.screens.components_new.TopBar
 import com.example.mobilefaztudo.R
 import com.example.mobilefaztudo.api.User
 import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
+import com.example.mobilefaztudo.ui.theme.components_new.NavBarFuncional
 import com.example.mobilefaztudo.viewModel.ListPrestadoresViewModel
 import java.io.ByteArrayInputStream
 
@@ -128,10 +129,7 @@ fun encontrePrestadores(
                     }
                 }
             }
-            NavBarHome(
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
+            NavBarFuncional()
         }
     }
 }
