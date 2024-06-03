@@ -4,9 +4,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.mobilefaztudo.api.User
 import com.example.mobilefaztudo.repository.ListDemandasRepository
 import com.example.mobilefaztudo.repository.ListProviders
 import com.example.mobilefaztudo.repository.LoginRepository
@@ -65,12 +68,10 @@ class MainActivity : ComponentActivity() {
                     composable(route = "splash"){ SplashScreen(navController) }
                     composable(route = "encontrePrestadores"){ encontrePrestadores(navController, listPrestadoresViewModel)}
                     composable(route = "encontreDemandas"){ encontreDemandas(navController, listDemandasViewModel)}
-
                 }
             }
         }
     }
-
 }
 
 

@@ -122,7 +122,7 @@ fun encontrePrestadores(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         listPrestadores.forEach { prestador ->
-                            PrestadorCard(prestador = prestador)
+                            PrestadorCard(navController = navController, prestador = prestador)
                             Spacer(modifier = Modifier.padding(10.dp))
                         }
                     }

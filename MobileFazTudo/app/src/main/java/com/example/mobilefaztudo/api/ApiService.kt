@@ -7,7 +7,6 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
-import java.time.LocalDate
 
 interface ApiService {
     @POST("auth/login")
@@ -58,7 +57,6 @@ data class LoginResponse(
     val token: String,
     val login: User
 )
-
 data class User(
     val id: Int,
     val name: String,
