@@ -1,5 +1,8 @@
 package com.example.mobilefaztudo.view
 
+import android.graphics.BitmapFactory
+import android.util.Base64
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,13 +24,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.BitmapPainter
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -36,15 +39,17 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.faztudo_mb.ui.theme.screens.components.BackgroundRegister
 import com.example.faztudo_mb.ui.theme.screens.components.imagem
-import com.example.faztudo_mb.ui.theme.screens.components_new.NavBarHome
 import com.example.faztudo_mb.ui.theme.screens.components_new.PrestadorCard
 import com.example.faztudo_mb.ui.theme.screens.components_new.TopBar
 import com.example.mobilefaztudo.R
-import com.example.mobilefaztudo.api.User
+import com.example.mobilefaztudo.ui.theme.components_new.NavBarFuncional
 import com.example.mobilefaztudo.viewModel.ListPrestadoresViewModel
+import java.io.ByteArrayInputStream
 
 @Composable
-fun encontrePrestadores(navController: NavController, viewModel: ListPrestadoresViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+fun encontrePrestadores(
+    navController: NavController,
+    viewModel: ListPrestadoresViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
 
     val listPrestadores by viewModel.listPrestadores.observeAsState(initial = emptyList())
 
@@ -112,16 +117,38 @@ fun encontrePrestadores(navController: NavController, viewModel: ListPrestadores
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         listPrestadores.forEach { prestador ->
-                            PrestadorCard(prestador = prestador)
+                            PrestadorCard(navController = navController, prestador = prestador)
                             Spacer(modifier = Modifier.padding(10.dp))
                         }
                     }
                 }
             }
-            NavBarHome(
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
+            NavBarFuncional()
         }
+    }
+}
+fun Base64ToPainter(base64String :String) : Painter?{
+    return try {
+        val decodedString = Base64.decode(base64String, Base64.DEFAULT)
+        val bitmap = BitmapFactory.decodeStream(ByteArrayInputStream(decodedString))
+        bitmap?.let {
+            BitmapPainter(it.asImageBitmap())
+        }
+    }catch (e:Exception){
+        e.printStackTrace()
+        null
+    }
+}
+@Composable
+fun Base64Image(base64String :String, modifier: Modifier = Modifier){
+    val imagePainter: Painter? = remember { Base64ToPainter(base64String) }
+
+    imagePainter?.let {
+        Image(
+            modifier = modifier,
+            painter = it,
+            contentDescription = "Imagem em base64")
+    }?:run{
+
     }
 }

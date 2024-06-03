@@ -1,6 +1,5 @@
 package com.example.mobilefaztudo.view
 
-import android.content.SharedPreferences
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -33,21 +32,23 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.faztudo_mb.ui.theme.screens.components.BackgroundRegister
 import com.example.faztudo_mb.ui.theme.screens.components.imagem
-import com.example.faztudo_mb.ui.theme.screens.components_new.DemandCard
+import com.example.faztudo_mb.ui.theme.screens.components_new.PrestadorCard
 import com.example.faztudo_mb.ui.theme.screens.components_new.TopBar
 import com.example.mobilefaztudo.R
 import com.example.mobilefaztudo.ui.theme.components_new.NavBarFuncional
-import com.example.mobilefaztudo.viewModel.ListDemandasViewModel
+import com.example.mobilefaztudo.viewModel.ListPrestadoresViewModel
 
 @Composable
-fun encontreDemandas(
+fun FavoritosScreen (
     navController: NavController,
-    viewModel: ListDemandasViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
-    ) {
-    val listDemandas by viewModel.listDemandas.observeAsState(initial = emptyList())
+    viewModel: ListPrestadoresViewModel = androidx.lifecycle.viewmodel.compose.viewModel()){
+
+    val listPrestadores by viewModel.listPrestadores.observeAsState(initial = emptyList())
+
     LaunchedEffect(Unit){
-        viewModel.listarDemandas()
+        viewModel.listarPrestadores()
     }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -75,7 +76,7 @@ fun encontreDemandas(
                 ) {
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Encontre demandas",
+                        text = "Perfis favoritados",
                         fontSize = 30.sp,
                         style = TextStyle(
                             fontWeight = FontWeight.Bold,
@@ -104,11 +105,10 @@ fun encontreDemandas(
                     Column(
                         modifier = Modifier
                             .padding(horizontal = 18.dp),
-//                            .border(3.dp, Color.Red),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        listDemandas.forEach { demanda ->
-                            DemandCard(demanda = demanda)
+                        listPrestadores.forEach { prestador ->
+                            PrestadorCard(navController = navController, prestador = prestador)
                             Spacer(modifier = Modifier.padding(10.dp))
                         }
                     }

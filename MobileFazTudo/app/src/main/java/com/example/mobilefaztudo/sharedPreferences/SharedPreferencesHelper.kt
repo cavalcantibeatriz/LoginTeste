@@ -14,6 +14,7 @@ class SharedPreferencesHelper(context: Context) {
     fun saveUserData(user: User) {
         val userJson = Gson().toJson(user)
         val categoryJson = Gson().toJson(user.category)
+        sharedPreferences.edit().putString("teste", userJson).apply()
         sharedPreferences.edit().putString("JSON", userJson).apply()
         sharedPreferences.edit().putInt("id", user.id).apply()
         sharedPreferences.edit().putString("nome", user.name).apply()
@@ -38,6 +39,10 @@ class SharedPreferencesHelper(context: Context) {
 
     fun getIdUser() : Int {
         return sharedPreferences.getInt("id", 0)
+    }
+
+    fun getJSONUser() : String? {
+        return sharedPreferences.getString("JSON", "")
     }
 
     fun getAuthToken() : String {

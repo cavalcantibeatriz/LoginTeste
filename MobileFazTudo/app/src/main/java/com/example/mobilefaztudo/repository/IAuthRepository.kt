@@ -4,8 +4,10 @@ import com.example.mobilefaztudo.api.CadastroContratanteBody
 import com.example.mobilefaztudo.api.CadastroContratanteResponse
 import com.example.mobilefaztudo.api.CadastroPrestadorBody
 import com.example.mobilefaztudo.api.CadastroPrestadorResponse
+import com.example.mobilefaztudo.api.Demanda
 import com.example.mobilefaztudo.api.LoginRequestBody
 import com.example.mobilefaztudo.api.LoginResponse
+import com.example.mobilefaztudo.api.MensagemRequest
 import com.example.mobilefaztudo.api.User
 import retrofit2.Response
 import retrofit2.http.Body
@@ -25,6 +27,7 @@ interface ICadastroContratanteRepository {
 
 interface IPostFavoriteRepository {
     suspend fun postFavorite(
+        authToken: String,
         @Path("idContratante") idContratante: Int,
         @Path("idUser") idUser: Int
     ): Response<Unit>
@@ -32,6 +35,7 @@ interface IPostFavoriteRepository {
 
 interface IDeleteFavoriteRepository {
     suspend fun deleteFavorite(
+        authToken: String,
         @Path("idContratante") idContratante: Int,
         @Path("idUser") idUser: Int
     ): Response<Unit>
@@ -39,4 +43,17 @@ interface IDeleteFavoriteRepository {
 
 interface IListProvidersRepository {
     suspend fun listProviders(authToken: String): Response<List<User>>
+}
+
+interface IListDemandasRepository {
+    suspend fun listDemandas(authToken: String) : Response<List<Demanda>>
+}
+
+interface IEnviarMensagemRepository{
+    suspend fun enviarMensagem(
+        authToken: String,
+        @Path ("idDemanda") idDemanda: Int,
+        @Path("idUser") idUser: Int,
+        @Body body: MensagemRequest
+    ): Response<Unit>
 }
