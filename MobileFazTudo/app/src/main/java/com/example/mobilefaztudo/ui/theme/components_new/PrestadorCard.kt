@@ -60,7 +60,6 @@ fun PrestadorCard(
 //    desfavoritarViewModel: DesfavoritarViewModel = viewModel()
 ) {
     val (currentImage, setCurrentImage) = remember { mutableStateOf(R.drawable.image_63) }
-
 //    val idUser = sharedPreferencesHelper.getIdUser()
 
     var showModalError by remember { mutableStateOf(false) }
@@ -82,10 +81,6 @@ fun PrestadorCard(
 //            desfavoritarViewModel.deleteFavorite(idUser,prestador.id){onResult ->
                         showModalSuccessD = true
         }
-    }
-
-    fun visualizarPerfil(){
-        showCardPrestador = true
     }
 
     if (showCardPrestador) {
@@ -330,6 +325,7 @@ fun PrestadorCard(
             }
         )
     }
+
     if (showModalSuccess) {
         Log.d("EXIBIR", "CHAMOU O MODAL")
         AlertDialog(
@@ -349,6 +345,7 @@ fun PrestadorCard(
             }
         )
     }
+
     if (showModalError) {
         Log.d("EXIBIR", "CHAMOU O MODAL")
         AlertDialog(
@@ -368,7 +365,6 @@ fun PrestadorCard(
             }
         )
     }
-
 }
 
 fun Base64ToPainter(base64String :String) : Painter?{
@@ -386,13 +382,10 @@ fun Base64ToPainter(base64String :String) : Painter?{
 @Composable
 fun Base64Image(base64String :String, modifier: Modifier = Modifier){
     val imagePainter: Painter? = remember { Base64ToPainter(base64String) }
-
     imagePainter?.let {
         Image(
             modifier = modifier,
             painter = it,
             contentDescription = "Imagem em base64")
-    }?:run{
-
-    }
+    }?:run{}
 }

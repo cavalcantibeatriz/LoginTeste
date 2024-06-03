@@ -20,6 +20,7 @@ import com.example.mobilefaztudo.ui.theme.MobileFazTudoTheme
 import com.example.mobilefaztudo.view.CadastroContratanteEtapa2
 import com.example.mobilefaztudo.view.CadastroPrestadorEtapa2
 import com.example.mobilefaztudo.view.CadastroScreenEtapa1
+import com.example.mobilefaztudo.view.FavoritosScreen
 import com.example.mobilefaztudo.view.LoginScreen
 import com.example.mobilefaztudo.view.SplashScreen
 import com.example.mobilefaztudo.view.encontreDemandas
@@ -68,6 +69,8 @@ class MainActivity : ComponentActivity() {
                     composable(route = "splash"){ SplashScreen(navController) }
                     composable(route = "encontrePrestadores"){ encontrePrestadores(navController, listPrestadoresViewModel)}
                     composable(route = "encontreDemandas"){ encontreDemandas(navController, listDemandasViewModel)}
+                    composable(route = "encontreFavoritos"){ FavoritosScreen(navController, listPrestadoresViewModel)}
+
                 }
             }
         }
