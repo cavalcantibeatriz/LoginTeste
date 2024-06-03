@@ -32,10 +32,10 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.faztudo_mb.ui.theme.screens.components.BackgroundRegister
 import com.example.faztudo_mb.ui.theme.screens.components.imagem
-import com.example.faztudo_mb.ui.theme.screens.components_new.NavBarHome
 import com.example.faztudo_mb.ui.theme.screens.components_new.PrestadorCard
 import com.example.faztudo_mb.ui.theme.screens.components_new.TopBar
 import com.example.mobilefaztudo.R
+import com.example.mobilefaztudo.ui.theme.components_new.NavBarFuncional
 import com.example.mobilefaztudo.viewModel.ListPrestadoresViewModel
 
 @Composable
@@ -114,10 +114,7 @@ fun FavoritosScreen (
                     }
                 }
             }
-            NavBarHome(
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
+            NavBarFuncional()
         }
     }
 }

@@ -24,10 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -42,12 +39,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.faztudo_mb.ui.theme.screens.components.BackgroundRegister
 import com.example.faztudo_mb.ui.theme.screens.components.imagem
-import com.example.faztudo_mb.ui.theme.screens.components_new.NavBarHome
 import com.example.faztudo_mb.ui.theme.screens.components_new.PrestadorCard
 import com.example.faztudo_mb.ui.theme.screens.components_new.TopBar
 import com.example.mobilefaztudo.R
-import com.example.mobilefaztudo.api.User
-import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
 import com.example.mobilefaztudo.ui.theme.components_new.NavBarFuncional
 import com.example.mobilefaztudo.viewModel.ListPrestadoresViewModel
 import java.io.ByteArrayInputStream

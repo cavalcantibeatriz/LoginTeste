@@ -34,12 +34,10 @@ import androidx.navigation.NavController
 import com.example.faztudo_mb.ui.theme.screens.components.BackgroundRegister
 import com.example.faztudo_mb.ui.theme.screens.components.imagem
 import com.example.faztudo_mb.ui.theme.screens.components_new.DemandCard
-import com.example.faztudo_mb.ui.theme.screens.components_new.NavBarHome
 import com.example.faztudo_mb.ui.theme.screens.components_new.TopBar
 import com.example.mobilefaztudo.R
-import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
+import com.example.mobilefaztudo.ui.theme.components_new.NavBarFuncional
 import com.example.mobilefaztudo.viewModel.ListDemandasViewModel
-import com.example.mobilefaztudo.viewModel.ListPrestadoresViewModel
 
 @Composable
 fun encontreDemandas(
@@ -116,10 +114,7 @@ fun encontreDemandas(
                     }
                 }
             }
-            NavBarHome(
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
+            NavBarFuncional()
         }
     }
 }
