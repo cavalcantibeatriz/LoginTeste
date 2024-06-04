@@ -42,14 +42,16 @@ import com.example.faztudo_mb.ui.theme.screens.components.imagem
 import com.example.faztudo_mb.ui.theme.screens.components_new.PrestadorCard
 import com.example.faztudo_mb.ui.theme.screens.components_new.TopBar
 import com.example.mobilefaztudo.R
-import com.example.mobilefaztudo.ui.theme.components_new.NavBarFuncional
+import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
+import com.example.mobilefaztudo.ui.theme.components_new.NavBar.NavBarContratante
 import com.example.mobilefaztudo.viewModel.ListPrestadoresViewModel
 import java.io.ByteArrayInputStream
 
 @Composable
 fun encontrePrestadores(
     navController: NavController,
-    viewModel: ListPrestadoresViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+    viewModel: ListPrestadoresViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+    sharedPreferencesHelper: SharedPreferencesHelper) {
 
     val listPrestadores by viewModel.listPrestadores.observeAsState(initial = emptyList())
 
@@ -123,7 +125,7 @@ fun encontrePrestadores(
                     }
                 }
             }
-            NavBarFuncional()
+NavBarContratante(sharedPreferencesHelper, navController,"Home")
         }
     }
 }
