@@ -1,4 +1,4 @@
-package com.example.mobilefaztudo.view
+package com.example.mobilefaztudo.view.LoginECadastro
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

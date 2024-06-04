@@ -1,6 +1,7 @@
 package com.example.mobilefaztudo.sharedPreferences
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import com.example.mobilefaztudo.api.User
 import com.google.gson.Gson
 
@@ -41,8 +42,8 @@ class SharedPreferencesHelper(context: Context) {
         return sharedPreferences.getInt("id", 0)
     }
 
-    fun getJSONUser() : String? {
-        return sharedPreferences.getString("JSON", "")
+    fun getCategory() : String? {
+        return sharedPreferences.getString("categoryJson", null)
     }
 
     fun getAuthToken() : String {

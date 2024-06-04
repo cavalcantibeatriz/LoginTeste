@@ -1,4 +1,4 @@
-package com.example.mobilefaztudo.ui.theme.components_new
+package com.example.mobilefaztudo.ui.theme.components_new.NavBar
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
@@ -24,18 +23,34 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
 
 @Composable
-fun NavBarFuncional() {
-    val selectedIcon = remember { mutableStateOf(Icons.Filled.Home)}
-    val personBoxModifier = remember { mutableStateOf(Modifier.size(70.dp)) }
-    val infoBoxModifier = remember { mutableStateOf(Modifier.size(70.dp)) }
-    val homeBoxModifier = remember { mutableStateOf(Modifier.size(70.dp).clip(CircleShape).background(color = Color(0xFFF7A000)))  }
-    val notificationsBoxModifier = remember { mutableStateOf(Modifier.size(70.dp)) }
-    val favoriteBoxModifier = remember { mutableStateOf(Modifier.size(70.dp)) }
+fun NavBarContratante(sharedPreferencesHelper: SharedPreferencesHelper,
+                      navController: NavController,
+                      initialState: String
+){
+    val selectedBoxModifier = remember { mutableStateOf(Modifier.size(70.dp).clip(CircleShape).background(color = Color(0xFFF7A000))) }
+
+    fun stringToIcon(initialState: String): ImageVector {
+        return when (initialState) {
+            "Home" -> Icons.Filled.Home
+            "Person" -> Icons.Filled.Person
+            "Info" -> Icons.Filled.Info
+            "Favorite" -> Icons.Filled.Favorite
+            "Notifications" -> Icons.Filled.Notifications
+            else -> Icons.Filled.Home // Define a imagem padrão caso a string não seja mapeada
+        }
+    }
+    val initialIcon = stringToIcon(initialState)
+    val selectedIcon = remember { mutableStateOf(initialIcon) }
+    fun iconBackground(isSelected: Boolean): Modifier {
+        return if (isSelected) selectedBoxModifier.value else Modifier.size(70.dp)
+    }
 
     Box(
         modifier = Modifier
@@ -45,7 +60,6 @@ fun NavBarFuncional() {
         Box(
             modifier = Modifier
                 .fillMaxWidth().height(65.dp).align(Alignment.BottomCenter)
-//                .clip(shape = RoundedCornerShape(topStart = 45.dp, topEnd = 45.dp))
                 .background(color = Color.White),
         )
         Row(
@@ -56,35 +70,25 @@ fun NavBarFuncional() {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Box(
-                modifier = personBoxModifier.value
-                .background(if (selectedIcon.value == Icons.Filled.Person) Color(0xFFF7A000) else Color.White)
-                .clickable {
-                    selectedIcon.value = Icons.Filled.Person
-                    personBoxModifier.value = Modifier.size(70.dp).clip(CircleShape)
-                    infoBoxModifier.value = Modifier.size(70.dp)
-                    homeBoxModifier.value = Modifier.size(70.dp)
-                    favoriteBoxModifier.value = Modifier.size(70.dp)
-                    notificationsBoxModifier.value = Modifier.size(70.dp)
-                }
+                modifier = iconBackground(selectedIcon.value == Icons.Filled.Person)
+                    .clickable {
+                        selectedIcon.value = Icons.Filled.Person
+                        navController.navigate("PerfilContratanteScreen")
+                    }
             ) {
                 Image(
                     imageVector = Icons.Filled.Person,
-                    contentDescription = "image 56",
+                    contentDescription = "PROFILE",
                     modifier = Modifier.size(width = 45.dp, height = 45.dp)
                         .align(Alignment.Center),
                     contentScale = ContentScale.FillBounds
                 )
             }
             Box(
-                modifier = infoBoxModifier.value
-                    .background(if (selectedIcon.value == Icons.Filled.Info) Color(0xFFF7A000) else Color.White)
+                modifier = iconBackground(selectedIcon.value == Icons.Filled.Info)
                     .clickable {
                         selectedIcon.value = Icons.Filled.Info
-                        personBoxModifier.value = Modifier.size(70.dp)
-                        infoBoxModifier.value = Modifier.size(70.dp).clip(CircleShape)
-                        homeBoxModifier.value = Modifier.size(70.dp)
-                        favoriteBoxModifier.value = Modifier.size(70.dp)
-                        notificationsBoxModifier.value = Modifier.size(70.dp)
+                        //tela de acordos aqui !
                     }
             ) {
                 Image(
@@ -96,60 +100,45 @@ fun NavBarFuncional() {
                 )
             }
             Box(
-                modifier = homeBoxModifier.value
-                    .background(if (selectedIcon.value == Icons.Filled.Home) Color(0xFFF7A000) else Color.White)
+                modifier = iconBackground(selectedIcon.value == Icons.Filled.Home)
                     .clickable {
                         selectedIcon.value = Icons.Filled.Home
-                        personBoxModifier.value = Modifier.size(70.dp)
-                        infoBoxModifier.value = Modifier.size(70.dp)
-                        homeBoxModifier.value = Modifier.size(70.dp).clip(CircleShape)
-                        favoriteBoxModifier.value = Modifier.size(70.dp)
-                        notificationsBoxModifier.value = Modifier.size(70.dp)
+                        navController.navigate("encontrePrestadores")
                     }
             ) {
                 Image(
                     imageVector = Icons.Filled.Home,
-                    contentDescription = "perfil-icon 1",
+                    contentDescription = "HOME",
                     modifier = Modifier.size(width = 45.dp, height = 45.dp)
                         .align(Alignment.Center),
                     contentScale = ContentScale.FillBounds
                 )
             }
             Box(
-                modifier = favoriteBoxModifier.value
-                    .background(if (selectedIcon.value == Icons.Filled.Favorite) Color(0xFFF7A000) else Color.White)
+                modifier = iconBackground(selectedIcon.value == Icons.Filled.Favorite)
                     .clickable {
                         selectedIcon.value = Icons.Filled.Favorite
-                        personBoxModifier.value = Modifier.size(70.dp)
-                        infoBoxModifier.value = Modifier.size(70.dp)
-                        homeBoxModifier.value = Modifier.size(70.dp)
-                        favoriteBoxModifier.value = Modifier.size(70.dp).clip(CircleShape)
-                        notificationsBoxModifier.value = Modifier.size(70.dp)
+                        navController.navigate("encontreFavoritos")
                     }
             ) {
                 Image(
                     imageVector = Icons.Filled.Favorite,
-                    contentDescription = "icons8-aperto-de-mo-50 1",
+                    contentDescription = "FAVORITE",
                     modifier = Modifier.size(width = 45.dp, height = 45.dp)
                         .align(Alignment.Center),
                     contentScale = ContentScale.FillBounds
                 )
             }
             Box(
-                modifier = notificationsBoxModifier.value
-                    .background(if (selectedIcon.value == Icons.Filled.Notifications) Color(0xFFF7A000) else Color.White)
+                modifier = iconBackground(selectedIcon.value == Icons.Filled.Notifications)
                     .clickable {
                         selectedIcon.value = Icons.Filled.Notifications
-                        personBoxModifier.value = Modifier.size(70.dp)
-                        infoBoxModifier.value = Modifier.size(70.dp)
-                        homeBoxModifier.value = Modifier.size(70.dp)
-                        favoriteBoxModifier.value = Modifier.size(70.dp)
-                        notificationsBoxModifier.value = Modifier.size(70.dp).clip(CircleShape)
+                        // Implementar navegação para tela de notificações
                     }
             ) {
                 Image(
                     imageVector = Icons.Filled.Notifications,
-                    contentDescription = "bell-nav 1",
+                    contentDescription = "NOTIFICAÇÃO",
                     modifier = Modifier.size(width = 45.dp, height = 45.dp)
                         .align(Alignment.Center),
                     contentScale = ContentScale.FillBounds
