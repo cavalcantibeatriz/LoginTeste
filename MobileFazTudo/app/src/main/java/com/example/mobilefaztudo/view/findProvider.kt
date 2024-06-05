@@ -1,6 +1,6 @@
 package com.example.mobilefaztudo.view
 
-import androidx.compose.foundation.background
+import  androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -99,7 +99,6 @@ fun ShowProviders() {
                     Column(
                         modifier = Modifier
                             .padding(horizontal = 18.dp),
-//                            .border(3.dp, Color.Red),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         for (i in 0..10) {
