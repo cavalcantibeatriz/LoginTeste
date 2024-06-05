@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
@@ -27,21 +26,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.faztudo_mb.ui.theme.screens.components.BackgroundRegister
-import com.example.faztudo_mb.ui.theme.screens.components.BoldTilte
 import com.example.faztudo_mb.ui.theme.screens.components.imagem
-import com.example.faztudo_mb.ui.theme.screens.components_new.DemandCard
 import com.example.faztudo_mb.ui.theme.screens.components_new.DemandFinished
 import com.example.faztudo_mb.ui.theme.screens.components_new.DemandInProgress
 import com.example.faztudo_mb.ui.theme.screens.components_new.DemandOpened
-import com.example.faztudo_mb.ui.theme.screens.components_new.NavBarFavorites
-import com.example.faztudo_mb.ui.theme.screens.components_new.NavBarHome
 import com.example.faztudo_mb.ui.theme.screens.components_new.TopBar
 import com.example.mobilefaztudo.R
-import com.example.mobilefaztudo.ui.theme.components_new.NavBarDemand
+import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
+import com.example.mobilefaztudo.ui.theme.components_new.NavBar.NavBarContratante
 
 @Composable
-fun Demands() {
+fun Demand(
+    navController: NavController,
+    sharedPreferencesHelper: SharedPreferencesHelper
+
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -51,11 +52,11 @@ fun Demands() {
 
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
             TopBar()
             Spacer(modifier = Modifier.height(16.dp)) // Adiciona espaço entre a TopBar e o texto
-
             // Linha para ícone de filtro e texto
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -70,7 +71,7 @@ fun Demands() {
                         fontWeight = FontWeight.Bold,
                         fontSize = 18.sp
                     ),
-                    modifier = Modifier.padding(start = 20.dp, end = 20.dp) // Espaçamento mínimo entre texto e ícone
+                    modifier = Modifier.padding(start = 20.dp) // Espaçamento mínimo entre texto e ícone
                 )
                 IconButton(
                     onClick = { /* Implementar a lógica do clique aqui */ },
@@ -103,16 +104,7 @@ fun Demands() {
                     DemandOpened()
                 }
             }
-            NavBarDemand(
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
+NavBarContratante(sharedPreferencesHelper = sharedPreferencesHelper, navController = navController, initialState = "Info")
         }
     }
-}
-
-@Preview
-@Composable
-fun DemandsPreview() {
-    Demands()
 }

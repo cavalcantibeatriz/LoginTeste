@@ -31,8 +31,7 @@ import com.example.mobilefaztudo.R
 fun DemandFinished(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
-            .width(355.dp)
-            .padding(8.dp)
+            .width(350.dp)
     ) {
         Box(
             modifier = Modifier

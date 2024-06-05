@@ -32,7 +32,6 @@ fun DemandOpened(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .width(355.dp)
-            .padding(8.dp)
     ) {
         Box(
             modifier = Modifier

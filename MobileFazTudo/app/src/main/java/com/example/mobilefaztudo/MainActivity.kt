@@ -14,12 +14,14 @@ import com.example.mobilefaztudo.repository.RegisterContractorRepository
 import com.example.mobilefaztudo.repository.RegisterProviderRepository
 import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
 import com.example.mobilefaztudo.ui.theme.MobileFazTudoTheme
+import com.example.mobilefaztudo.view.Demand
 import com.example.mobilefaztudo.view.LoginECadastro.CadastroContratanteEtapa2
 import com.example.mobilefaztudo.view.LoginECadastro.CadastroPrestadorEtapa2
 import com.example.mobilefaztudo.view.LoginECadastro.CadastroScreenEtapa1
 import com.example.mobilefaztudo.view.FavoritosScreen
 import com.example.mobilefaztudo.view.LoginECadastro.LoginScreen
 import com.example.mobilefaztudo.view.LoginECadastro.SplashScreen
+import com.example.mobilefaztudo.view.NotificacoesScreen
 import com.example.mobilefaztudo.view.TelasPerfil.PerfilContratanteScreen
 import com.example.mobilefaztudo.view.TelasPerfil.PerfilPrestadorScreen
 import com.example.mobilefaztudo.view.encontreDemandas
@@ -104,6 +106,14 @@ class MainActivity : ComponentActivity() {
                     composable(route = "PerfilContratanteScreen") {
                         PerfilContratanteScreen(navController, sharedPreferencesHelper)
                     }
+                    composable(route = "Demand") {
+                        Demand(navController, sharedPreferencesHelper)
+                    }
+                    composable(route = "NotificacoesScreen") {
+                        NotificacoesScreen(navController, sharedPreferencesHelper)
+                    }
+
+
                 }
             }
         }
