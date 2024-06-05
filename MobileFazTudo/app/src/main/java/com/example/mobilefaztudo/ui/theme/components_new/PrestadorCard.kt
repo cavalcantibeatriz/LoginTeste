@@ -170,12 +170,12 @@ fun PrestadorCard(
     }
 
     if (showPerfilPrestador){
-        //INSERIR NOVA TELA AQUI
         Box(
             modifier = Modifier
                 .height(420.dp)
                 .clip(RoundedCornerShape(16.dp))
                 .background(lightGray)
+
         ) {
             Row(
                 modifier = Modifier
@@ -192,7 +192,8 @@ fun PrestadorCard(
             }
             Column(
                 modifier = Modifier
-                    .fillMaxSize().padding(20.dp),
+                    .fillMaxSize()
+                    .padding(20.dp),
                 verticalArrangement = Arrangement.Top
             ) {
                 Spacer(modifier = Modifier.height(16.dp))
