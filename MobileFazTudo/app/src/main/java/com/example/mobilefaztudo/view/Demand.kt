@@ -27,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.faztudo_mb.ui.theme.screens.components.BackgroundDemanda
 import com.example.faztudo_mb.ui.theme.screens.components.BackgroundRegister
 import com.example.faztudo_mb.ui.theme.screens.components.imagem
 import com.example.faztudo_mb.ui.theme.screens.components_new.DemandFinished
@@ -48,7 +49,7 @@ fun Demand(
             .fillMaxSize()
             .background(Color.White)
     ) {
-        BackgroundRegister(backgroundImageResId = imagem)
+        BackgroundDemanda()
 
         Column(
             modifier = Modifier
