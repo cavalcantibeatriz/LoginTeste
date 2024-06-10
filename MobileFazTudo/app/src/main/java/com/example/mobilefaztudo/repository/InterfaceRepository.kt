@@ -29,7 +29,7 @@ interface IPostFavoriteRepository {
     suspend fun postFavorite(
         authToken: String,
         @Path("idContratante") idContratante: Int,
-        @Path("idUser") idUser: Int
+        @Path("idProvider") idProvider: Int
     ): Response<Unit>
 }
 
@@ -37,12 +37,19 @@ interface IDeleteFavoriteRepository {
     suspend fun deleteFavorite(
         authToken: String,
         @Path("idContratante") idContratante: Int,
-        @Path("idUser") idUser: Int
+        @Path("idProvider") idProvider: Int
     ): Response<Unit>
 }
 
 interface IListProvidersRepository {
     suspend fun listProviders(authToken: String): Response<List<User>>
+}
+
+interface  IListProvidersFavoriteRepository{
+    suspend fun listProvidersFavorite(
+        authToken: String,
+        @Path("idUser") idUser: Int
+    ):Response<List<User>>
 }
 
 interface IListDemandasRepository {

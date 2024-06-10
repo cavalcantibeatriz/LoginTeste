@@ -41,22 +41,40 @@ class RegisterContractorRepository : ICadastroContratanteRepository {
 }
 
 class PostFavorite : IPostFavoriteRepository {
-    override suspend fun postFavorite(authToken: String,idContratante: Int, idUser: Int): Response<Unit> {
+    override suspend fun postFavorite(
+        authToken: String,
+        idContratante: Int,
+        idProvider: Int
+    ): Response<Unit> {
         val api = RetrofitClient.getInstance()
             .create(ApiService::class.java)
-        return api.postFavorite("Bearer $authToken",idContratante,idUser)
+        return api.postFavorite("Bearer $authToken", idContratante, idProvider)
     }
 }
 
 class DeleteFavorite : IDeleteFavoriteRepository {
-    override suspend fun deleteFavorite(authToken: String, idContratante: Int, idUser: Int): Response<Unit> {
+    override suspend fun deleteFavorite(
+        authToken: String,
+        idContratante: Int,
+        idProvider: Int
+    ): Response<Unit> {
         val api = RetrofitClient.getInstance()
             .create(ApiService::class.java)
-        return api.deleteFavorite("Bearer $authToken", idContratante,idUser)
+        return api.deleteFavorite("Bearer $authToken", idContratante, idProvider)
+    }
+}
+class ListProvidersFavorite : IListProvidersFavoriteRepository {
+    override suspend fun listProvidersFavorite(
+        authToken: String,
+        idUser: Int
+    ): Response<List<User>> {
+        val api = RetrofitClient.getInstance()
+            .create(ApiService::class.java)
+        return api.listProvidersFavorite("Bearer $authToken", idUser)
     }
 }
 
-class ListProviders : IListProvidersRepository{
+class ListProviders : IListProvidersRepository {
     override suspend fun listProviders(authToken: String): Response<List<User>> {
         val api = RetrofitClient.getInstance()
             .create(ApiService::class.java)
@@ -64,7 +82,7 @@ class ListProviders : IListProvidersRepository{
     }
 }
 
-class ListDemandasRepository : IListDemandasRepository{
+class ListDemandasRepository : IListDemandasRepository {
     override suspend fun listDemandas(authToken: String): Response<List<Demanda>> {
         val api = RetrofitClient.getInstance()
             .create(ApiService::class.java)
@@ -72,7 +90,7 @@ class ListDemandasRepository : IListDemandasRepository{
     }
 }
 
-class EnviarMensagemRepository: IEnviarMensagemRepository{
+class EnviarMensagemRepository : IEnviarMensagemRepository {
 
     override suspend fun enviarMensagem(
         authToken: String,

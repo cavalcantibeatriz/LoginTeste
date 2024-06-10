@@ -18,18 +18,18 @@ interface ApiService {
     @POST("auth/register-service-provider")
     suspend fun registerProvider(@Body body: CadastroPrestadorBody): Response<CadastroPrestadorResponse>
 
-    @DELETE("favorite/{idContratante}/{idUser}")
+    @DELETE("favorite/{idContratante}/{idProvider}")
     suspend fun deleteFavorite(
         @Header("Authorization") authToken: String,
         @Path("idContratante") idContratante: Int,
-        @Path("idUser") idUser: Int
+        @Path("idProvider") idProvider: Int
     ): Response<Unit>
 
-    @POST("favorite/{idContratante}/{idUser}")
+    @POST("favorite/{idContratante}/{idProvider}")
     suspend fun postFavorite(
         @Header("Authorization") authToken: String,
         @Path("idContratante") idContratante: Int,
-        @Path("idUser") idUser: Int
+        @Path("idProvider") idProvider: Int
     ): Response<Unit>
 
     @POST("proposta/criar/{idDemanda}/{idUser}")
@@ -42,6 +42,12 @@ interface ApiService {
 
     @GET("search/")
         suspend fun listProviders(@Header("Authorization") authToken: String): Response<List<User>>
+
+    @GET("favorite/{idUser}")
+    suspend fun listProvidersFavorite(
+        @Header("Authorization") authToken: String,
+        @Path("idUser") idUser: Int
+    ): Response<List<User>>
 
     @GET("post/all")
     suspend fun listDemandas(@Header("Authorization") authToken: String): Response<List<Demanda>>

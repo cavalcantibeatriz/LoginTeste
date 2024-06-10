@@ -29,6 +29,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.faztudo_mb.ui.theme.screens.components.BackgroundRegister
 import com.example.faztudo_mb.ui.theme.screens.components.imagem
@@ -37,18 +38,25 @@ import com.example.faztudo_mb.ui.theme.screens.components_new.TopBar
 import com.example.mobilefaztudo.R
 import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
 import com.example.mobilefaztudo.ui.theme.components_new.NavBar.NavBarContratante
+import com.example.mobilefaztudo.viewModel.DesfavoritarViewModel
+import com.example.mobilefaztudo.viewModel.FavoritarViewModel
+import com.example.mobilefaztudo.viewModel.ListFavoriteViewModel
 import com.example.mobilefaztudo.viewModel.ListPrestadoresViewModel
 
 @Composable
 fun FavoritosScreen (
     navController: NavController,
-    viewModel: ListPrestadoresViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
-    sharedPreferencesHelper: SharedPreferencesHelper){
-
-    val listPrestadores by viewModel.listPrestadores.observeAsState(initial = emptyList())
+    viewModel: ListFavoriteViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+    sharedPreferencesHelper: SharedPreferencesHelper,
+    favoritarViewModel: FavoritarViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+    desfavoritarViewModel: DesfavoritarViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+    listPrestadoresFavoritos : ListFavoriteViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+    listPrestadores: ListPrestadoresViewModel = viewModel()
+){
+    val listPrestadoresFavoritados by viewModel.listPrestadoresFavorite.observeAsState(initial = emptyList())
 
     LaunchedEffect(Unit){
-        viewModel.listarPrestadores()
+        viewModel.listarPrestadoresFavoritos()
     }
 
     Box(
@@ -109,8 +117,16 @@ fun FavoritosScreen (
                             .padding(horizontal = 18.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        listPrestadores.forEach { prestador ->
-                            PrestadorCard(navController = navController, prestador = prestador)
+                        listPrestadoresFavoritados.forEach { prestador ->
+                            PrestadorCard(
+                                navController = navController,
+                            prestador = prestador,
+                                favoritarViewModel = favoritarViewModel,
+                                desfavoritarViewModel = desfavoritarViewModel,
+                                sharedPreferencesHelper = sharedPreferencesHelper,
+                                listPrestadoresFavoritos = listPrestadoresFavoritos,
+                                listPrestadores = listPrestadores
+                            )
                             Spacer(modifier = Modifier.padding(10.dp))
                         }
                     }

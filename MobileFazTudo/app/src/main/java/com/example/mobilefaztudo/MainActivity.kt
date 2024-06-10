@@ -7,9 +7,12 @@ import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.mobilefaztudo.repository.DeleteFavorite
 import com.example.mobilefaztudo.repository.ListDemandasRepository
 import com.example.mobilefaztudo.repository.ListProviders
+import com.example.mobilefaztudo.repository.ListProvidersFavorite
 import com.example.mobilefaztudo.repository.LoginRepository
+import com.example.mobilefaztudo.repository.PostFavorite
 import com.example.mobilefaztudo.repository.RegisterContractorRepository
 import com.example.mobilefaztudo.repository.RegisterProviderRepository
 import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
@@ -28,7 +31,10 @@ import com.example.mobilefaztudo.view.encontreDemandas
 import com.example.mobilefaztudo.view.encontrePrestadores
 import com.example.mobilefaztudo.viewModel.CadastroContratanteViewModel
 import com.example.mobilefaztudo.viewModel.CadastroPrestadorViewModel
+import com.example.mobilefaztudo.viewModel.DesfavoritarViewModel
+import com.example.mobilefaztudo.viewModel.FavoritarViewModel
 import com.example.mobilefaztudo.viewModel.ListDemandasViewModel
+import com.example.mobilefaztudo.viewModel.ListFavoriteViewModel
 import com.example.mobilefaztudo.viewModel.ListPrestadoresViewModel
 import com.example.mobilefaztudo.viewModel.LoginViewModel
 
@@ -38,10 +44,15 @@ class MainActivity : ComponentActivity() {
     private lateinit var contratanteViewModel: CadastroContratanteViewModel
     private lateinit var listPrestadoresViewModel: ListPrestadoresViewModel
     private lateinit var listDemandasViewModel: ListDemandasViewModel
+    private lateinit var favoritarViewModel: FavoritarViewModel
+    private lateinit var desfavoritarViewModel: DesfavoritarViewModel
+    private lateinit var listPrestadoresFavoritos: ListFavoriteViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val repositoryL = LoginRepository()
         val sharedPreferencesHelper = SharedPreferencesHelper(applicationContext)
+
         loginViewModel = LoginViewModel(repositoryL, sharedPreferencesHelper)
 
         val repositoryC = RegisterContractorRepository()
@@ -51,11 +62,19 @@ class MainActivity : ComponentActivity() {
         prestadorViewModel = CadastroPrestadorViewModel(repositoryP)
 
         val repositoryListP = ListProviders()
-        listPrestadoresViewModel =
-            ListPrestadoresViewModel(repositoryListP, sharedPreferencesHelper)
+        listPrestadoresViewModel = ListPrestadoresViewModel(repositoryListP, sharedPreferencesHelper)
 
         val repositoryListD = ListDemandasRepository()
         listDemandasViewModel = ListDemandasViewModel(repositoryListD, sharedPreferencesHelper)
+
+        val repositoryFavorite = PostFavorite()
+        favoritarViewModel = FavoritarViewModel(repositoryFavorite, sharedPreferencesHelper)
+
+        val repositoryDesfavorite = DeleteFavorite()
+        desfavoritarViewModel = DesfavoritarViewModel(repositoryDesfavorite, sharedPreferencesHelper)
+
+        val repositoryListFavorites = ListProvidersFavorite()
+        listPrestadoresFavoritos = ListFavoriteViewModel(repositoryListFavorites,sharedPreferencesHelper)
 
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -78,25 +97,34 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                     composable(route = "splash") { SplashScreen(navController) }
+
                     composable(route = "encontrePrestadores") {
                         encontrePrestadores(
                             navController,
                             listPrestadoresViewModel,
-                            sharedPreferencesHelper
+                            sharedPreferencesHelper,
+                            favoritarViewModel,
+                            desfavoritarViewModel,
+                            listPrestadoresFavoritos
                         )
                     }
                     composable(route = "encontreDemandas") {
                         encontreDemandas(
                             navController,
                             listDemandasViewModel,
-                            sharedPreferencesHelper
+                            sharedPreferencesHelper,
+
                         )
                     }
                     composable(route = "encontreFavoritos") {
                         FavoritosScreen(
                             navController,
-                            listPrestadoresViewModel,
-                            sharedPreferencesHelper
+                            listPrestadoresFavoritos,
+                            sharedPreferencesHelper,
+                            favoritarViewModel,
+                            desfavoritarViewModel,
+                            listPrestadoresFavoritos,
+                            listPrestadoresViewModel
                         )
                     }
                     composable(route = "PerfilPrestadorScreen") {

@@ -42,8 +42,12 @@ import com.example.faztudo_mb.ui.theme.screens.components.imagem
 import com.example.faztudo_mb.ui.theme.screens.components_new.PrestadorCard
 import com.example.faztudo_mb.ui.theme.screens.components_new.TopBar
 import com.example.mobilefaztudo.R
+import com.example.mobilefaztudo.repository.ListProvidersFavorite
 import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
 import com.example.mobilefaztudo.ui.theme.components_new.NavBar.NavBarContratante
+import com.example.mobilefaztudo.viewModel.DesfavoritarViewModel
+import com.example.mobilefaztudo.viewModel.FavoritarViewModel
+import com.example.mobilefaztudo.viewModel.ListFavoriteViewModel
 import com.example.mobilefaztudo.viewModel.ListPrestadoresViewModel
 import java.io.ByteArrayInputStream
 
@@ -51,11 +55,15 @@ import java.io.ByteArrayInputStream
 fun encontrePrestadores(
     navController: NavController,
     viewModel: ListPrestadoresViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
-    sharedPreferencesHelper: SharedPreferencesHelper) {
+    sharedPreferencesHelper: SharedPreferencesHelper,
+    favoritarViewModel: FavoritarViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+    desfavoritarViewModel: DesfavoritarViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+    listPrestadoresFavoritos : ListFavoriteViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+) {
 
     val listPrestadores by viewModel.listPrestadores.observeAsState(initial = emptyList())
 
-    LaunchedEffect(Unit){
+    LaunchedEffect(Unit) {
         viewModel.listarPrestadores()
     }
 
@@ -119,38 +127,49 @@ fun encontrePrestadores(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         listPrestadores.forEach { prestador ->
-                            PrestadorCard(navController = navController, prestador = prestador)
+                            PrestadorCard(
+                                navController = navController,
+                            prestador = prestador,
+                                favoritarViewModel = favoritarViewModel,
+                                desfavoritarViewModel = desfavoritarViewModel,
+                                sharedPreferencesHelper = sharedPreferencesHelper,
+                                listPrestadoresFavoritos = listPrestadoresFavoritos,
+                                listPrestadores = viewModel
+                            )
                             Spacer(modifier = Modifier.padding(10.dp))
                         }
                     }
                 }
             }
-NavBarContratante(sharedPreferencesHelper, navController,"Home")
+            NavBarContratante(sharedPreferencesHelper, navController, "Home")
         }
     }
 }
-fun Base64ToPainter(base64String :String) : Painter?{
+
+fun Base64ToPainter(base64String: String): Painter? {
     return try {
         val decodedString = Base64.decode(base64String, Base64.DEFAULT)
         val bitmap = BitmapFactory.decodeStream(ByteArrayInputStream(decodedString))
         bitmap?.let {
             BitmapPainter(it.asImageBitmap())
         }
-    }catch (e:Exception){
+    } catch (e: Exception) {
         e.printStackTrace()
         null
     }
 }
+
 @Composable
-fun Base64Image(base64String :String, modifier: Modifier = Modifier){
+fun Base64Image(base64String: String, modifier: Modifier = Modifier) {
     val imagePainter: Painter? = remember { Base64ToPainter(base64String) }
 
     imagePainter?.let {
         Image(
             modifier = modifier,
             painter = it,
-            contentDescription = "Imagem em base64")
-    }?:run{
+            contentDescription = "Imagem em base64"
+        )
+    } ?: run {
 
     }
 }

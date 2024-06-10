@@ -27,7 +27,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -45,9 +47,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.mobilefaztudo.R
 import com.example.mobilefaztudo.api.User
+import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
+import com.example.mobilefaztudo.viewModel.DesfavoritarViewModel
+import com.example.mobilefaztudo.viewModel.FavoritarViewModel
+import com.example.mobilefaztudo.viewModel.ListFavoriteViewModel
+import com.example.mobilefaztudo.viewModel.ListPrestadoresViewModel
 import java.io.ByteArrayInputStream
 
 
@@ -56,30 +64,57 @@ fun PrestadorCard(
     navController: NavController,
     modifier: Modifier = Modifier,
     prestador: User,
-//    favoritarViewModel: FavoritarViewModel = viewModel(),
-//    desfavoritarViewModel: DesfavoritarViewModel = viewModel()
+    favoritarViewModel: FavoritarViewModel = viewModel(),
+    desfavoritarViewModel: DesfavoritarViewModel = viewModel(),
+    sharedPreferencesHelper: SharedPreferencesHelper,
+    listPrestadoresFavoritos: ListFavoriteViewModel = viewModel(),
+    listPrestadores: ListPrestadoresViewModel = viewModel()
 ) {
-    val (currentImage, setCurrentImage) = remember { mutableStateOf(R.drawable.image_63) }
-//    val idUser = sharedPreferencesHelper.getIdUser()
-
+    val (currentImage, setCurrentImage) = remember { mutableStateOf(R.drawable.image_56) }
+    val (currentImage2, setCurrentImage2) = remember { mutableStateOf(R.drawable.image_72) }
+    val idUserAtual = sharedPreferencesHelper.getIdUser()
     var showModalError by remember { mutableStateOf(false) }
     var showModalSuccess by remember { mutableStateOf(false) }
     var showModalSuccessD by remember { mutableStateOf(false) }
-
     var showCardPrestador by remember { mutableStateOf(true) }
     var showPerfilPrestador by remember { mutableStateOf(false) }
 
     val lightGray = Color(0xFFD3D3D3)
 
+    var coracaoAtivo by remember { mutableStateOf(false) }
+    var favoritosSet by remember { mutableStateOf(HashSet<Int>())}
+
+    val listFavoritos by listPrestadoresFavoritos.listPrestadoresFavorite.observeAsState(
+        initial = emptyList()
+    )
+    LaunchedEffect(key1 = listFavoritos) {
+        favoritosSet.clear()
+            favoritosSet.addAll(listFavoritos.map { favoritos -> favoritos.id})
+            coracaoAtivo = favoritosSet.contains(prestador.id)
+    }
+
     fun toggleImage() {
-        if (currentImage == R.drawable.image_63) {
-            setCurrentImage(R.drawable.image_72)
-//            favoritarViewModel.postFavorite(idUser,prestador.id){onResult ->
-                        showModalSuccess = true
+        if (coracaoAtivo) {
+            try {
+                desfavoritarViewModel.deleteFavorite(idUserAtual,prestador.id){onResult ->
+                    showModalSuccessD = true
+                    coracaoAtivo = false
+                }
+            } catch (e: Exception) {
+                Log.d("Favorite", "Erro ao desfavoritar::: ${e.message}",e)
+                showModalError = true
+            }
         } else {
-            setCurrentImage(R.drawable.image_63)
-//            desfavoritarViewModel.deleteFavorite(idUser,prestador.id){onResult ->
-                        showModalSuccessD = true
+            try {
+                favoritarViewModel.postFavorite(idUserAtual, prestador.id) { onResult ->
+                    showModalSuccess = true
+                    coracaoAtivo = true
+                }
+            } catch (e: Exception) {
+                Log.d("Favorite", "Erro ao favoritar::: ${e.message}",e)
+                showModalError = true
+            }
+
         }
     }
 
@@ -147,7 +182,7 @@ fun PrestadorCard(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Image(
-                            painter = painterResource(id = currentImage),
+                            painter = if (coracaoAtivo) painterResource(currentImage2) else painterResource(currentImage),
                             contentDescription = "Imagem Alternável",
                             modifier = Modifier
                                 .clickable { toggleImage() } // Adiciona a ação de clique
@@ -157,9 +192,10 @@ fun PrestadorCard(
                             modifier = Modifier.clickable {
                                 if (!showPerfilPrestador) {
                                     showPerfilPrestador = true
-                                }else{
+                                } else {
                                     showPerfilPrestador = false
-                                }},
+                                }
+                            },
                             painter = painterResource(id = R.drawable.visualizar_1),
                             contentDescription = "Botao de Voltar"
                         )
@@ -169,7 +205,7 @@ fun PrestadorCard(
         }
     }
 
-    if (showPerfilPrestador){
+    if (showPerfilPrestador) {
         Box(
             modifier = Modifier
                 .height(420.dp)
@@ -225,16 +261,7 @@ fun PrestadorCard(
                             .size(130.dp)
                             .clip(CircleShape)
                             .background(Color.Gray)
-                    ){
-                        Image(
-                            painter = painterResource(R.drawable.img_profile_default),
-                            contentDescription = "teste",
-                            modifier = Modifier
-                                .size(130.dp)
-                                .clip(CircleShape)
-                                .background(Color.Gray)
-                        )
-
+                    ) {
                         if (prestador.image_profile === null) {
                             Image(
                                 painter = painterResource(R.drawable.img_profile_default),
@@ -262,7 +289,7 @@ fun PrestadorCard(
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier
                         .fillMaxWidth()
-                ){
+                ) {
                     Text(
                         text = "${prestador.name}${prestador.lastName}",
                         fontSize = 20.sp,
@@ -278,7 +305,7 @@ fun PrestadorCard(
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier
                         .fillMaxWidth()
-                ){
+                ) {
                     Text(
                         text = "Descriçao do perfil aaaaaaa aaaaaa aaaa aaaaa aaaaaaa aaaaaa aaaaaaaaaaaa aaa aaaaaa",
                         fontSize = 20.sp,
@@ -335,7 +362,7 @@ fun PrestadorCard(
                 showModalSuccess = false
             },
             title = { Text("Eba!") },
-            text = { Text("Você adicionou ${prestador.name} como favorito!") },
+            text = { Text("Você adicionou ${prestador.name}como favorito!") },
             confirmButton = {
                 Button(onClick = {
                     // Fechar o modal ao clicar no botão OK
@@ -368,25 +395,27 @@ fun PrestadorCard(
     }
 }
 
-fun Base64ToPainter(base64String :String) : Painter?{
+fun Base64ToPainter(base64String: String): Painter? {
     return try {
         val decodedString = Base64.decode(base64String, Base64.DEFAULT)
         val bitmap = BitmapFactory.decodeStream(ByteArrayInputStream(decodedString))
         bitmap?.let {
             BitmapPainter(it.asImageBitmap())
         }
-    }catch (e:Exception){
+    } catch (e: Exception) {
         e.printStackTrace()
         null
     }
 }
+
 @Composable
-fun Base64Image(base64String :String, modifier: Modifier = Modifier){
+fun Base64Image(base64String: String, modifier: Modifier = Modifier) {
     val imagePainter: Painter? = remember { Base64ToPainter(base64String) }
     imagePainter?.let {
         Image(
             modifier = modifier,
             painter = it,
-            contentDescription = "Imagem em base64")
-    }?:run{}
+            contentDescription = "Imagem em base64"
+        )
+    } ?: run {}
 }
