@@ -1,4 +1,7 @@
 package com.example.mobilefaztudo.ui.theme.components_new
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.*
@@ -32,7 +35,14 @@ fun Frame17(modifier: Modifier = Modifier) {
     var expanded by remember { mutableStateOf(false) }
     var selectedItem by remember { mutableStateOf("Selecione a Categoria") }
     val items = listOf("limpeza", "Obras", "Hidraúlica","Elétrica","Mecânica","Todos")
-
+    //NÃO APAGARRR
+    var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
+    val galleryLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        selectedImageUri = uri
+        // Aqui para lidar com a URI da imagem selecionada
+    }
     Column(
         modifier = modifier
             .requiredWidth(width = 300.dp)
@@ -120,7 +130,9 @@ fun Frame17(modifier: Modifier = Modifier) {
                     .requiredWidth(width = 33.dp)
                     .requiredHeight(height = 32.dp)
                     .clip(shape = CircleShape)
-                    .clickable { /* TODO: Bia não é um botão mas é clicavel, mim perdoe */ }
+                    .clickable {
+                        galleryLauncher.launch("image/*")
+                    }
                     .background(color = Color(0xff588aed))
             ){
                 Icon(
