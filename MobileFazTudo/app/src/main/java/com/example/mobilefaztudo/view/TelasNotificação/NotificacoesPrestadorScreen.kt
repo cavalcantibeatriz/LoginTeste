@@ -48,7 +48,7 @@ fun NotificacoesPrestadorScreen(
                     .weight(1f),
                 verticalArrangement = Arrangement.Top
             ) {
-                TopBar()
+                TopBar(navController=navController,sharedPreferencesHelper= sharedPreferencesHelper)
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(
                     verticalAlignment = Alignment.CenterVertically,

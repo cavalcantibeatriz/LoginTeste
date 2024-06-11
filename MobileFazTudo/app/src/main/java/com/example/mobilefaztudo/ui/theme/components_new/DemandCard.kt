@@ -36,19 +36,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mobilefaztudo.R
 import com.example.mobilefaztudo.api.Demanda
-import com.example.mobilefaztudo.api.MensagemRequest
-import com.example.mobilefaztudo.api.User
 import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
-import com.example.mobilefaztudo.viewModel.EnviarMensagensViewModel
-import com.google.gson.Gson
 
 @Composable
 fun DemandCard(
@@ -260,6 +256,23 @@ fun DemandCard(
                             }
                         }
                     }
+                }
+                Spacer(modifier = Modifier.height(13.dp))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    Text(
+                        text = "Cód. Demanda: ${demanda.id}",
+                        fontSize = 12.sp,
+                        style = TextStyle(
+                            fontWeight = FontWeight.Normal,
+                            fontStyle = FontStyle.Italic,
+                            fontSize = 12.sp
+                        )
+                    )
                 }
                 Spacer(modifier = Modifier.height(18.dp))
                 Row(
