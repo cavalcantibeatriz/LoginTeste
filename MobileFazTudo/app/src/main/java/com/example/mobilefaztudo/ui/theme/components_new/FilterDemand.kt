@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.mobilefaztudo.R
 
-
+@Preview
 @Composable
 fun IconBox() {
     var selectedIcon by remember { mutableStateOf(-1) }
@@ -117,23 +117,23 @@ fun IconButtonItem(
         Button(
             onClick = onClick,
             colors = ButtonDefaults.buttonColors(Color.Transparent),
-            shape = RoundedCornerShape(8.dp), // Define bordas arredondadas menores
+            shape = RoundedCornerShape(8.dp),
             modifier = Modifier.size(80.dp),
-            contentPadding = PaddingValues(0.dp), // Remove o padding padrão do botão
-            elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 8.dp, pressedElevation = 16.dp), // Adiciona elevação (sombra)
-            border = if (isSelected) BorderStroke(2.dp, Color.Black) else null // Adiciona uma borda preta se estiver selecionado
+            contentPadding = PaddingValues(0.dp),
+            elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 8.dp, pressedElevation = 16.dp),
+            border = if (isSelected) BorderStroke(2.dp, Color.Black) else null
         ) {
             Box(
                 modifier = Modifier
                     .size(72.dp)
                     .background(Color.White, shape = RoundedCornerShape(8.dp))
-                    .padding(4.dp), // Adiciona um padding para a sombra ficar visível
+                    .padding(4.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Image(
                     painter = painterResource(id = iconRes),
                     contentDescription = null,
-                    modifier = Modifier.size(64.dp) // Tamanho do ícone
+                    modifier = Modifier.size(64.dp)
                 )
             }
         }
@@ -150,10 +150,4 @@ fun ActionButton(text: String, backgroundColor: Color, onClick: () -> Unit) {
     ) {
         Text(text = text, color = Color.White)
     }
-}
-
-@Preview()
-@Composable
-fun PreviewIconBox() {
-    IconBox()
 }

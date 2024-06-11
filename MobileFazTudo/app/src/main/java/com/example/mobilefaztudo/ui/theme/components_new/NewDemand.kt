@@ -1,20 +1,20 @@
 package com.example.mobilefaztudo.ui.theme.components_new
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.*
 import androidx.compose.foundation.shape.*
-import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.*
-import androidx.compose.ui.*
+import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,53 +22,133 @@ import androidx.compose.ui.graphics.*
 import androidx.compose.ui.text.*
 import androidx.compose.ui.text.style.*
 import androidx.compose.ui.unit.*
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.mobilefaztudo.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Frame17(modifier: Modifier = Modifier) {
-    Box(
+    var text = ""
+    var expanded by remember { mutableStateOf(false) }
+    var selectedItem by remember { mutableStateOf("Selecione a Categoria") }
+    val items = listOf("limpeza", "Obras", "Hidraúlica","Elétrica","Mecânica","Todos")
+
+    Column(
         modifier = modifier
-            .requiredWidth(width = 292.dp)
-            .requiredHeight(height = 280.dp)
+            .requiredWidth(width = 300.dp)
+            .requiredHeight(height = 300.dp)
             .clip(shape = RoundedCornerShape(10.dp))
             .background(color = Color.White)
+            .padding(20.dp),
+        verticalArrangement = Arrangement.Top
     ) {
-        Box(
+        //TITLE
+        Text(
+            text = "Nova Demanda",
+            color = Color.Black,
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.titleMedium,
             modifier = Modifier
-                .align(alignment = Alignment.TopStart)
-                .offset(x = 20.dp,
-                    y = 73.dp)
-                .requiredWidth(width = 252.dp)
-                .requiredHeight(height = 36.dp)
-        ) {
+                .fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(15.dp))
+        //INPUT
+        OutlinedTextField(
+            value = text,
+            onValueChange = { newText -> text = newText },
+            textStyle = TextStyle(
+                color = Color.Black,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Medium
+            ),
+            label = { Text("Descreva sua necessidade") },
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Color.Transparent,
+                unfocusedBorderColor = Color.Transparent,
+                disabledBorderColor = Color.Transparent
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(shape = RoundedCornerShape(15.dp))
+                .background(color = Color(0xffff5c00).copy(alpha = 0.2f))
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        
+        Row (
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(CircleShape)
+                .background(color = Color(0xFFCDD3E0))
+        ){
             Box(
                 modifier = Modifier
-                    .requiredWidth(width = 252.dp)
-                    .requiredHeight(height = 36.dp)
-            ) {
-                Text(
-                    text = buildAnnotatedString {
-                        withStyle(style = SpanStyle(
-                            color = Color.Black,
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Medium)) {append("Descrição: \n")}
-                        withStyle(style = SpanStyle(
-                            color = Color.White,
-                            fontSize = 16.sp)) {append("\n")}},
+                    .requiredWidth(width = 33.dp)
+                    .requiredHeight(height = 32.dp)
+                    .clip(shape = CircleShape)
+                    .clickable { /* TODO: Bia não é um botão mas é clicavel, mim perdoe */ }
+                    .background(color = Color(0xff588aed))
+            ){
+                Icon(
+                    imageVector = Icons.Default.ArrowDropDown,
+                    contentDescription = "Arrow - Down 2",
+                    tint = Color.Black,
                     modifier = Modifier
-                        .align(alignment = Alignment.CenterStart))
-            }
-        }
-        Row(
-            modifier = Modifier.fillMaxWidth() .offset(x = 0.dp,
-                y = 210.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly
+                        .align(alignment = Alignment.Center)
+                )
 
+            }
+            Text(
+                text = "Selecione uma categoria",
+                color = Color.Black,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.CenterVertically)
+            )
+        }
+        Spacer(modifier = Modifier.height(10.dp))
+
+        Row (
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(CircleShape)
+                .background(color = Color(0xFFCDD3E0))
+        ){
+            Box(
+                modifier = Modifier
+                    .requiredWidth(width = 33.dp)
+                    .requiredHeight(height = 32.dp)
+                    .clip(shape = CircleShape)
+                    .clickable { /* TODO: Bia não é um botão mas é clicavel, mim perdoe */ }
+                    .background(color = Color(0xff588aed))
+            ){
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Arrow - Down 2",
+                    tint = Color.Black,
+                    modifier = Modifier
+                        .align(alignment = Alignment.Center)
+                )
+            }
+            Text(
+                text = "Adicione uma imagem",
+                color = Color.Black,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.CenterVertically)
+            )
+
+        }
+        Spacer(modifier = Modifier.height(7.dp))
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+//                .border(3.dp, Color.Red),
+            horizontalArrangement = Arrangement.SpaceAround
         ) {
             ActionButton(
                 text = "Cancelar",
@@ -81,124 +161,33 @@ fun Frame17(modifier: Modifier = Modifier) {
                 onClick = { /* TODO: Adicione a ação de confirmar */ }
             )
         }
-
-        Text(
-            text = "Nova Demanda",
-            color = Color.Black,
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier
-                .align(alignment = Alignment.TopStart)
-                .offset(x = 60.dp,
-                    y = 19.dp)
-                .requiredWidth(width = 172.dp)
-                .requiredHeight(height = 34.dp))
-
-        Box(
-            modifier = Modifier
-                .align(alignment = Alignment.TopStart)
-                .offset(x = 28.dp,
-                    y = 169.dp)
-                .requiredWidth(width = 33.dp)
-                .requiredHeight(height = 32.dp)
-                .clip(shape = CircleShape)
-                .clickable { /* TODO: Bia não é um botão mas é clicavel, mim perdoe */  }
-                .background(color = Color(0xff588aed)))
-        Box(
-            modifier = Modifier
-                .align(alignment = Alignment.TopStart)
-                .offset(x = 28.dp,
-                    y = 132.dp)
-                .requiredWidth(width = 33.dp)
-                .requiredHeight(height = 32.dp)
-                .clip(shape = CircleShape)
-                .clickable { /* TODO: Bia não é um botão mas é clicavel, mim perdoe */  }
-                .background(color = Color(0xff588aed)))
-        Text(
-            text = "Adicionar imagem",
-            color = Color.Black,
-            textAlign = TextAlign.Center,
-            style = TextStyle(
-                fontSize = 14.sp),
-            modifier = Modifier
-                .align(alignment = Alignment.TopStart)
-                .offset(x = 72.dp,
-                    y = 175.dp)
-                .requiredWidth(width = 174.dp)
-                .requiredHeight(height = 20.dp))
-
-        var expanded by remember { mutableStateOf(false) }
-        var selectedItem by remember { mutableStateOf("Selecione a Categoria") }
-        val items = listOf("limpeza", "Obras", "Hidraúlica","Elétrica","Mecânica","Todos")
-
-        Box(
-            modifier = Modifier
-                .wrapContentSize()
-                .clickable(onClick = { expanded = true })
-                .padding(16.dp)
-                .offset(x = 78.dp,
-                    y = 122.dp)
-        ) {
-            Text(text = selectedItem)
-
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false }
-            ) {
-                items.forEach { item ->
-                    DropdownMenuItem(onClick = {
-                        selectedItem = item
-                        expanded = false
-                    }) {
-                        Text(text = item)
-                    }
-                }
-            }
-        }
-        Image(
-            painter = painterResource(id = R.drawable.combined_shape),
-            contentDescription = "Arrow - Down 2",
-            colorFilter = ColorFilter.tint(Color.Black),
-            modifier = Modifier
-                .align(alignment = Alignment.TopStart)
-                .offset(x = 34.dp,
-                    y = 175.dp)
-                .requiredSize(size = 20.dp))
-        var text = ""
-            
-        OutlinedTextField(
-            value = text,
-            onValueChange = { newText -> text = newText },
-            textStyle = TextStyle(
-                color = Color.Black,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Medium
-            ),
-            label = { Text("Label") },
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = Color.Transparent,
-                unfocusedBorderColor = Color.Transparent,
-                disabledBorderColor = Color.Transparent
-            ),
-            modifier = Modifier
-                .align(alignment = Alignment.TopStart)
-                .offset(x = 110.dp, y = 73.dp)
-                .requiredWidth(width = 148.dp)
-                .requiredHeight(height = 28.dp)
-                .clip(shape = RoundedCornerShape(30.dp))
-                .background(color = Color(0xffff5c00).copy(alpha = 0.2f))
-        )
-
-        Image(
-            painter = painterResource(id = R.drawable.vector),
-            contentDescription = "Arrow - Down 2",
-            colorFilter = ColorFilter.tint(Color.Black),
-            modifier = Modifier
-                .align(alignment = Alignment.TopStart)
-                .offset(x = 35.dp,
-                    y = 139.dp)
-                .requiredSize(size = 19.dp))
     }
+
+    //Exibição do drop
+//    Box(
+//        modifier = Modifier
+//            .wrapContentSize()
+//            .clickable(onClick = { expanded = true })
+//            .padding(16.dp)
+//            .offset(x = 78.dp,
+//                y = 122.dp)
+//    ) {
+//        Text(text = selectedItem)
+//
+//        DropdownMenu(
+//            expanded = expanded,
+//            onDismissRequest = { expanded = false }
+//        ) {
+//            items.forEach { item ->
+//                DropdownMenuItem(onClick = {
+//                    selectedItem = item
+//                    expanded = false
+//                }) {
+//                    Text(text = item)
+//                }
+//            }
+//        }
+//    }
 }
 
 fun DropdownMenuItem(onClick: () -> Unit, interactionSource: @Composable () -> Unit) {
@@ -216,8 +205,18 @@ fun ActionButtona(text: String, backgroundColor: Color, onClick: () -> Unit) {
     }
 }
 
-@Preview(widthDp = 292, heightDp = 280)
+@Preview
 @Composable
 private fun Frame17Preview() {
-    Frame17(Modifier)
+    Column (
+        modifier=Modifier
+        .fillMaxSize()
+        .background(Color.DarkGray),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally // Centraliza horizontalmente
+
+    ){
+        Frame17(Modifier)
+
+    }
 }
