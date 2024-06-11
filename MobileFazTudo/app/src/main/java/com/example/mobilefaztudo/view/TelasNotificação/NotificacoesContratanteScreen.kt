@@ -1,4 +1,4 @@
-package com.example.mobilefaztudo.view
+package com.example.mobilefaztudo.view.TelasNotificação
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -21,14 +21,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.faztudo_mb.ui.theme.screens.components.BackgroundDemanda
-import com.example.faztudo_mb.ui.theme.screens.components.BackgroundRegister
-import com.example.faztudo_mb.ui.theme.screens.components.imagem
+import com.example.faztudo_mb.ui.theme.screens.components.BackgroundNotificacao
 import com.example.faztudo_mb.ui.theme.screens.components_new.TopBar
 import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
 import com.example.mobilefaztudo.ui.theme.components_new.NavBar.NavBarContratante
 @Composable
-fun NotificacoesScreen(
+fun NotificacoesContratanteScreen(
     navController: NavController, sharedPreferencesHelper: SharedPreferencesHelper
 ){
     Box(
@@ -36,7 +34,7 @@ fun NotificacoesScreen(
             .fillMaxSize()
             .background(Color.White)
     ) {
-        BackgroundDemanda()
+        BackgroundNotificacao()
         Column(
             modifier = Modifier
                 .fillMaxSize(),
@@ -58,7 +56,7 @@ fun NotificacoesScreen(
                 ) {
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Tela notificaçoes",
+                        text = "Tela notificaçoes CONTRATANTE",
                         fontSize = 30.sp,
                         style = TextStyle(
                             fontWeight = FontWeight.Bold,

@@ -21,8 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.faztudo_mb.ui.theme.screens.components.BackgroundRegister
-import com.example.faztudo_mb.ui.theme.screens.components.imagem
+import com.example.faztudo_mb.ui.theme.screens.components.BackgroundPerfilPrestador
 import com.example.faztudo_mb.ui.theme.screens.components_new.TopBar
 import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
 import com.example.mobilefaztudo.ui.theme.components_new.NavBar.NavBarPrestador
@@ -36,7 +35,7 @@ fun PerfilPrestadorScreen(
             .fillMaxSize()
             .background(Color.White)
     ) {
-        BackgroundRegister(backgroundImageResId = imagem)
+        BackgroundPerfilPrestador()
         Column(
             modifier = Modifier
                 .fillMaxSize(),

@@ -24,7 +24,8 @@ import com.example.mobilefaztudo.view.LoginECadastro.CadastroScreenEtapa1
 import com.example.mobilefaztudo.view.FavoritosScreen
 import com.example.mobilefaztudo.view.LoginECadastro.LoginScreen
 import com.example.mobilefaztudo.view.LoginECadastro.SplashScreen
-import com.example.mobilefaztudo.view.NotificacoesScreen
+import com.example.mobilefaztudo.view.TelasNotificação.NotificacoesContratanteScreen
+import com.example.mobilefaztudo.view.TelasNotificação.NotificacoesPrestadorScreen
 import com.example.mobilefaztudo.view.TelasPerfil.PerfilContratanteScreen
 import com.example.mobilefaztudo.view.TelasPerfil.PerfilPrestadorScreen
 import com.example.mobilefaztudo.view.encontreDemandas
@@ -47,7 +48,6 @@ class MainActivity : ComponentActivity() {
     private lateinit var favoritarViewModel: FavoritarViewModel
     private lateinit var desfavoritarViewModel: DesfavoritarViewModel
     private lateinit var listPrestadoresFavoritos: ListFavoriteViewModel
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val repositoryL = LoginRepository()
@@ -137,10 +137,12 @@ class MainActivity : ComponentActivity() {
                     composable(route = "Demand") {
                         Demand(navController, sharedPreferencesHelper)
                     }
-                    composable(route = "NotificacoesScreen") {
-                        NotificacoesScreen(navController, sharedPreferencesHelper)
+                    composable(route = "NotificacoesContratanteScreen") {
+                        NotificacoesContratanteScreen(navController, sharedPreferencesHelper)
                     }
-
+                    composable(route = "NotificacoesPrestadorScreen") {
+                        NotificacoesPrestadorScreen(navController, sharedPreferencesHelper)
+                    }
 
                 }
             }

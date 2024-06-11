@@ -1,4 +1,4 @@
-package com.example.mobilefaztudo.view.TelasPerfil
+package com.example.mobilefaztudo.view.TelasNotificação
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -21,20 +21,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.faztudo_mb.ui.theme.screens.components.BackgroundPerfilContratante
+import com.example.faztudo_mb.ui.theme.screens.components.BackgroundNotificacao
 import com.example.faztudo_mb.ui.theme.screens.components_new.TopBar
 import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
 import com.example.mobilefaztudo.ui.theme.components_new.NavBar.NavBarContratante
+import com.example.mobilefaztudo.ui.theme.components_new.NavBar.NavBarPrestador
+
 @Composable
-fun PerfilContratanteScreen (
+fun NotificacoesPrestadorScreen(
     navController: NavController, sharedPreferencesHelper: SharedPreferencesHelper
 ){
     Box(
-    modifier = Modifier
-    .fillMaxSize()
-    .background(Color.White)
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
     ) {
-        BackgroundPerfilContratante()
+        BackgroundNotificacao()
         Column(
             modifier = Modifier
                 .fillMaxSize(),
@@ -56,7 +58,7 @@ fun PerfilContratanteScreen (
                 ) {
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Tela do perfil CONTRATANTE",
+                        text = "Tela notificaçoes PRESTADOR",
                         fontSize = 30.sp,
                         style = TextStyle(
                             fontWeight = FontWeight.Bold,
@@ -65,8 +67,7 @@ fun PerfilContratanteScreen (
                     )
                 }
             }
-            NavBarContratante(sharedPreferencesHelper = sharedPreferencesHelper, navController = navController,initialState = "Person")
+            NavBarPrestador(sharedPreferencesHelper = sharedPreferencesHelper, navController = navController,initialState = "Notifications")
         }
     }
 }
-

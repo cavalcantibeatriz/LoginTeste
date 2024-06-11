@@ -42,8 +42,8 @@ import com.google.gson.Gson
 fun DemandCard(
     modifier: Modifier = Modifier,
     demanda: Demanda,
-//    enviarMensagensViewModel: EnviarMensagensViewModel = viewModel(),
-) {
+    sharedPreferencesHelper: SharedPreferencesHelper,
+    ) {
     fun categoria(id: Int): String {
         var categoriaSelecionada = ""
         if (id == 1){
@@ -66,31 +66,14 @@ fun DemandCard(
         }
         return categoriaSelecionada
     }
-    val idUser = 12
-//    val idUser = sharedPreferencesHelper.getIdUser()
+
     var showModalInserirMensagem by remember { mutableStateOf(false) }
     var mensagemTexto by remember { mutableStateOf("") }
 
     fun toggleImage() {
-//        val prestadorJson = sharedPreferencesHelper.getJSONUser() ?: "{}"
-//        val prestadorJson = ""
-//        val prestador = Gson().fromJson(prestadorJson, User::class.java)
-//
-//        val body = MensagemRequest(
-//            mensagem = mensagemTexto,
-//            post = demanda,
-//            prestador = prestador
-//        )
-//        enviarMensagensViewModel.enviarMensagem(demanda.id,idUser,body) { onResult ->
-//            try {
                 Log.d("INTERESSE", "chamou o toggle")
-//                showModalInserirMensagem = true
-//
-//            } catch (e: Exception) {
-//                Log.d("INTERESSE", "exception ::: ${e}")
-//            }
-//        }
     }
+
     Box(
         modifier = modifier
             .width(350.dp)
@@ -152,6 +135,14 @@ fun DemandCard(
                         contentDescription = "Botao de ENVIAR",
                         modifier = Modifier.clickable { showModalInserirMensagem = true }
                     )
+                    Spacer(modifier = modifier.width(10.dp))
+                    Image(
+                        modifier = Modifier.clickable {
+
+                        },
+                        painter = painterResource(id = R.drawable.visualizar_1),
+                        contentDescription = "Botao de Voltar"
+                    )
                 }
             }
         }
@@ -192,4 +183,6 @@ fun DemandCard(
             }
         )
     }
+
+
 }

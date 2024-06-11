@@ -119,7 +119,7 @@ fun NavBarPrestador(sharedPreferencesHelper: SharedPreferencesHelper,
                 modifier = iconBackground(selectedIcon.value == Icons.Filled.Notifications)
                     .clickable {
                         selectedIcon.value = Icons.Filled.Notifications
-                        // Implementar navegação para tela de notificações
+                        navController.navigate("NotificacoesPrestadorScreen")
                     }
             ) {
                 Image(

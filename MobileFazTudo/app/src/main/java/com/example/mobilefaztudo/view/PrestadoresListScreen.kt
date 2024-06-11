@@ -24,7 +24,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,6 +39,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.faztudo_mb.ui.theme.screens.components.BackgroundPrestador
 import com.example.faztudo_mb.ui.theme.screens.components.BackgroundRegister
 import com.example.faztudo_mb.ui.theme.screens.components.imagem
 import com.example.faztudo_mb.ui.theme.screens.components_new.PrestadorCard
@@ -49,6 +52,8 @@ import com.example.mobilefaztudo.viewModel.DesfavoritarViewModel
 import com.example.mobilefaztudo.viewModel.FavoritarViewModel
 import com.example.mobilefaztudo.viewModel.ListFavoriteViewModel
 import com.example.mobilefaztudo.viewModel.ListPrestadoresViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.io.ByteArrayInputStream
 
 @Composable
@@ -58,21 +63,22 @@ fun encontrePrestadores(
     sharedPreferencesHelper: SharedPreferencesHelper,
     favoritarViewModel: FavoritarViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
     desfavoritarViewModel: DesfavoritarViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
-    listPrestadoresFavoritos : ListFavoriteViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    listPrestadoresFavoritos: ListFavoriteViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
-
     val listPrestadores by viewModel.listPrestadores.observeAsState(initial = emptyList())
 
     LaunchedEffect(Unit) {
-        viewModel.listarPrestadores()
+        while (true) {
+            delay(1000)
+            viewModel.listarPrestadores()
+        }
     }
-
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
     ) {
-        BackgroundRegister(backgroundImageResId = imagem)
+        BackgroundPrestador()
         Column(
             modifier = Modifier
                 .fillMaxSize(),
@@ -129,7 +135,7 @@ fun encontrePrestadores(
                         listPrestadores.forEach { prestador ->
                             PrestadorCard(
                                 navController = navController,
-                            prestador = prestador,
+                                prestador = prestador,
                                 favoritarViewModel = favoritarViewModel,
                                 desfavoritarViewModel = desfavoritarViewModel,
                                 sharedPreferencesHelper = sharedPreferencesHelper,

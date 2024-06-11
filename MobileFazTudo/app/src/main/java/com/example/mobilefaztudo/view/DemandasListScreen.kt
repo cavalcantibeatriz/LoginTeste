@@ -29,9 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.faztudo_mb.ui.theme.screens.components.BackgroundPrestador
-import com.example.faztudo_mb.ui.theme.screens.components.BackgroundRegister
-import com.example.faztudo_mb.ui.theme.screens.components.imagem
+import com.example.faztudo_mb.ui.theme.screens.components.BackgroundDemanda
 import com.example.faztudo_mb.ui.theme.screens.components_new.DemandCard
 import com.example.faztudo_mb.ui.theme.screens.components_new.TopBar
 import com.example.mobilefaztudo.R
@@ -54,7 +52,7 @@ fun encontreDemandas(
             .fillMaxSize()
             .background(Color.White)
     ) {
-        BackgroundPrestador()
+        BackgroundDemanda()
         Column(
             modifier = Modifier
                 .fillMaxSize(),
@@ -109,7 +107,9 @@ fun encontreDemandas(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         listDemandas.forEach { demanda ->
-                            DemandCard(demanda = demanda)
+                            DemandCard(
+                                demanda = demanda,
+                                sharedPreferencesHelper = sharedPreferencesHelper)
                             Spacer(modifier = Modifier.padding(10.dp))
                         }
                     }

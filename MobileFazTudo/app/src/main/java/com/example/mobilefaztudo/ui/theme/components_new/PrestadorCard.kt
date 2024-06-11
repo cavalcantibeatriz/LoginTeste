@@ -307,7 +307,7 @@ fun PrestadorCard(
                         .fillMaxWidth()
                 ) {
                     Text(
-                        text = "Descriçao do perfil aaaaaaa aaaaaa aaaa aaaaa aaaaaaa aaaaaa aaaaaaaaaaaa aaa aaaaaa",
+                        text = if (prestador.descricao != null) "${prestador.descricao}" else "Este usuário ainda não adicionou uma descrição...",
                         fontSize = 20.sp,
                         style = TextStyle(
                             fontWeight = FontWeight.Light,
