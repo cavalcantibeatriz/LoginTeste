@@ -21,8 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.faztudo_mb.ui.theme.screens.components.BackgroundRegister
-import com.example.faztudo_mb.ui.theme.screens.components.imagem
+import com.example.faztudo_mb.ui.theme.screens.components.BackgroundPerfilContratante
 import com.example.faztudo_mb.ui.theme.screens.components_new.TopBar
 import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
 import com.example.mobilefaztudo.ui.theme.components_new.NavBar.NavBarContratante
@@ -35,7 +34,7 @@ fun PerfilContratanteScreen (
     .fillMaxSize()
     .background(Color.White)
     ) {
-        BackgroundRegister(backgroundImageResId = imagem)
+        BackgroundPerfilContratante()
         Column(
             modifier = Modifier
                 .fillMaxSize(),
@@ -47,7 +46,7 @@ fun PerfilContratanteScreen (
                     .weight(1f),
                 verticalArrangement = Arrangement.Top
             ) {
-                TopBar()
+                TopBar(navController=navController,sharedPreferencesHelper= sharedPreferencesHelper)
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(
                     verticalAlignment = Alignment.CenterVertically,

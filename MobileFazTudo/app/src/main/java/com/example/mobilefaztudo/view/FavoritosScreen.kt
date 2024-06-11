@@ -21,6 +21,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.faztudo_mb.ui.theme.screens.components.BackgroundPrestador
 import com.example.faztudo_mb.ui.theme.screens.components.BackgroundRegister
 import com.example.faztudo_mb.ui.theme.screens.components.imagem
 import com.example.faztudo_mb.ui.theme.screens.components_new.PrestadorCard
@@ -42,21 +46,27 @@ import com.example.mobilefaztudo.viewModel.DesfavoritarViewModel
 import com.example.mobilefaztudo.viewModel.FavoritarViewModel
 import com.example.mobilefaztudo.viewModel.ListFavoriteViewModel
 import com.example.mobilefaztudo.viewModel.ListPrestadoresViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
-fun FavoritosScreen (
+fun FavoritosScreen(
     navController: NavController,
     viewModel: ListFavoriteViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
     sharedPreferencesHelper: SharedPreferencesHelper,
     favoritarViewModel: FavoritarViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
     desfavoritarViewModel: DesfavoritarViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
-    listPrestadoresFavoritos : ListFavoriteViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+    listPrestadoresFavoritos: ListFavoriteViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
     listPrestadores: ListPrestadoresViewModel = viewModel()
-){
+) {
     val listPrestadoresFavoritados by viewModel.listPrestadoresFavorite.observeAsState(initial = emptyList())
 
-    LaunchedEffect(Unit){
-        viewModel.listarPrestadoresFavoritos()
+    LaunchedEffect(Unit) {
+        while (true){
+            delay(1000)
+            viewModel.listarPrestadoresFavoritos()
+
+        }
     }
 
     Box(
@@ -64,7 +74,7 @@ fun FavoritosScreen (
             .fillMaxSize()
             .background(Color.White)
     ) {
-        BackgroundRegister(backgroundImageResId = imagem)
+        BackgroundPrestador()
         Column(
             modifier = Modifier
                 .fillMaxSize(),
@@ -76,7 +86,7 @@ fun FavoritosScreen (
                     .weight(1f),
                 verticalArrangement = Arrangement.Top
             ) {
-                TopBar()
+                TopBar(navController=navController,sharedPreferencesHelper= sharedPreferencesHelper)
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -86,24 +96,13 @@ fun FavoritosScreen (
                 ) {
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Perfis favoritados",
+                        text = "Seus favoritos",
                         fontSize = 30.sp,
                         style = TextStyle(
                             fontWeight = FontWeight.Bold,
                             fontSize = 18.sp
                         )
                     )
-                    IconButton(
-                        onClick = { /* Implementar a lógica do filtro aqui */ },
-                        modifier = Modifier.size(48.dp)
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.icons8_filtro_24),
-                            contentDescription = "Filtro",
-                            modifier = Modifier.size(24.dp)
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(8.dp))
                 }
                 Spacer(modifier = Modifier.padding(10.dp))
                 Box(
@@ -120,7 +119,7 @@ fun FavoritosScreen (
                         listPrestadoresFavoritados.forEach { prestador ->
                             PrestadorCard(
                                 navController = navController,
-                            prestador = prestador,
+                                prestador = prestador,
                                 favoritarViewModel = favoritarViewModel,
                                 desfavoritarViewModel = desfavoritarViewModel,
                                 sharedPreferencesHelper = sharedPreferencesHelper,
@@ -132,7 +131,11 @@ fun FavoritosScreen (
                     }
                 }
             }
-            NavBarContratante(sharedPreferencesHelper = sharedPreferencesHelper, navController = navController, initialState = "Favorite")
+            NavBarContratante(
+                sharedPreferencesHelper = sharedPreferencesHelper,
+                navController = navController,
+                initialState = "Favorite"
+            )
         }
     }
 }

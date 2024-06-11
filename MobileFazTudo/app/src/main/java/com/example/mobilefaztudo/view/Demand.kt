@@ -56,7 +56,7 @@ fun Demand(
                 .fillMaxSize(),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            TopBar()
+            TopBar(navController=navController,sharedPreferencesHelper= sharedPreferencesHelper)
             Spacer(modifier = Modifier.height(16.dp)) // Adiciona espaço entre a TopBar e o texto
             // Linha para ícone de filtro e texto
             Row(

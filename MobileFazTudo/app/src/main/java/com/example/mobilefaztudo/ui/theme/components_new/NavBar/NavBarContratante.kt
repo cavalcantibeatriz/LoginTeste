@@ -133,7 +133,7 @@ fun NavBarContratante(sharedPreferencesHelper: SharedPreferencesHelper,
                 modifier = iconBackground(selectedIcon.value == Icons.Filled.Notifications)
                     .clickable {
                         selectedIcon.value = Icons.Filled.Notifications
-                        navController.navigate("NotificacoesScreen")
+                        navController.navigate("NotificacoesContratanteScreen")
                     }
             ) {
                 Image(

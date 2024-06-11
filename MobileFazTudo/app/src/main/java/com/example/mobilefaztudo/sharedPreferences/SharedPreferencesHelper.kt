@@ -1,4 +1,5 @@
 package com.example.mobilefaztudo.sharedPreferences
+
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
@@ -12,6 +13,7 @@ class SharedPreferencesHelper(context: Context) {
     fun saveAuthToken(token: String) {
         sharedPreferences.edit().putString("authToken", token).apply()
     }
+
     fun saveUserData(user: User) {
         val userJson = Gson().toJson(user)
         val categoryJson = Gson().toJson(user.category)
@@ -38,19 +40,19 @@ class SharedPreferencesHelper(context: Context) {
         sharedPreferences.edit().putString("categoryName", user.category?.name).apply()
     }
 
-    fun getIdUser() : Int {
+    fun getIdUser(): Int {
         return sharedPreferences.getInt("id", 0)
     }
 
-    fun getCategory() : String? {
+    fun getCategory(): String? {
         return sharedPreferences.getString("categoryJson", null)
     }
 
-    fun getAuthToken() : String {
-        return sharedPreferences.getString("authToken","").toString()
+    fun getAuthToken(): String {
+        return sharedPreferences.getString("authToken", "").toString()
     }
 
-    fun sessionStorage(){
+    fun sessionStorage() {
         var nome = sharedPreferences.getString("nome", "")
         var sobrenome = sharedPreferences.getString("sobrenome", "")
         var dt_cadastro = sharedPreferences.getString("dt_cadastro", "")
@@ -70,6 +72,12 @@ class SharedPreferencesHelper(context: Context) {
         var JSON = sharedPreferences.getString("JSON", "")
         var categoryJson = sharedPreferences.getString("categoryJson", null)
         var categoryName = sharedPreferences.getString("categoryName", null)
+    }
+
+    fun clear() {
+        val editor = sharedPreferences.edit()
+        editor.clear()
+        editor.apply()
     }
 }
 
