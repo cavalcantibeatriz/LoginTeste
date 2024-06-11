@@ -35,12 +35,13 @@ fun Frame17(modifier: Modifier = Modifier) {
     var expanded by remember { mutableStateOf(false) }
     var selectedItem by remember { mutableStateOf("Selecione a Categoria") }
     val items = listOf("limpeza", "Obras", "Hidraúlica","Elétrica","Mecânica","Todos")
+    //NÃO APAGARRR
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
         selectedImageUri = uri
-        // Aqui você pode lidar com a URI da imagem selecionada
+        // Aqui para lidar com a URI da imagem selecionada
     }
     Column(
         modifier = modifier
