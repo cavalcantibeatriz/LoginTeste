@@ -78,6 +78,9 @@ fun encontreDemandas(
         demanda.categoria == 6 && demanda.dataDeConclusao == null && demanda.fkProvider == 0
     }
 
+    val demandasDefault = listDemandas.filter { demanda ->
+        demanda.dataDeConclusao == null && demanda.fkProvider == 0
+    }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -275,7 +278,7 @@ fun encontreDemandas(
                                     }
                                 }
                                 null -> {
-                                    listDemandas.forEach { demanda ->
+                                    demandasDefault.forEach { demanda ->
                                         DemandCard(
                                             demanda = demanda,
                                             sharedPreferencesHelper = sharedPreferencesHelper
