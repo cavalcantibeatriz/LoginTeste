@@ -78,7 +78,6 @@ fun encontreDemandas(
         demanda.categoria == 6 && demanda.dataDeConclusao == null && demanda.fkProvider == 0
     }
 
-
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -205,7 +204,6 @@ fun encontreDemandas(
                                         }
                                     }
                                 }
-
                                 FilterTipo.LIMPEZA -> {
                                     if (demandasLimpeza.isEmpty()) {
                                         Spacer(modifier = Modifier.padding(10.dp))
@@ -220,7 +218,6 @@ fun encontreDemandas(
                                         }
                                     }
                                 }
-
                                 FilterTipo.OBRAS -> {
                                     if (demandasObras.isEmpty()) {
                                         Spacer(modifier = Modifier.padding(10.dp))
@@ -235,7 +232,6 @@ fun encontreDemandas(
                                         }
                                     }
                                 }
-
                                 FilterTipo.HIDRAULICA -> {
                                     if (demandasHidraulica.isEmpty()) {
                                         Spacer(modifier = Modifier.padding(10.dp))
@@ -250,7 +246,6 @@ fun encontreDemandas(
                                         }
                                     }
                                 }
-
                                 FilterTipo.TODOS -> {
                                     if (demandasTodos.isEmpty()) {
                                         Spacer(modifier = Modifier.padding(10.dp))
@@ -265,7 +260,6 @@ fun encontreDemandas(
                                         }
                                     }
                                 }
-
                                 FilterTipo.MECANICA -> {
                                     if (demandasMecanica.isEmpty()) {
                                         Spacer(modifier = Modifier.padding(10.dp))
@@ -280,7 +274,6 @@ fun encontreDemandas(
                                         }
                                     }
                                 }
-
                                 null -> {
                                     listDemandas.forEach { demanda ->
                                         DemandCard(

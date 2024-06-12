@@ -70,7 +70,6 @@ fun DemandPrestador(
         viewModel.listarDemandas()
     }
 Log.d("AAA", "Ver o retorno ${listDemandas}")
-
     // Separar as demandas de acordo com o status
     val demandasEmAndamento = listDemandas.filter { demanda ->
         demanda.fkProvider == idUser && demanda.dataDeConclusao == null
@@ -81,7 +80,6 @@ Log.d("AAA", "Ver o retorno ${listDemandas}")
     val demandasEmAberto = listAbertas.filter { demanda ->
         demanda.status == "Aguardando resposta do contratante." && demanda.prestador.id == idUser
     }
-
     var exibirCriacaoDemanda by remember { mutableStateOf(false) }
     var exibirFiltro by remember { mutableStateOf<FilterDemanda?>(null) }
 
@@ -91,7 +89,6 @@ Log.d("AAA", "Ver o retorno ${listDemandas}")
             .background(Color.White)
     ) {
         BackgroundDemanda()
-
         Column(
             modifier = Modifier
                 .fillMaxSize(),
@@ -117,7 +114,6 @@ Log.d("AAA", "Ver o retorno ${listDemandas}")
                 )
             }
             Spacer(modifier = Modifier.height(10.dp))
-
             Box(
                 modifier = Modifier
                     .weight(1f) // Utilize o restante do espaço disponível
@@ -135,7 +131,7 @@ Log.d("AAA", "Ver o retorno ${listDemandas}")
                         horizontalArrangement = Arrangement.SpaceAround
                     ){
                         FilterButton(
-                            text = "Aguardo",
+                            text = "Aguardando",
                             isSelected = exibirFiltro == FilterDemanda.ABERTA,
                             onClick = {
                                 exibirFiltro = if (exibirFiltro == FilterDemanda.ABERTA) null else FilterDemanda.ABERTA
@@ -155,40 +151,45 @@ Log.d("AAA", "Ver o retorno ${listDemandas}")
                                 exibirFiltro = if (exibirFiltro == FilterDemanda.ANDAMENTO) null else FilterDemanda.ANDAMENTO
                             })
                     }
-
                     Spacer(modifier = Modifier.height(10.dp))
-
-
-
                     if (demandasEmAndamento.isEmpty() && demandasEmAberto.isEmpty() && demandasConcluidas.isEmpty()){
                         Text(text = "Você não tem demandas cadastradas ...")
                     }else{
                         when (exibirFiltro) {
                             FilterDemanda.ANDAMENTO -> {
+                                if (demandasEmAndamento.isEmpty()){
+                                    Text(text = "Você não tem demandas por aqui ...")
+                                }else{
                                 demandasEmAndamento.forEach { demanda ->
                                     DemandInProgress(demanda)
                                     Spacer(modifier = Modifier.height(16.dp)) // Espaço entre os cards
-                                }
+                                }}
                             }
                             FilterDemanda.CONCLUIDA -> {
+                                if (demandasConcluidas.isEmpty()){
+                                    Text(text = "Você não tem demandas por aqui ...")
+                                }else{
                                 demandasConcluidas.forEach { demanda ->
                                     DemandFinished(demanda)
                                     Spacer(modifier = Modifier.height(16.dp)) // Espaço entre os cards
-                                }
+                                }}
                             }
                             FilterDemanda.ABERTA -> {
+                                if (demandasEmAberto.isEmpty()){
+                                    Text(text = "Você não tem demandas por aqui ...")
+                                }else{
                                 demandasEmAberto.forEach { demanda ->
                                     DemandAbertaPrestador(demanda)
                                     Spacer(modifier = Modifier.height(16.dp)) // Espaço entre os cards
-                                }
+                                }}
                             }
                             null -> {
-                                demandasEmAndamento.forEach { demanda ->
-                                    DemandInProgress(demanda)
-                                    Spacer(modifier = Modifier.height(16.dp)) // Espaço entre os cards
-                                }
                                 demandasEmAberto.forEach { demanda ->
                                     DemandAbertaPrestador(demanda)
+                                    Spacer(modifier = Modifier.height(16.dp)) // Espaço entre os cards
+                                }
+                                demandasEmAndamento.forEach { demanda ->
+                                    DemandInProgress(demanda)
                                     Spacer(modifier = Modifier.height(16.dp)) // Espaço entre os cards
                                 }
                                 demandasConcluidas.forEach { demanda ->
