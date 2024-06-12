@@ -149,7 +149,7 @@ class MainActivity : ComponentActivity() {
                         DemandContratante(navController, sharedPreferencesHelper,listDemandasUserViewModel)
                     }
                     composable(route = "DemandPrestador") {
-                        DemandPrestador(navController, sharedPreferencesHelper,listDemandasUserViewModel,listDemandaAbertaViewModel)
+                        DemandPrestador(navController, sharedPreferencesHelper,listDemandasViewModel,listDemandaAbertaViewModel)
                     }
                     composable(route = "NotificacoesContratanteScreen") {
                         NotificacoesContratanteScreen(navController, sharedPreferencesHelper)

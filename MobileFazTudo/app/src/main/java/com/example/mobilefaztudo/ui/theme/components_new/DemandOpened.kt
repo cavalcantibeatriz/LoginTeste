@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mobilefaztudo.R
 import com.example.mobilefaztudo.api.Demanda
+import com.example.mobilefaztudo.api.DemandaInteresse
 
 @Composable
 fun DemandOpened(demanda: Demanda) {
@@ -268,6 +269,244 @@ fun DemandOpened(demanda: Demanda) {
                 ) {
                     Text(
                         text = if (demanda.descricao != null) "${demanda.descricao}" else "Parece que esta demanda não tem uma descrição...",
+                        fontSize = 20.sp,
+                        style = TextStyle(
+                            fontWeight = FontWeight.Light,
+                            fontSize = 20.sp
+                        ),
+                        modifier = Modifier.fillMaxWidth(),
+                        maxLines = Int.MAX_VALUE,
+                        overflow = TextOverflow.Clip,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
+        }
+    }
+}
+
+
+@Composable
+fun DemandAbertaPrestador(demanda: DemandaInteresse) {
+    val lightGray = Color(0xFFD3D3D3)
+    var showDemandaCompleta by remember { mutableStateOf(false) }
+    fun categoria(id: Int): String {
+        var categoriaSelecionada = ""
+        if (id == 1) {
+            categoriaSelecionada = "Mecânica"
+        }
+        if (id == 2) {
+            categoriaSelecionada = "Hidraulica"
+        }
+        if (id == 3) {
+            categoriaSelecionada = "Limpeza"
+        }
+        if (id == 4) {
+            categoriaSelecionada = "Elétrica"
+        }
+        if (id == 5) {
+            categoriaSelecionada = "Obras"
+        }
+        if (id == 6) {
+            categoriaSelecionada = "Todos"
+        }
+        return categoriaSelecionada
+    }
+
+    Column(
+        modifier = Modifier
+            .width(355.dp)
+
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(120.dp)
+                .clip(RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp))
+                .background(Color.White)
+        ) {
+            Text(
+                text = demanda.post.descricao,
+                color = Color.Black,
+                style = TextStyle(
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Light
+                ),
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .offset(x = 128.dp, y = 45.dp)
+                    .width(210.dp)
+            )
+            if (demanda.post.data === null) {
+                Image(
+                    modifier = Modifier
+                        .align(Alignment.TopStart)
+                        .offset(x = 21.dp, y = 17.dp)
+                        .width(86.dp)
+                        .height(93.dp)
+                        .clip(RoundedCornerShape(10.dp)),
+                    painter = painterResource(id = R.drawable.rectangle_71__1_),
+                    contentDescription = "Botao de Voltar"
+                )
+            } else {
+                demanda.post.data?.let {
+                    Base64Image(
+                        base64String = it,
+                        Modifier
+                            .width(86.dp)
+                            .align(Alignment.TopStart)
+                            .offset(x = 21.dp, y = 17.dp)
+                            .height(93.dp)
+                            .clip(RoundedCornerShape(10.dp))
+                    ) }
+            }
+
+            Text(
+                text = categoria(demanda.post.categoria),
+                color = Color.Black,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .offset(x = 128.dp, y = 16.dp)
+            )
+        }
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(30.dp)
+                .clip(RoundedCornerShape(bottomStart = 38.dp, bottomEnd = 38.dp))
+                .background(Color(0xFFFFEB3B)),
+        ) {
+            Text(
+                text = "Aguardando resposta do contratante",
+                color = Color.Black,
+                style = TextStyle(
+                    fontWeight = FontWeight.Bold
+                ),
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
+                    .padding(start = 23.dp)
+            )
+            Image(
+                modifier = Modifier.align(Alignment.CenterEnd).padding(end = 23.dp)
+                    .clickable {
+                        if (!showDemandaCompleta) {
+                            showDemandaCompleta = true
+                        } else {
+                            showDemandaCompleta = false
+                        }
+                    },
+                painter = painterResource(id = R.drawable.visualizar_1),
+                contentDescription = "Botao de Voltar"
+            )
+
+        }
+    }
+    if (showDemandaCompleta) {
+        Box(
+            modifier = Modifier
+                .height(400.dp)
+                .clip(RoundedCornerShape(16.dp))
+                .background(lightGray)
+
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                IconButton(onClick = { showDemandaCompleta = false }) {
+                    Icon(
+                        imageVector = Icons.Filled.Close,
+                        contentDescription = "Fechar",
+                        tint = Color.Black
+                    )
+                }
+            }
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(20.dp),
+                verticalArrangement = Arrangement.Top
+            ) {
+                Spacer(modifier = Modifier.height(16.dp))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 18.dp)
+                ) {
+                    Text(
+                        text = "Categoria - ${categoria(demanda.post.categoria)}",
+                        fontSize = 25.sp,
+                        style = TextStyle(
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 25.sp
+                        )
+                    )
+                }
+                Spacer(modifier = Modifier.height(18.dp))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(200.dp)
+                            .clip(CircleShape)
+                            .background(Color.LightGray)
+                    ) {
+                        if (demanda.post.data === null || demanda.post.data === "AA==") {
+                            Image(
+                                painter = painterResource(R.drawable.img_geral_default),
+                                contentDescription = "imagem da demanda",
+                                modifier = Modifier
+                                    .size(200.dp)
+                                    .clip(CircleShape)
+                                    .background(Color.Gray)
+                            )
+                        } else {
+                            demanda.post.data?.let {
+                                Base64Image(
+                                    base64String = it,
+                                    modifier = Modifier
+                                        .size(200.dp)
+                                        .clip(CircleShape)
+                                )
+                            }
+                        }
+                    }
+                }
+                Spacer(modifier = Modifier.height(13.dp))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    Text(
+                        text = "Cód. Demanda: ${demanda.post.id}",
+                        fontSize = 12.sp,
+                        style = TextStyle(
+                            fontWeight = FontWeight.Normal,
+                            fontStyle = FontStyle.Italic,
+                            fontSize = 12.sp
+                        )
+                    )
+                }
+                Spacer(modifier = Modifier.height(18.dp))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    Text(
+                        text = if (demanda.post.descricao != null) "${demanda.post.descricao}" else "Parece que esta demanda não tem uma descrição...",
                         fontSize = 20.sp,
                         style = TextStyle(
                             fontWeight = FontWeight.Light,

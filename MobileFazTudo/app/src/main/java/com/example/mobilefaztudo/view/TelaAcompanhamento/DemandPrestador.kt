@@ -1,5 +1,6 @@
 package com.example.mobilefaztudo.view.TelaAcompanhamento
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -39,6 +40,7 @@ import androidx.navigation.NavController
 import com.example.faztudo_mb.ui.theme.screens.components.BackgroundDemanda
 import com.example.faztudo_mb.ui.theme.screens.components.BackgroundPerfilContratante
 import com.example.faztudo_mb.ui.theme.screens.components.BackgroundPrestador
+import com.example.faztudo_mb.ui.theme.screens.components_new.DemandAbertaPrestador
 import com.example.faztudo_mb.ui.theme.screens.components_new.DemandFinished
 import com.example.faztudo_mb.ui.theme.screens.components_new.DemandInProgress
 import com.example.faztudo_mb.ui.theme.screens.components_new.DemandOpened
@@ -50,29 +52,36 @@ import com.example.mobilefaztudo.ui.theme.components_new.NavBar.NavBarContratant
 import com.example.mobilefaztudo.ui.theme.components_new.NavBar.NavBarPrestador
 import com.example.mobilefaztudo.viewModel.Prestador.ListDemandaAbertasViewModel
 import com.example.mobilefaztudo.viewModel.Prestador.ListDemandasUserViewModel
+import com.example.mobilefaztudo.viewModel.Prestador.ListDemandasViewModel
 
 @Composable
 fun DemandPrestador(
     navController: NavController,
     sharedPreferencesHelper: SharedPreferencesHelper,
-    viewModel: ListDemandasUserViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+    viewModel: ListDemandasViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
     listDemandaAbertasViewModel: ListDemandaAbertasViewModel= androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
-    val listDemandas by viewModel.listDemandasUser.observeAsState(initial = emptyList())
+    val listDemandas by viewModel.listDemandas.observeAsState(initial = emptyList())
+    val listAbertas by listDemandaAbertasViewModel.listDemandasAbertas.observeAsState(initial = emptyList())
+    var idUser = sharedPreferencesHelper.getIdUser()
+
     LaunchedEffect(Unit) {
-        viewModel.listarDemandasUser()
+        listDemandaAbertasViewModel.listarDemandaAberta()
+        viewModel.listarDemandas()
     }
+Log.d("AAA", "Ver o retorno ${listDemandas}")
 
     // Separar as demandas de acordo com o status
     val demandasEmAndamento = listDemandas.filter { demanda ->
-        demanda.status == "Negócio fechado!" && demanda.dataDeConclusao == null
+        demanda.fkProvider == idUser && demanda.dataDeConclusao == null
     }
     val demandasConcluidas = listDemandas.filter { demanda ->
-        demanda.status == "Negócio fechado!" && demanda.dataDeConclusao != null
+        demanda.fkProvider == idUser && demanda.dataDeConclusao != null
     }
-    val demandasEmAberto = listDemandas.filter { demanda ->
-        demanda.status == "Interesse enviado por algum prestador de serviço" || demanda.status == "Recem criado"
+    val demandasEmAberto = listAbertas.filter { demanda ->
+        demanda.status == "Aguardando resposta do contratante." && demanda.prestador.id == idUser
     }
+
     var exibirCriacaoDemanda by remember { mutableStateOf(false) }
     var exibirFiltro by remember { mutableStateOf<FilterDemanda?>(null) }
 
@@ -126,14 +135,14 @@ fun DemandPrestador(
                         horizontalArrangement = Arrangement.SpaceAround
                     ){
                         FilterButton(
-                            text = "Abertas",
+                            text = "Aguardo",
                             isSelected = exibirFiltro == FilterDemanda.ABERTA,
                             onClick = {
                                 exibirFiltro = if (exibirFiltro == FilterDemanda.ABERTA) null else FilterDemanda.ABERTA
                             })
 
                         FilterButton(
-                            text = "Concluidas",
+                            text = "Finalizadas",
                             isSelected = exibirFiltro == FilterDemanda.CONCLUIDA,
                             onClick = {
                                 exibirFiltro = if (exibirFiltro == FilterDemanda.CONCLUIDA) null else FilterDemanda.CONCLUIDA
@@ -148,6 +157,8 @@ fun DemandPrestador(
                     }
 
                     Spacer(modifier = Modifier.height(10.dp))
+
+
 
                     if (demandasEmAndamento.isEmpty() && demandasEmAberto.isEmpty() && demandasConcluidas.isEmpty()){
                         Text(text = "Você não tem demandas cadastradas ...")
@@ -167,7 +178,7 @@ fun DemandPrestador(
                             }
                             FilterDemanda.ABERTA -> {
                                 demandasEmAberto.forEach { demanda ->
-                                    DemandOpened(demanda)
+                                    DemandAbertaPrestador(demanda)
                                     Spacer(modifier = Modifier.height(16.dp)) // Espaço entre os cards
                                 }
                             }
@@ -177,7 +188,7 @@ fun DemandPrestador(
                                     Spacer(modifier = Modifier.height(16.dp)) // Espaço entre os cards
                                 }
                                 demandasEmAberto.forEach { demanda ->
-                                    DemandOpened(demanda)
+                                    DemandAbertaPrestador(demanda)
                                     Spacer(modifier = Modifier.height(16.dp)) // Espaço entre os cards
                                 }
                                 demandasConcluidas.forEach { demanda ->
@@ -196,7 +207,6 @@ fun DemandPrestador(
             )
         }
     }
-
 
     if (exibirCriacaoDemanda) {
         Column(
