@@ -1,4 +1,4 @@
-package com.example.mobilefaztudo.view
+package com.example.mobilefaztudo.view.TelaHome
 
 import android.graphics.BitmapFactory
 import android.util.Base64
@@ -40,20 +40,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.faztudo_mb.ui.theme.screens.components.BackgroundPrestador
-import com.example.faztudo_mb.ui.theme.screens.components.BackgroundRegister
-import com.example.faztudo_mb.ui.theme.screens.components.imagem
 import com.example.faztudo_mb.ui.theme.screens.components_new.PrestadorCard
 import com.example.faztudo_mb.ui.theme.screens.components_new.TopBar
 import com.example.mobilefaztudo.R
-import com.example.mobilefaztudo.repository.ListProvidersFavorite
 import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
+import com.example.mobilefaztudo.ui.theme.components_new.IconBox
 import com.example.mobilefaztudo.ui.theme.components_new.NavBar.NavBarContratante
-import com.example.mobilefaztudo.viewModel.DesfavoritarViewModel
-import com.example.mobilefaztudo.viewModel.FavoritarViewModel
-import com.example.mobilefaztudo.viewModel.ListFavoriteViewModel
-import com.example.mobilefaztudo.viewModel.ListPrestadoresViewModel
+import com.example.mobilefaztudo.viewModel.Contratante.DesfavoritarViewModel
+import com.example.mobilefaztudo.viewModel.Contratante.FavoritarViewModel
+import com.example.mobilefaztudo.viewModel.Contratante.ListFavoriteViewModel
+import com.example.mobilefaztudo.viewModel.Contratante.ListPrestadoresViewModel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import java.io.ByteArrayInputStream
 
 @Composable
@@ -66,6 +63,7 @@ fun encontrePrestadores(
     listPrestadoresFavoritos: ListFavoriteViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
     val listPrestadores by viewModel.listPrestadores.observeAsState(initial = emptyList())
+    var exibirFiltro by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         while (true) {
@@ -108,7 +106,7 @@ fun encontrePrestadores(
                         )
                     )
                     IconButton(
-                        onClick = { /* Implementar a lógica do filtro aqui */ },
+                        onClick = { exibirFiltro = true},
                         modifier = Modifier.size(48.dp)
                     ) {
                         Icon(
@@ -132,22 +130,38 @@ fun encontrePrestadores(
 //                            .border(3.dp, Color.Red),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        listPrestadores.forEach { prestador ->
-                            PrestadorCard(
-                                navController = navController,
-                                prestador = prestador,
-                                favoritarViewModel = favoritarViewModel,
-                                desfavoritarViewModel = desfavoritarViewModel,
-                                sharedPreferencesHelper = sharedPreferencesHelper,
-                                listPrestadoresFavoritos = listPrestadoresFavoritos,
-                                listPrestadores = viewModel
-                            )
-                            Spacer(modifier = Modifier.padding(10.dp))
+                        if (listPrestadores.isEmpty()){
+                            Text(text = "Sem prestadores no momento :(")
+                        }else {
+                            listPrestadores.forEach { prestador ->
+                                PrestadorCard(
+                                    navController = navController,
+                                    prestador = prestador,
+                                    favoritarViewModel = favoritarViewModel,
+                                    desfavoritarViewModel = desfavoritarViewModel,
+                                    sharedPreferencesHelper = sharedPreferencesHelper,
+                                    listPrestadoresFavoritos = listPrestadoresFavoritos,
+                                    listPrestadores = viewModel
+                                )
+                                Spacer(modifier = Modifier.padding(10.dp))
+                            }
                         }
                     }
                 }
             }
             NavBarContratante(sharedPreferencesHelper, navController, "Home")
+        }
+    }
+
+    if (exibirFiltro){
+        Column (
+            modifier=Modifier
+                .fillMaxSize()
+                .background(Color(color = 0x41000000)),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally // Centraliza horizontalmente
+        ){
+            IconBox()
         }
     }
 }

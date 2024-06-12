@@ -5,6 +5,7 @@ import com.example.mobilefaztudo.api.CadastroContratanteResponse
 import com.example.mobilefaztudo.api.CadastroPrestadorBody
 import com.example.mobilefaztudo.api.CadastroPrestadorResponse
 import com.example.mobilefaztudo.api.Demanda
+import com.example.mobilefaztudo.api.DemandaInteresse
 import com.example.mobilefaztudo.api.LoginRequestBody
 import com.example.mobilefaztudo.api.LoginResponse
 import com.example.mobilefaztudo.api.MensagemRequest
@@ -45,22 +46,35 @@ interface IListProvidersRepository {
     suspend fun listProviders(authToken: String): Response<List<User>>
 }
 
-interface  IListProvidersFavoriteRepository{
+interface IListProvidersFavoriteRepository {
     suspend fun listProvidersFavorite(
         authToken: String,
         @Path("idUser") idUser: Int
-    ):Response<List<User>>
+    ): Response<List<User>>
 }
 
 interface IListDemandasRepository {
-    suspend fun listDemandas(authToken: String) : Response<List<Demanda>>
+    suspend fun listDemandas(authToken: String): Response<List<Demanda>>
 }
 
-interface IEnviarMensagemRepository{
+interface IEnviarMensagemRepository {
     suspend fun enviarMensagem(
         authToken: String,
-        @Path ("idDemanda") idDemanda: Int,
+        @Path("idDemanda") idDemanda: Int,
         @Path("idUser") idUser: Int,
         @Body body: MensagemRequest
     ): Response<Unit>
+}
+
+interface IListDemandasUser {
+    suspend fun listDemandasUser(
+        authToken: String,
+        @Path("idUser") idUser: Int
+    ): Response<List<Demanda>>
+}
+
+interface IListDemandaAberta{
+    suspend fun listDemandaAberta(
+        authToken: String
+    ):Response<List<DemandaInteresse>>
 }

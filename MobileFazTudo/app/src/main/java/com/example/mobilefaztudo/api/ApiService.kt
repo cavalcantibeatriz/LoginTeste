@@ -52,6 +52,16 @@ interface ApiService {
     @GET("post/all")
     suspend fun listDemandas(@Header("Authorization") authToken: String): Response<List<Demanda>>
 
+    @GET("post/{idUser}")
+    suspend fun listDemandasUser(
+        @Header("Authorization") authToken: String,
+        @Path("idUser") idUser: Int
+        ):Response<List<Demanda>>
+
+    @GET("/proposta/notificar")
+    suspend fun listDemandaAberta(
+        @Header("Authorization") authToken: String
+        ): Response<List<DemandaInteresse>>
 }
 
 data class LoginRequestBody(
@@ -202,3 +212,11 @@ data class MensagemRequest(
     val post: Demanda,
     val prestador: User
     )
+
+data class DemandaInteresse(
+    val id: Int,
+    val mensagem: String,
+    val status: String,
+    val post: Demanda,
+    val prestador: User
+)

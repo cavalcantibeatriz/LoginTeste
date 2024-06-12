@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
@@ -30,23 +31,31 @@ import androidx.navigation.NavController
 import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
 
 @Composable
-fun NavBarPrestador(sharedPreferencesHelper: SharedPreferencesHelper,
-                    navController: NavController,
-                    initialState: String
-)
-{
-    val selectedBoxModifier = remember { mutableStateOf(Modifier.size(70.dp).clip(CircleShape).background(color = Color(0xFFF7A000))) }
+fun NavBarPrestador(
+    sharedPreferencesHelper: SharedPreferencesHelper,
+    navController: NavController,
+    initialState: String
+) {
+    val selectedBoxModifier = remember {
+        mutableStateOf(
+            Modifier
+                .size(70.dp)
+                .clip(CircleShape)
+                .background(color = Color(0xFFF7A000))
+        )
+    }
 
     fun stringToIcon(initialState: String): ImageVector {
         return when (initialState) {
             "Home" -> Icons.Filled.Home
             "Person" -> Icons.Filled.Person
-            "Info" -> Icons.Filled.Info
+            "Info" -> Icons.Filled.Build
             "Favorite" -> Icons.Filled.Favorite
             "Notifications" -> Icons.Filled.Notifications
             else -> Icons.Filled.Home // Define a imagem padrão caso a string não seja mapeada
         }
     }
+
     val initialIcon = stringToIcon(initialState)
     val selectedIcon = remember { mutableStateOf(initialIcon) }
     fun iconBackground(isSelected: Boolean): Modifier {
@@ -60,14 +69,16 @@ fun NavBarPrestador(sharedPreferencesHelper: SharedPreferencesHelper,
     ) {
         Box(
             modifier = Modifier
-                .fillMaxWidth().height(65.dp).align(Alignment.BottomCenter)
+                .fillMaxWidth()
+                .height(65.dp)
+                .align(Alignment.BottomCenter)
                 .background(color = Color.White),
         )
         Row(
-            modifier = Modifier.
-            fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .height(65.dp)
-                .align(Alignment.BottomCenter) ,
+                .align(Alignment.BottomCenter),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Box(
@@ -80,22 +91,26 @@ fun NavBarPrestador(sharedPreferencesHelper: SharedPreferencesHelper,
                 Image(
                     imageVector = Icons.Filled.Person,
                     contentDescription = "PROFILE",
-                    modifier = Modifier.size(width = 45.dp, height = 45.dp)
+                    modifier = Modifier
+                        .size(width = 45.dp, height = 45.dp)
                         .align(Alignment.Center),
                     contentScale = ContentScale.FillBounds
                 )
             }
             Box(
-                modifier = iconBackground(selectedIcon.value == Icons.Filled.Info)
+                modifier = iconBackground(selectedIcon.value == Icons.Filled.Build)
                     .clickable {
-                        selectedIcon.value = Icons.Filled.Info
-                        //tela de acordos aqui !
+                        selectedIcon.value = Icons.Filled.Build
+                        navController.navigate(
+                            "DemandPrestador"
+                        )
                     }
             ) {
                 Image(
-                    imageVector = Icons.Filled.Info,
+                    imageVector = Icons.Filled.Build,
                     contentDescription = "icons8-aperto-de-mo-50 1",
-                    modifier = Modifier.size(width = 45.dp, height = 45.dp)
+                    modifier = Modifier
+                        .size(width = 45.dp, height = 45.dp)
                         .align(Alignment.Center),
                     contentScale = ContentScale.FillBounds
                 )
@@ -110,7 +125,8 @@ fun NavBarPrestador(sharedPreferencesHelper: SharedPreferencesHelper,
                 Image(
                     imageVector = Icons.Filled.Home,
                     contentDescription = "HOME",
-                    modifier = Modifier.size(width = 45.dp, height = 45.dp)
+                    modifier = Modifier
+                        .size(width = 45.dp, height = 45.dp)
                         .align(Alignment.Center),
                     contentScale = ContentScale.FillBounds
                 )
@@ -125,7 +141,8 @@ fun NavBarPrestador(sharedPreferencesHelper: SharedPreferencesHelper,
                 Image(
                     imageVector = Icons.Filled.Notifications,
                     contentDescription = "bell-nav 1",
-                    modifier = Modifier.size(width = 45.dp, height = 45.dp)
+                    modifier = Modifier
+                        .size(width = 45.dp, height = 45.dp)
                         .align(Alignment.Center),
                     contentScale = ContentScale.FillBounds
                 )

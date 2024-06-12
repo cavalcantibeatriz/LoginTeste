@@ -52,10 +52,10 @@ import androidx.navigation.NavController
 import com.example.mobilefaztudo.R
 import com.example.mobilefaztudo.api.User
 import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
-import com.example.mobilefaztudo.viewModel.DesfavoritarViewModel
-import com.example.mobilefaztudo.viewModel.FavoritarViewModel
-import com.example.mobilefaztudo.viewModel.ListFavoriteViewModel
-import com.example.mobilefaztudo.viewModel.ListPrestadoresViewModel
+import com.example.mobilefaztudo.viewModel.Contratante.DesfavoritarViewModel
+import com.example.mobilefaztudo.viewModel.Contratante.FavoritarViewModel
+import com.example.mobilefaztudo.viewModel.Contratante.ListFavoriteViewModel
+import com.example.mobilefaztudo.viewModel.Contratante.ListPrestadoresViewModel
 import java.io.ByteArrayInputStream
 
 

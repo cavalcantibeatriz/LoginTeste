@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
@@ -40,7 +41,7 @@ fun NavBarContratante(sharedPreferencesHelper: SharedPreferencesHelper,
         return when (initialState) {
             "Home" -> Icons.Filled.Home
             "Person" -> Icons.Filled.Person
-            "Info" -> Icons.Filled.Info
+            "Info" -> Icons.Filled.Build
             "Favorite" -> Icons.Filled.Favorite
             "Notifications" -> Icons.Filled.Notifications
             else -> Icons.Filled.Home // Define a imagem padrão caso a string não seja mapeada
@@ -85,14 +86,14 @@ fun NavBarContratante(sharedPreferencesHelper: SharedPreferencesHelper,
                 )
             }
             Box(
-                modifier = iconBackground(selectedIcon.value == Icons.Filled.Info)
+                modifier = iconBackground(selectedIcon.value == Icons.Filled.Build)
                     .clickable {
-                        selectedIcon.value = Icons.Filled.Info
-                        navController.navigate("Demand")
+                        selectedIcon.value = Icons.Filled.Build
+                        navController.navigate("DemandContratante")
                     }
             ) {
                 Image(
-                    imageVector = Icons.Filled.Info,
+                    imageVector = Icons.Filled.Build,
                     contentDescription = "icons8-aperto-de-mo-50 1",
                     modifier = Modifier.size(width = 45.dp, height = 45.dp)
                         .align(Alignment.Center),
