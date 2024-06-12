@@ -216,8 +216,10 @@ fun DemandContratante(
     }
 }
 enum class FilterDemanda {
-    ANDAMENTO, CONCLUIDA, ABERTA
+    ANDAMENTO, CONCLUIDA, ABERTA,
 }
+
+
 
 @Composable
 fun FilterButton(text: String, isSelected: Boolean, onClick: () -> Unit) {

@@ -36,6 +36,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import com.example.faztudo_mb.ui.theme.screens.components.BackgroundDemanda
+import com.example.faztudo_mb.ui.theme.screens.components.BackgroundPerfilContratante
 import com.example.faztudo_mb.ui.theme.screens.components.BackgroundPrestador
 import com.example.faztudo_mb.ui.theme.screens.components_new.DemandFinished
 import com.example.faztudo_mb.ui.theme.screens.components_new.DemandInProgress
@@ -45,6 +47,7 @@ import com.example.mobilefaztudo.R
 import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
 import com.example.mobilefaztudo.ui.theme.components_new.Frame17
 import com.example.mobilefaztudo.ui.theme.components_new.NavBar.NavBarContratante
+import com.example.mobilefaztudo.ui.theme.components_new.NavBar.NavBarPrestador
 import com.example.mobilefaztudo.viewModel.Prestador.ListDemandaAbertasViewModel
 import com.example.mobilefaztudo.viewModel.Prestador.ListDemandasUserViewModel
 
@@ -78,7 +81,7 @@ fun DemandPrestador(
             .fillMaxSize()
             .background(Color.White)
     ) {
-        BackgroundPrestador()
+        BackgroundDemanda()
 
         Column(
             modifier = Modifier
@@ -95,7 +98,7 @@ fun DemandPrestador(
                     .padding(horizontal = 18.dp)
             ) {
                 Text(
-                    text = "Demandas",
+                    text = "Suas demandas",
                     fontSize = 30.sp,
                     style = TextStyle(
                         fontWeight = FontWeight.Bold,
@@ -103,17 +106,6 @@ fun DemandPrestador(
                     ),
                     modifier = Modifier.padding(start = 20.dp) // Espaçamento mínimo entre texto e ícone
                 )
-                Spacer(modifier = Modifier.width(10.dp))
-                IconButton(
-                    onClick = { exibirCriacaoDemanda = true },
-                    modifier = Modifier.size(30.dp) // Tamanho maior para o ícone
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.add), // Substitua com o ID do seu recurso de imagem
-                        contentDescription = "Filtro",
-                        modifier = Modifier.size(36.dp) // Tamanho maior para o ícone
-                    )
-                }
             }
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -137,8 +129,8 @@ fun DemandPrestador(
                             text = "Abertas",
                             isSelected = exibirFiltro == FilterDemanda.ABERTA,
                             onClick = {
-                            exibirFiltro = if (exibirFiltro == FilterDemanda.ABERTA) null else FilterDemanda.ABERTA
-                        })
+                                exibirFiltro = if (exibirFiltro == FilterDemanda.ABERTA) null else FilterDemanda.ABERTA
+                            })
 
                         FilterButton(
                             text = "Concluidas",
@@ -153,8 +145,8 @@ fun DemandPrestador(
                             onClick = {
                                 exibirFiltro = if (exibirFiltro == FilterDemanda.ANDAMENTO) null else FilterDemanda.ANDAMENTO
                             })
-
                     }
+
                     Spacer(modifier = Modifier.height(10.dp))
 
                     if (demandasEmAndamento.isEmpty() && demandasEmAberto.isEmpty() && demandasConcluidas.isEmpty()){
@@ -197,7 +189,7 @@ fun DemandPrestador(
                     }
                 }
             }
-            NavBarContratante(
+            NavBarPrestador(
                 sharedPreferencesHelper = sharedPreferencesHelper,
                 navController = navController,
                 initialState = "Info"
@@ -219,4 +211,6 @@ fun DemandPrestador(
     }
 }
 
-
+enum class FilterTipo{
+    MECANICA, HIDRAULICA, LIMPEZA, ELETRICA, OBRAS, TODOS
+}

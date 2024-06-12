@@ -40,12 +40,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.faztudo_mb.ui.theme.screens.components.BackgroundPrestador
+import com.example.faztudo_mb.ui.theme.screens.components_new.DemandCard
 import com.example.faztudo_mb.ui.theme.screens.components_new.PrestadorCard
 import com.example.faztudo_mb.ui.theme.screens.components_new.TopBar
 import com.example.mobilefaztudo.R
 import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
 import com.example.mobilefaztudo.ui.theme.components_new.IconBox
 import com.example.mobilefaztudo.ui.theme.components_new.NavBar.NavBarContratante
+import com.example.mobilefaztudo.view.TelaAcompanhamento.FilterButton
+import com.example.mobilefaztudo.view.TelaAcompanhamento.FilterTipo
 import com.example.mobilefaztudo.viewModel.Contratante.DesfavoritarViewModel
 import com.example.mobilefaztudo.viewModel.Contratante.FavoritarViewModel
 import com.example.mobilefaztudo.viewModel.Contratante.ListFavoriteViewModel
@@ -63,7 +66,27 @@ fun encontrePrestadores(
     listPrestadoresFavoritos: ListFavoriteViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
     val listPrestadores by viewModel.listPrestadores.observeAsState(initial = emptyList())
-    var exibirFiltro by remember { mutableStateOf(false) }
+    var exibirFiltro by remember { mutableStateOf<FilterTipo?>(null) }
+
+    val prestadoresMecanica = listPrestadores.filter { prestador ->
+        prestador.category?.id == 1
+    }
+    val prestadoresHidraulica = listPrestadores.filter { prestador ->
+        prestador.category?.id == 2
+    }
+    val prestadoresLimpeza = listPrestadores.filter { prestador ->
+        prestador.category?.id == 3
+    }
+    val prestadoresEletrica = listPrestadores.filter { prestador ->
+        prestador.category?.id == 4
+    }
+    val prestadoresObras = listPrestadores.filter { prestador ->
+        prestador.category?.id == 5
+    }
+    val prestadoresTodos = listPrestadores.filter { prestador ->
+        prestador.category?.id == 6
+    }
+
 
     LaunchedEffect(Unit) {
         while (true) {
@@ -71,6 +94,7 @@ fun encontrePrestadores(
             viewModel.listarPrestadores()
         }
     }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -105,17 +129,6 @@ fun encontrePrestadores(
                             fontSize = 18.sp
                         )
                     )
-                    IconButton(
-                        onClick = { exibirFiltro = true},
-                        modifier = Modifier.size(48.dp)
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.icons8_filtro_24),
-                            contentDescription = "Filtro",
-                            modifier = Modifier.size(24.dp)
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(8.dp))
                 }
                 Spacer(modifier = Modifier.padding(10.dp))
                 Box(
@@ -127,41 +140,209 @@ fun encontrePrestadores(
                     Column(
                         modifier = Modifier
                             .padding(horizontal = 18.dp),
-//                            .border(3.dp, Color.Red),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceAround
+                        ) {
+                            FilterButton(
+                                text = "Mecânica",
+                                isSelected = exibirFiltro == FilterTipo.MECANICA,
+                                onClick = {
+                                    exibirFiltro =
+                                        if (exibirFiltro == FilterTipo.MECANICA) null else FilterTipo.MECANICA
+                                })
+                            FilterButton(
+                                text = "Obras",
+                                isSelected = exibirFiltro == FilterTipo.OBRAS,
+                                onClick = {
+                                    exibirFiltro =
+                                        if (exibirFiltro == FilterTipo.OBRAS) null else FilterTipo.OBRAS
+                                })
+                            FilterButton(
+                                text = "Limpeza",
+                                isSelected = exibirFiltro == FilterTipo.LIMPEZA,
+                                onClick = {
+                                    exibirFiltro =
+                                        if (exibirFiltro == FilterTipo.LIMPEZA) null else FilterTipo.LIMPEZA
+                                })
+                        }
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceAround
+                        ) {
+                            FilterButton(
+                                text = "Elétrica",
+                                isSelected = exibirFiltro == FilterTipo.ELETRICA,
+                                onClick = {
+                                    exibirFiltro =
+                                        if (exibirFiltro == FilterTipo.ELETRICA) null else FilterTipo.ELETRICA
+                                })
+                            FilterButton(
+                                text = "Hidráulica",
+                                isSelected = exibirFiltro == FilterTipo.HIDRAULICA,
+                                onClick = {
+                                    exibirFiltro =
+                                        if (exibirFiltro == FilterTipo.HIDRAULICA) null else FilterTipo.HIDRAULICA
+                                })
+
+                            FilterButton(
+                                text = "Geral",
+                                isSelected = exibirFiltro == FilterTipo.TODOS,
+                                onClick = {
+                                    exibirFiltro =
+                                        if (exibirFiltro == FilterTipo.TODOS) null else FilterTipo.TODOS
+                                })
+
+                        }
+                        Spacer(modifier = Modifier.padding(3.dp))
+
                         if (listPrestadores.isEmpty()){
-                            Text(text = "Sem prestadores no momento :(")
+                            Text(text = "Não identificamos prestadores no momento :(")
                         }else {
-                            listPrestadores.forEach { prestador ->
-                                PrestadorCard(
-                                    navController = navController,
-                                    prestador = prestador,
-                                    favoritarViewModel = favoritarViewModel,
-                                    desfavoritarViewModel = desfavoritarViewModel,
-                                    sharedPreferencesHelper = sharedPreferencesHelper,
-                                    listPrestadoresFavoritos = listPrestadoresFavoritos,
-                                    listPrestadores = viewModel
-                                )
-                                Spacer(modifier = Modifier.padding(10.dp))
+                            when(exibirFiltro){
+                                FilterTipo.ELETRICA -> {
+                                    if (prestadoresEletrica.isEmpty()) {
+                                        Spacer(modifier = Modifier.padding(10.dp))
+                                        Text(text = "Não identificamos prestadores na categoria :(")
+                                    } else {
+                                        prestadoresEletrica.forEach { prestador ->
+                                            PrestadorCard(
+                                                navController = navController,
+                                                prestador = prestador,
+                                                favoritarViewModel = favoritarViewModel,
+                                                desfavoritarViewModel = desfavoritarViewModel,
+                                                sharedPreferencesHelper = sharedPreferencesHelper,
+                                                listPrestadoresFavoritos = listPrestadoresFavoritos,
+                                                listPrestadores = viewModel
+                                            )
+                                            Spacer(modifier = Modifier.padding(10.dp))
+                                        }
+                                    }
+                                }
+                                FilterTipo.LIMPEZA -> {
+                                    if (prestadoresLimpeza.isEmpty()) {
+                                        Spacer(modifier = Modifier.padding(10.dp))
+                                        Text(text = "Não identificamos prestadores na categoria :(")
+                                    } else {
+                                        prestadoresLimpeza.forEach { prestador ->
+                                            PrestadorCard(
+                                                navController = navController,
+                                                prestador = prestador,
+                                                favoritarViewModel = favoritarViewModel,
+                                                desfavoritarViewModel = desfavoritarViewModel,
+                                                sharedPreferencesHelper = sharedPreferencesHelper,
+                                                listPrestadoresFavoritos = listPrestadoresFavoritos,
+                                                listPrestadores = viewModel
+                                            )
+                                            Spacer(modifier = Modifier.padding(10.dp))
+                                        }
+                                    }
+                                }
+
+                                FilterTipo.OBRAS -> {
+                                    if (prestadoresObras.isEmpty()) {
+                                        Spacer(modifier = Modifier.padding(10.dp))
+                                        Text(text = "Não identificamos prestadores na categoria :(")
+                                    } else {
+                                        prestadoresObras.forEach { prestador ->
+                                            PrestadorCard(
+                                                navController = navController,
+                                                prestador = prestador,
+                                                favoritarViewModel = favoritarViewModel,
+                                                desfavoritarViewModel = desfavoritarViewModel,
+                                                sharedPreferencesHelper = sharedPreferencesHelper,
+                                                listPrestadoresFavoritos = listPrestadoresFavoritos,
+                                                listPrestadores = viewModel
+                                            )
+                                            Spacer(modifier = Modifier.padding(10.dp))
+                                        }
+                                    }
+                                }
+
+                                FilterTipo.HIDRAULICA -> {
+                                    if (prestadoresHidraulica.isEmpty()) {
+                                        Spacer(modifier = Modifier.padding(10.dp))
+                                        Text(text = "Não identificamos prestadores na categoria :(")
+                                    } else {
+                                        prestadoresHidraulica.forEach { prestador ->
+                                            PrestadorCard(
+                                                navController = navController,
+                                                prestador = prestador,
+                                                favoritarViewModel = favoritarViewModel,
+                                                desfavoritarViewModel = desfavoritarViewModel,
+                                                sharedPreferencesHelper = sharedPreferencesHelper,
+                                                listPrestadoresFavoritos = listPrestadoresFavoritos,
+                                                listPrestadores = viewModel
+                                            )
+                                            Spacer(modifier = Modifier.padding(10.dp))
+                                        }
+                                    }
+                                }
+
+                                FilterTipo.TODOS -> {
+                                    if (prestadoresTodos.isEmpty()) {
+                                        Spacer(modifier = Modifier.padding(10.dp))
+                                        Text(text = "Não identificamos prestadores na categoria :(")
+                                    } else {
+                                        prestadoresTodos.forEach { prestador ->
+                                            PrestadorCard(
+                                                navController = navController,
+                                                prestador = prestador,
+                                                favoritarViewModel = favoritarViewModel,
+                                                desfavoritarViewModel = desfavoritarViewModel,
+                                                sharedPreferencesHelper = sharedPreferencesHelper,
+                                                listPrestadoresFavoritos = listPrestadoresFavoritos,
+                                                listPrestadores = viewModel
+                                            )
+                                            Spacer(modifier = Modifier.padding(10.dp))
+                                        }
+                                    }
+                                }
+
+                                FilterTipo.MECANICA -> {
+                                    if (prestadoresMecanica.isEmpty()) {
+                                        Spacer(modifier = Modifier.padding(10.dp))
+                                        Text(text = "Não identificamos prestadores na categoria :(")
+                                    } else {
+                                        prestadoresMecanica.forEach { prestador ->
+                                            PrestadorCard(
+                                                navController = navController,
+                                                prestador = prestador,
+                                                favoritarViewModel = favoritarViewModel,
+                                                desfavoritarViewModel = desfavoritarViewModel,
+                                                sharedPreferencesHelper = sharedPreferencesHelper,
+                                                listPrestadoresFavoritos = listPrestadoresFavoritos,
+                                                listPrestadores = viewModel
+                                            )
+                                            Spacer(modifier = Modifier.padding(10.dp))
+                                        }
+                                    }
+                                }
+
+                                null -> {
+                                    listPrestadores.forEach { prestador ->
+                                        PrestadorCard(
+                                            navController = navController,
+                                            prestador = prestador,
+                                            favoritarViewModel = favoritarViewModel,
+                                            desfavoritarViewModel = desfavoritarViewModel,
+                                            sharedPreferencesHelper = sharedPreferencesHelper,
+                                            listPrestadoresFavoritos = listPrestadoresFavoritos,
+                                            listPrestadores = viewModel
+                                        )
+                                        Spacer(modifier = Modifier.padding(10.dp))
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
             NavBarContratante(sharedPreferencesHelper, navController, "Home")
-        }
-    }
-
-    if (exibirFiltro){
-        Column (
-            modifier=Modifier
-                .fillMaxSize()
-                .background(Color(color = 0x41000000)),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally // Centraliza horizontalmente
-        ){
-            IconBox()
         }
     }
 }
@@ -178,11 +359,9 @@ fun Base64ToPainter(base64String: String): Painter? {
         null
     }
 }
-
 @Composable
 fun Base64Image(base64String: String, modifier: Modifier = Modifier) {
     val imagePainter: Painter? = remember { Base64ToPainter(base64String) }
-
     imagePainter?.let {
         Image(
             modifier = modifier,
@@ -190,6 +369,5 @@ fun Base64Image(base64String: String, modifier: Modifier = Modifier) {
             contentDescription = "Imagem em base64"
         )
     } ?: run {
-
     }
 }
