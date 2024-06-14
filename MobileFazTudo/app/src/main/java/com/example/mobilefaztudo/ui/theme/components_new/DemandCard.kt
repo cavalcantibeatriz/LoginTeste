@@ -44,13 +44,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mobilefaztudo.R
 import com.example.mobilefaztudo.api.Demanda
+import com.example.mobilefaztudo.api.MensagemRequest
+import com.example.mobilefaztudo.api.User
 import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
+import com.example.mobilefaztudo.viewModel.EnviarMensagensViewModel
 
 @Composable
 fun DemandCard(
     modifier: Modifier = Modifier,
     demanda: Demanda,
     sharedPreferencesHelper: SharedPreferencesHelper,
+    requestMensagem: EnviarMensagensViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
     val lightGray = Color(0xFFD3D3D3)
 
@@ -83,10 +87,6 @@ fun DemandCard(
     var showModalSuccess by remember { mutableStateOf(false) }
     var showDemandaCompleta by remember { mutableStateOf(false) }
     var showDemandaCard by remember { mutableStateOf(true) }
-
-    fun toggleImage() {
-        Log.d("INTERESSE", "chamou o toggle")
-    }
 
 
     if (showDemandaCard) {
@@ -319,7 +319,31 @@ fun DemandCard(
             },
             confirmButton = {
                 Button(onClick = {
-                    toggleImage()
+                    try {
+                        val prestador = sharedPreferencesHelper.getJsonUser() ?: User()
+                        val requestBody = MensagemRequest(
+                            mensagem = mensagemTexto,
+                            prestador = prestador, // Substitua por seu objeto prestador
+                            post = demanda    // Substitua por seu objeto demanda
+                        )
+                        Log.d("Mensagem", "teste ${requestBody}")
+                        Log.d("Mensagem", "teste ${demanda.id}")
+                        Log.d("Mensagem", "teste ${mensagemTexto}")
+
+                        requestMensagem.enviarMensagem(demanda.id, requestBody){onResult ->
+                            if (onResult){
+                                Log.d("Mensagem", "sucesso${requestBody}")
+                                showModalSuccess = true
+
+                            }else{
+                                Log.d("Mensagem", "falha${onResult}")
+                                Log.d("Mensagem", "falha${requestBody}")
+                                showModalError = true
+                            }
+                        }
+                    }catch(e:Exception){
+                        Log.d("Mensagem", "algo deu errado ${e}")
+                    }
                     showModalInserirMensagem = false
                 }) {
                     Text("Enviar")

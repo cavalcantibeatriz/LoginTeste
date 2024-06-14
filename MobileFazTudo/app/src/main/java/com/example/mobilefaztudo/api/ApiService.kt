@@ -1,5 +1,6 @@
 package com.example.mobilefaztudo.api
 
+import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -7,6 +8,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
+
 
 interface ApiService {
     @POST("auth/login")
@@ -38,10 +40,10 @@ interface ApiService {
         @Path("idDemanda") idDemanda: Int,
         @Path("idUser") idUser: Int,
         @Body body: MensagemRequest
-        ): Response<Unit>
+    ): Response<Unit>
 
     @GET("search/")
-        suspend fun listProviders(@Header("Authorization") authToken: String): Response<List<User>>
+    suspend fun listProviders(@Header("Authorization") authToken: String): Response<List<User>>
 
     @GET("favorite/{idUser}")
     suspend fun listProvidersFavorite(
@@ -56,12 +58,12 @@ interface ApiService {
     suspend fun listDemandasUser(
         @Header("Authorization") authToken: String,
         @Path("idUser") idUser: Int
-        ):Response<List<Demanda>>
+    ): Response<List<Demanda>>
 
     @GET("/proposta/notificar")
     suspend fun listDemandaAberta(
         @Header("Authorization") authToken: String
-        ): Response<List<DemandaInteresse>>
+    ): Response<List<DemandaInteresse>>
 }
 
 data class LoginRequestBody(
@@ -73,36 +75,37 @@ data class LoginResponse(
     val token: String,
     val login: User
 )
+
 data class User(
-    val id: Int,
-    val name: String,
-    val lastName: String,
-    val cpf: String,
-    val dt_nascimento: String,
-    val cep: String,
-    val logradouro: String,
-    val state: String,
-    val city: String,
-    val phone: String,
-    val email: String,
-    val senha: String,
-    val dt_cadastro: String,
-    val descricao: String?,
-    val image_profile: String?,
-    val role: String?,
-    val category: Category?,
-    val proUser: Boolean,
-    val password: String,
-    val enabled: Boolean,
-    val username: String,
-    val authorities: List<Authorities>,
-    val accountNonExpired: Boolean,
-    val credentialsNonExpired: Boolean,
-    val accountNonLocked: Boolean
+    val id: Int = 0,
+    val name: String = "",
+    val lastName: String = "",
+    val cpf: String = "",
+    val dt_nascimento: String = "",
+    val cep: String = "",
+    val logradouro: String = "",
+    val state: String = "",
+    val city: String = "",
+    val phone: String = "",
+    val email: String = "",
+    val senha: String = "",
+    val dt_cadastro: String = "",
+    val descricao: String?= null,
+    val image_profile: String?= null,
+    val role: String? = "",
+    val category: Category? = null,
+    val proUser: Boolean = false,
+    val password: String = "",
+    val enabled: Boolean = false,
+    val username: String = "",
+    val authorities: List<Authorities> = emptyList(),
+    val accountNonExpired: Boolean = false,
+    val credentialsNonExpired: Boolean = false,
+    val accountNonLocked: Boolean = false
 )
 
 data class Authorities(
-    val authority: String
+    val authority: String = ""
 )
 
 data class CadastroContratanteBody(
@@ -161,6 +164,7 @@ data class CadastroPrestadorBody(
     val senha: String,
     val category: Category
 )
+
 data class CadastroPrestadorResponse(
     val id: Int,
     val name: String,
@@ -189,7 +193,7 @@ data class CadastroPrestadorResponse(
 )
 
 data class Category(
-    val id: Int,
+    val id: Int ,
     val name: String
 )
 
@@ -203,15 +207,15 @@ data class Demanda(
     val categoria: Int,
     val rating: Int,
     val dataCriacao: String,
-    val dataDeConclusao : String?,
+    val dataDeConclusao: String?,
     val data: String?
 )
 
 data class MensagemRequest(
     val mensagem: String,
-    val post: Demanda,
-    val prestador: User
-    )
+    val prestador: User,
+    val post: Demanda
+)
 
 data class DemandaInteresse(
     val id: Int,

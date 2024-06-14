@@ -131,14 +131,14 @@ Log.d("AAA", "Ver o retorno ${listDemandas}")
                         horizontalArrangement = Arrangement.SpaceAround
                     ){
                         FilterButton(
-                            text = "Aguardando",
+                            text = "Espera",
                             isSelected = exibirFiltro == FilterDemanda.ABERTA,
                             onClick = {
                                 exibirFiltro = if (exibirFiltro == FilterDemanda.ABERTA) null else FilterDemanda.ABERTA
                             })
 
                         FilterButton(
-                            text = "Finalizadas",
+                            text = "Concluídas",
                             isSelected = exibirFiltro == FilterDemanda.CONCLUIDA,
                             onClick = {
                                 exibirFiltro = if (exibirFiltro == FilterDemanda.CONCLUIDA) null else FilterDemanda.CONCLUIDA

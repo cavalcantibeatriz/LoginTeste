@@ -12,13 +12,13 @@ class EnviarMensagensViewModel (
     private val repository: IEnviarMensagemRepository,
     private val sharedPreferencesHelper: SharedPreferencesHelper)
     :ViewModel(){
-    fun enviarMensagem(idDemanda : Int, idUser:Int, body: MensagemRequest, onResult: (Boolean) -> Unit){
+    fun enviarMensagem(idDemanda: Int, body: MensagemRequest, onResult: (Boolean) -> Unit){
         Log.d("MENSAGEM", "CHAMOU A VIEWMODEL fav")
-        val idUser = sharedPreferencesHelper.getIdUser()
         viewModelScope.launch {
             try{
+                val idUser = sharedPreferencesHelper.getIdUser()
                 val authToken = sharedPreferencesHelper.getAuthToken()
-                val response = repository.enviarMensagem(authToken,idDemanda,idUser,body )
+                val response = repository.enviarMensagem(authToken,idDemanda,idUser,body)
                 if (response.isSuccessful){
                     onResult(true)
                     Log.d("MENSAGEM", "SUCESSO")

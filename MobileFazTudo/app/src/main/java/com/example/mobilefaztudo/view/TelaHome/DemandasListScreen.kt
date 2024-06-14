@@ -43,13 +43,15 @@ import com.example.mobilefaztudo.ui.theme.components_new.NavBar.NavBarPrestador
 import com.example.mobilefaztudo.view.TelaAcompanhamento.FilterButton
 import com.example.mobilefaztudo.view.TelaAcompanhamento.FilterDemanda
 import com.example.mobilefaztudo.view.TelaAcompanhamento.FilterTipo
+import com.example.mobilefaztudo.viewModel.EnviarMensagensViewModel
 import com.example.mobilefaztudo.viewModel.Prestador.ListDemandasViewModel
 
 @Composable
 fun encontreDemandas(
     navController: NavController,
     viewModel: ListDemandasViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
-    sharedPreferencesHelper: SharedPreferencesHelper
+    sharedPreferencesHelper: SharedPreferencesHelper,
+    requestMensagem: EnviarMensagensViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
     val listDemandas by viewModel.listDemandas.observeAsState(initial = emptyList())
     LaunchedEffect(Unit) {
@@ -201,7 +203,8 @@ fun encontreDemandas(
                                         demandasEletrica.forEach { demanda ->
                                             DemandCard(
                                                 demanda = demanda,
-                                                sharedPreferencesHelper = sharedPreferencesHelper
+                                                sharedPreferencesHelper = sharedPreferencesHelper,
+                                                requestMensagem = requestMensagem
                                             )
                                             Spacer(modifier = Modifier.padding(10.dp))
                                         }
@@ -215,7 +218,8 @@ fun encontreDemandas(
                                         demandasLimpeza.forEach { demanda ->
                                             DemandCard(
                                                 demanda = demanda,
-                                                sharedPreferencesHelper = sharedPreferencesHelper
+                                                sharedPreferencesHelper = sharedPreferencesHelper,
+                                                requestMensagem = requestMensagem
                                             )
                                             Spacer(modifier = Modifier.padding(10.dp))
                                         }
@@ -229,7 +233,8 @@ fun encontreDemandas(
                                         demandasObras.forEach { demanda ->
                                             DemandCard(
                                                 demanda = demanda,
-                                                sharedPreferencesHelper = sharedPreferencesHelper
+                                                sharedPreferencesHelper = sharedPreferencesHelper,
+                                                requestMensagem = requestMensagem
                                             )
                                             Spacer(modifier = Modifier.padding(10.dp))
                                         }
@@ -243,7 +248,8 @@ fun encontreDemandas(
                                         demandasHidraulica.forEach { demanda ->
                                             DemandCard(
                                                 demanda = demanda,
-                                                sharedPreferencesHelper = sharedPreferencesHelper
+                                                sharedPreferencesHelper = sharedPreferencesHelper,
+                                                requestMensagem = requestMensagem
                                             )
                                             Spacer(modifier = Modifier.padding(10.dp))
                                         }
@@ -257,7 +263,8 @@ fun encontreDemandas(
                                         demandasTodos.forEach { demanda ->
                                             DemandCard(
                                                 demanda = demanda,
-                                                sharedPreferencesHelper = sharedPreferencesHelper
+                                                sharedPreferencesHelper = sharedPreferencesHelper,
+                                                requestMensagem = requestMensagem
                                             )
                                             Spacer(modifier = Modifier.padding(10.dp))
                                         }
@@ -271,7 +278,8 @@ fun encontreDemandas(
                                         demandasMecanica.forEach { demanda ->
                                             DemandCard(
                                                 demanda = demanda,
-                                                sharedPreferencesHelper = sharedPreferencesHelper
+                                                sharedPreferencesHelper = sharedPreferencesHelper,
+                                                requestMensagem = requestMensagem
                                             )
                                             Spacer(modifier = Modifier.padding(10.dp))
                                         }
@@ -281,7 +289,8 @@ fun encontreDemandas(
                                     demandasDefault.forEach { demanda ->
                                         DemandCard(
                                             demanda = demanda,
-                                            sharedPreferencesHelper = sharedPreferencesHelper
+                                            sharedPreferencesHelper = sharedPreferencesHelper,
+                                            requestMensagem = requestMensagem
                                         )
                                         Spacer(modifier = Modifier.padding(10.dp))
                                     }

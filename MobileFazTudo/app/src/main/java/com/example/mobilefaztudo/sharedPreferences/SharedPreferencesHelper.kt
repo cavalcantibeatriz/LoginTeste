@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.util.Log
 import com.example.mobilefaztudo.api.User
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 class SharedPreferencesHelper(context: Context) {
     private val sharedPreferences: SharedPreferences =
@@ -17,7 +18,6 @@ class SharedPreferencesHelper(context: Context) {
     fun saveUserData(user: User) {
         val userJson = Gson().toJson(user)
         val categoryJson = Gson().toJson(user.category)
-        sharedPreferences.edit().putString("teste", userJson).apply()
         sharedPreferences.edit().putString("JSON", userJson).apply()
         sharedPreferences.edit().putInt("id", user.id).apply()
         sharedPreferences.edit().putString("nome", user.name).apply()
@@ -43,6 +43,22 @@ class SharedPreferencesHelper(context: Context) {
     fun getIdUser(): Int {
         return sharedPreferences.getInt("id", 0)
     }
+    fun saveUser(user: User) {
+        val userJson = Gson().toJson(user)
+        sharedPreferences.edit().putString("JSON", userJson).apply()
+    }
+
+    fun getJsonUser(): User? {
+        val userJson =  sharedPreferences.getString("JSON", null)
+        return if (userJson != null) {
+            val userType = object : TypeToken<User>() {}.type
+            Gson().fromJson(userJson, userType)
+
+        } else {
+            null
+        }
+    }
+
 
     fun getCategory(): String? {
         return sharedPreferences.getString("categoryJson", null)

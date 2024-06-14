@@ -158,7 +158,7 @@ fun LoginScreen(loginViewModel: LoginViewModel = viewModel(), navController: Nav
                 Button(onClick = {
                     // Fechar o modal ao clicar no botão OK
                     showModalError = false
-                    navController.navigate("cadastro1")
+                    navController.navigate("login")
                 }) {
                     Text("OK")
                 }

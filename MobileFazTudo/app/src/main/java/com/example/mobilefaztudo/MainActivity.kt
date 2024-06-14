@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.mobilefaztudo.repository.DeleteFavorite
+import com.example.mobilefaztudo.repository.EnviarMensagemRepository
 import com.example.mobilefaztudo.repository.ListDemandaAbertaRepository
 import com.example.mobilefaztudo.repository.ListDemandasRepository
 import com.example.mobilefaztudo.repository.ListDemandasUser
@@ -40,6 +41,7 @@ import com.example.mobilefaztudo.viewModel.Contratante.FavoritarViewModel
 import com.example.mobilefaztudo.viewModel.Prestador.ListDemandasViewModel
 import com.example.mobilefaztudo.viewModel.Contratante.ListFavoriteViewModel
 import com.example.mobilefaztudo.viewModel.Contratante.ListPrestadoresViewModel
+import com.example.mobilefaztudo.viewModel.EnviarMensagensViewModel
 import com.example.mobilefaztudo.viewModel.Prestador.ListDemandaAbertasViewModel
 import com.example.mobilefaztudo.viewModel.Prestador.ListDemandasUserViewModel
 import com.example.mobilefaztudo.viewModel.auth.LoginViewModel
@@ -55,6 +57,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var listPrestadoresFavoritos: ListFavoriteViewModel
     private lateinit var listDemandasUserViewModel: ListDemandasUserViewModel
     private lateinit var listDemandaAbertaViewModel : ListDemandaAbertasViewModel
+    private lateinit var requestEnviarMensagem : EnviarMensagensViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         val repositoryL = LoginRepository()
         val sharedPreferencesHelper = SharedPreferencesHelper(applicationContext)
@@ -87,6 +90,9 @@ class MainActivity : ComponentActivity() {
 
         val repositoryListDemandaAbertas = ListDemandaAbertaRepository()
         listDemandaAbertaViewModel = ListDemandaAbertasViewModel(repositoryListDemandaAbertas,sharedPreferencesHelper)
+
+        val repositoryEnviarMensagem = EnviarMensagemRepository()
+        requestEnviarMensagem = EnviarMensagensViewModel(repositoryEnviarMensagem,sharedPreferencesHelper)
 
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -125,6 +131,7 @@ class MainActivity : ComponentActivity() {
                             navController,
                             listDemandasViewModel,
                             sharedPreferencesHelper,
+                            requestEnviarMensagem
                         )
                     }
                     composable(route = "encontreFavoritos") {
