@@ -2,7 +2,9 @@ package com.example.mobilefaztudo.ui.theme.components_new
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.requiredHeight
@@ -116,6 +118,8 @@ fun PrestadorNotificationCard() {
             }
         }
     }
+    Spacer(modifier = Modifier.height(8.dp))
+
 }
 
 @Preview(widthDp = 355, heightDp = 167)

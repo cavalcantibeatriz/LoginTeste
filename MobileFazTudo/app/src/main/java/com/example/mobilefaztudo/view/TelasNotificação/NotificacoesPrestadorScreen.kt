@@ -64,6 +64,7 @@ fun NotificacoesPrestadorScreen(
                         .fillMaxWidth()
                         .padding(start = 18.dp)
                 ) {
+                    Spacer(modifier = Modifier.width(8.dp))
                     Icon(
                     imageVector = Icons.Filled.Notifications,
                     contentDescription = "Notification Icon",
@@ -92,12 +93,12 @@ fun NotificacoesPrestadorScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         for (i in 0..9) {
-                        PrestadorNotificationCard()
+                            ContratanteNotificationCard()
                         }
                     }
                 }
             }
-            NavBarContratante(sharedPreferencesHelper = sharedPreferencesHelper, navController = navController, initialState = "Notifications")
+            NavBarPrestador(sharedPreferencesHelper = sharedPreferencesHelper, navController = navController, initialState = "Notifications")
         }
     }
 }
