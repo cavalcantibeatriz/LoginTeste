@@ -84,7 +84,6 @@ fun PerfilPrestadorScreen(
                     )
                 }
                 Spacer(modifier = Modifier.height(28.dp))
-
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center,
@@ -94,7 +93,6 @@ fun PerfilPrestadorScreen(
                     PhotoProfile()
                 }
                 Spacer(modifier = Modifier.height(20.dp))
-
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center,
@@ -127,7 +125,6 @@ fun PerfilPrestadorScreen(
                         )
                     )
                 }
-
                 Spacer(modifier = Modifier.height(10.dp))
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
