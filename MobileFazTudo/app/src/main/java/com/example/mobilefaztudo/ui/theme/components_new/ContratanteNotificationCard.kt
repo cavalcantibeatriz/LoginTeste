@@ -24,11 +24,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mobilefaztudo.R
-
 
 @Composable
 fun ContratanteNotificationCard(modifier: Modifier = Modifier) {
@@ -43,11 +43,9 @@ fun ContratanteNotificationCard(modifier: Modifier = Modifier) {
                         bottomEnd = 20.dp,
                         bottomStart = 20.dp
                     )
-
                 )
-                .padding(top = 24.dp, bottom = 17.dp),
+                .padding(top = 20.dp, bottom = 17.dp),
             contentAlignment = Alignment.Center
-
         ) {
             Row (modifier = modifier
                 .background(
@@ -57,12 +55,13 @@ fun ContratanteNotificationCard(modifier: Modifier = Modifier) {
                         topEnd = 20.dp,
                         bottomEnd = 20.dp,
                         bottomStart = 20.dp
-                    ))){
-
+                    )
+                ),
+                verticalAlignment = Alignment.CenterVertically
+            ){
                 Image(modifier = modifier,
-                    painter = painterResource(id = R.drawable.img),
+                    painter = painterResource(id = R.drawable.rectangle_71__1_),
                     contentDescription = "Botao de Voltar"
-
                 )
                 Spacer(modifier = modifier.width(20.dp))
                 Column (modifier = modifier){
@@ -73,28 +72,33 @@ fun ContratanteNotificationCard(modifier: Modifier = Modifier) {
                         fontSize = 22.sp
                     )
                     Spacer(modifier = Modifier.height(3.dp))
-                    Text(text = "Especialista em Obras \n" +
-                            "Gerais")
+                    Text(
+                        text = "Faço por R$300,00",
+                        modifier = modifier
+                            .width(180.dp)
+                            .height(25.dp),
+                        maxLines = Int.MAX_VALUE,
+                        overflow = TextOverflow.Clip
+                    )
                     Row (
                         modifier = modifier
-                            .padding(start = 120.dp),
+                            .padding(start = 190.dp),
                         verticalAlignment = Alignment.CenterVertically
-
                     ) {
                         Image(
                             painter = painterResource(id = R.drawable.image_60),
-                            contentDescription = "Botao de Voltar",
+                            contentDescription = "Botao de enviar dados",
                             modifier = Modifier
-                                .size(20.dp) // Ajuste o tamanho conforme necessário
+                                 // Ajuste o tamanho conforme necessário
                                 .clickable {
                                     Direct()
                                 })
-
-
                     }
                 }
             }
         }
+    Spacer(modifier = modifier.height(8.dp))
+
 }
 
 @Preview

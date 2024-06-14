@@ -92,12 +92,12 @@ fun NotificacoesPrestadorScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         for (i in 0..9) {
-                        PrestadorNotificationCard()
+                            ContratanteNotificationCard()
                         }
                     }
                 }
             }
-            NavBarContratante(sharedPreferencesHelper = sharedPreferencesHelper, navController = navController, initialState = "Notifications")
+            NavBarPrestador(sharedPreferencesHelper = sharedPreferencesHelper, navController = navController, initialState = "Notifications")
         }
     }
 }

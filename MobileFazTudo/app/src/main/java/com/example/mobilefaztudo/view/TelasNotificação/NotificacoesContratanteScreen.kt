@@ -35,6 +35,8 @@ import com.example.faztudo_mb.ui.theme.screens.components_new.TopBar
 import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
 import com.example.mobilefaztudo.ui.theme.components_new.ContratanteNotificationCard
 import com.example.mobilefaztudo.ui.theme.components_new.NavBar.NavBarContratante
+import com.example.mobilefaztudo.ui.theme.components_new.PrestadorNotificationCard
+
 @Composable
 fun NotificacoesContratanteScreen(
     navController: NavController, sharedPreferencesHelper: SharedPreferencesHelper
@@ -92,7 +94,7 @@ fun NotificacoesContratanteScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         for (i in 0..9) {
-                            ContratanteNotificationCard()
+                            PrestadorNotificationCard()
                         }
                     }
                 }
