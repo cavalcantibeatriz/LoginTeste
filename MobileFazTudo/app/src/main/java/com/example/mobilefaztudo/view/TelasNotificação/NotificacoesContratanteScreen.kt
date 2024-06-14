@@ -66,6 +66,7 @@ fun NotificacoesContratanteScreen(
                         .fillMaxWidth()
                         .padding(start = 18.dp)
                 ) {
+                    Spacer(modifier = Modifier.width(8.dp))
                     Icon(
                         imageVector = Icons.Filled.Notifications,
                         contentDescription = "Notification Icon",
