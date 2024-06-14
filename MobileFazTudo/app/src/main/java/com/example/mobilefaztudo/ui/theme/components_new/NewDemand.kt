@@ -31,7 +31,6 @@ import androidx.compose.ui.tooling.preview.Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Frame17(modifier: Modifier = Modifier) {
-    var text = ""
     var expanded by remember { mutableStateOf(false) }
     var selectedItem by remember { mutableStateOf("Selecione a Categoria") }
     val items = listOf("limpeza", "Obras", "Hidraúlica","Elétrica","Mecânica","Todos")
@@ -43,6 +42,8 @@ fun Frame17(modifier: Modifier = Modifier) {
         selectedImageUri = uri
         // Aqui para lidar com a URI da imagem selecionada
     }
+    var descricao by remember { mutableStateOf("") }
+
     Column(
         modifier = modifier
             .requiredWidth(width = 300.dp)
@@ -64,8 +65,8 @@ fun Frame17(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.height(15.dp))
         //INPUT
         OutlinedTextField(
-            value = text,
-            onValueChange = { newText -> text = newText },
+            value = descricao,
+            onValueChange = { newText -> descricao = newText },
             textStyle = TextStyle(
                 color = Color.Black,
                 fontSize = 16.sp,

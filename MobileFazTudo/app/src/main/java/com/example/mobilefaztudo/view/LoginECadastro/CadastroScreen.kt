@@ -48,8 +48,8 @@ import com.example.faztudo_mb.ui.theme.screens.components.imagem
 import com.example.mobilefaztudo.R
 import com.example.mobilefaztudo.api.Category
 import com.example.mobilefaztudo.ui.theme.laranjaBtn
-import com.example.mobilefaztudo.viewModel.CadastroContratanteViewModel
-import com.example.mobilefaztudo.viewModel.CadastroPrestadorViewModel
+import com.example.mobilefaztudo.viewModel.auth.CadastroContratanteViewModel
+import com.example.mobilefaztudo.viewModel.auth.CadastroPrestadorViewModel
 
 @Composable
 fun CadastroScreenEtapa1(navController: NavController) {

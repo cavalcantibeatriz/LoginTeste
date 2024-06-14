@@ -27,6 +27,7 @@ import com.example.mobilefaztudo.R
 @Composable
 fun IconBox() {
     var selectedIcon by remember { mutableStateOf(-1) }
+    var filtroApp by remember { mutableStateOf(6) }
 
     Box(
         modifier = Modifier
@@ -47,19 +48,23 @@ fun IconBox() {
                 IconButtonItem(
                     iconRes = R.drawable.icons8_vassoura_100_2,
                     text = "Limpeza",
-                    onClick = { selectedIcon = 0 },
+                    onClick = {
+                        selectedIcon = 0
+                        filtroApp = 3},
                     isSelected = selectedIcon == 0
                 )
                 IconButtonItem(
                     iconRes = R.drawable.icons8_martelo_100_2,
                     text = "Obras",
-                    onClick = { selectedIcon = 1 },
+                    onClick = { selectedIcon = 1
+                        filtroApp = 5},
                     isSelected = selectedIcon == 1
                 )
                 IconButtonItem(
                     iconRes = R.drawable.image_63,
                     text = "Hidráulica",
-                    onClick = { selectedIcon = 2 },
+                    onClick = { selectedIcon = 2
+                        filtroApp = 2},
                     isSelected = selectedIcon == 2
                 )
             }
@@ -70,19 +75,22 @@ fun IconBox() {
                 IconButtonItem(
                     iconRes = R.drawable.icons8_eletricidade_64_2,
                     text = "Elétrica",
-                    onClick = { selectedIcon = 3 },
+                    onClick = { selectedIcon = 3
+                        filtroApp = 4},
                     isSelected = selectedIcon == 3
                 )
                 IconButtonItem(
                     iconRes = R.drawable.icons8_ferramenta_100_2,
                     text = "Mecânica",
-                    onClick = { selectedIcon = 4 },
+                    onClick = { selectedIcon = 4
+                        filtroApp = 1},
                     isSelected = selectedIcon == 4
                 )
                 IconButtonItem(
                     iconRes = R.drawable.image_64,
                     text = "Todos",
-                    onClick = { selectedIcon = 5 },
+                    onClick = { selectedIcon = 5
+                        filtroApp = 6},
                     isSelected = selectedIcon == 5
                 )
             }

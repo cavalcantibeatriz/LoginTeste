@@ -1,4 +1,4 @@
-package com.example.mobilefaztudo.viewModel
+package com.example.mobilefaztudo.viewModel.Contratante
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

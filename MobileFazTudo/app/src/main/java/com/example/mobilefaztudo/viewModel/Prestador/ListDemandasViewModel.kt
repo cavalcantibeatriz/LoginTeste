@@ -1,4 +1,4 @@
-package com.example.mobilefaztudo.viewModel
+package com.example.mobilefaztudo.viewModel.Prestador
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData

@@ -1,7 +1,5 @@
 package com.example.mobilefaztudo.view.LoginECadastro
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -35,10 +33,9 @@ import androidx.navigation.NavController
 import com.example.faztudo_mb.ui.theme.screens.components.BackgroundRegister
 import com.example.faztudo_mb.ui.theme.screens.components.imagem
 import com.example.mobilefaztudo.R
-import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
 import com.example.mobilefaztudo.ui.theme.laranjaBtn
 import com.example.mobilefaztudo.ui.theme.salmaoRosadoBtn
-import com.example.mobilefaztudo.viewModel.LoginViewModel
+import com.example.mobilefaztudo.viewModel.auth.LoginViewModel
 
 @Composable
 fun LoginScreen(loginViewModel: LoginViewModel = viewModel(), navController: NavController) {
@@ -161,7 +158,7 @@ fun LoginScreen(loginViewModel: LoginViewModel = viewModel(), navController: Nav
                 Button(onClick = {
                     // Fechar o modal ao clicar no botão OK
                     showModalError = false
-                    navController.navigate("cadastro1")
+                    navController.navigate("login")
                 }) {
                     Text("OK")
                 }

@@ -10,24 +10,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -35,19 +28,15 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.faztudo_mb.ui.theme.screens.components.BackgroundPrestador
-import com.example.faztudo_mb.ui.theme.screens.components.BackgroundRegister
-import com.example.faztudo_mb.ui.theme.screens.components.imagem
 import com.example.faztudo_mb.ui.theme.screens.components_new.PrestadorCard
 import com.example.faztudo_mb.ui.theme.screens.components_new.TopBar
-import com.example.mobilefaztudo.R
 import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
 import com.example.mobilefaztudo.ui.theme.components_new.NavBar.NavBarContratante
-import com.example.mobilefaztudo.viewModel.DesfavoritarViewModel
-import com.example.mobilefaztudo.viewModel.FavoritarViewModel
-import com.example.mobilefaztudo.viewModel.ListFavoriteViewModel
-import com.example.mobilefaztudo.viewModel.ListPrestadoresViewModel
+import com.example.mobilefaztudo.viewModel.Contratante.DesfavoritarViewModel
+import com.example.mobilefaztudo.viewModel.Contratante.FavoritarViewModel
+import com.example.mobilefaztudo.viewModel.Contratante.ListFavoriteViewModel
+import com.example.mobilefaztudo.viewModel.Contratante.ListPrestadoresViewModel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @Composable
 fun FavoritosScreen(
@@ -65,7 +54,6 @@ fun FavoritosScreen(
         while (true){
             delay(1000)
             viewModel.listarPrestadoresFavoritos()
-
         }
     }
 
@@ -116,17 +104,21 @@ fun FavoritosScreen(
                             .padding(horizontal = 18.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        listPrestadoresFavoritados.forEach { prestador ->
-                            PrestadorCard(
-                                navController = navController,
-                                prestador = prestador,
-                                favoritarViewModel = favoritarViewModel,
-                                desfavoritarViewModel = desfavoritarViewModel,
-                                sharedPreferencesHelper = sharedPreferencesHelper,
-                                listPrestadoresFavoritos = listPrestadoresFavoritos,
-                                listPrestadores = listPrestadores
-                            )
-                            Spacer(modifier = Modifier.padding(10.dp))
+                        if (listPrestadoresFavoritados.isEmpty()){
+                            Text(text = "Você não tem prestadores favoritados ...")
+                        }else {
+                            listPrestadoresFavoritados.forEach { prestador ->
+                                PrestadorCard(
+                                    navController = navController,
+                                    prestador = prestador,
+                                    favoritarViewModel = favoritarViewModel,
+                                    desfavoritarViewModel = desfavoritarViewModel,
+                                    sharedPreferencesHelper = sharedPreferencesHelper,
+                                    listPrestadoresFavoritos = listPrestadoresFavoritos,
+                                    listPrestadores = listPrestadores
+                                )
+                                Spacer(modifier = Modifier.padding(10.dp))
+                            }
                         }
                     }
                 }
