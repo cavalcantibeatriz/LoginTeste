@@ -17,6 +17,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -78,30 +81,29 @@ fun PrestadorCard(
     var showModalSuccessD by remember { mutableStateOf(false) }
     var showCardPrestador by remember { mutableStateOf(true) }
     var showPerfilPrestador by remember { mutableStateOf(false) }
-
+    var showGeleriaPrestador by remember { mutableStateOf(false) }
     val lightGray = Color(0xFFD3D3D3)
-
     var coracaoAtivo by remember { mutableStateOf(false) }
-    var favoritosSet by remember { mutableStateOf(HashSet<Int>())}
+    var favoritosSet by remember { mutableStateOf(HashSet<Int>()) }
 
     val listFavoritos by listPrestadoresFavoritos.listPrestadoresFavorite.observeAsState(
         initial = emptyList()
     )
     LaunchedEffect(key1 = listFavoritos) {
         favoritosSet.clear()
-            favoritosSet.addAll(listFavoritos.map { favoritos -> favoritos.id})
-            coracaoAtivo = favoritosSet.contains(prestador.id)
+        favoritosSet.addAll(listFavoritos.map { favoritos -> favoritos.id })
+        coracaoAtivo = favoritosSet.contains(prestador.id)
     }
 
     fun toggleImage() {
         if (coracaoAtivo) {
             try {
-                desfavoritarViewModel.deleteFavorite(idUserAtual,prestador.id){onResult ->
+                desfavoritarViewModel.deleteFavorite(idUserAtual, prestador.id) { onResult ->
                     showModalSuccessD = true
                     coracaoAtivo = false
                 }
             } catch (e: Exception) {
-                Log.d("Favorite", "Erro ao desfavoritar::: ${e.message}",e)
+                Log.d("Favorite", "Erro ao desfavoritar::: ${e.message}", e)
                 showModalError = true
             }
         } else {
@@ -111,7 +113,7 @@ fun PrestadorCard(
                     coracaoAtivo = true
                 }
             } catch (e: Exception) {
-                Log.d("Favorite", "Erro ao favoritar::: ${e.message}",e)
+                Log.d("Favorite", "Erro ao favoritar::: ${e.message}", e)
                 showModalError = true
             }
 
@@ -182,7 +184,9 @@ fun PrestadorCard(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Image(
-                            painter = if (coracaoAtivo) painterResource(currentImage2) else painterResource(currentImage),
+                            painter = if (coracaoAtivo) painterResource(currentImage2) else painterResource(
+                                currentImage
+                            ),
                             contentDescription = "Imagem Alternável",
                             modifier = Modifier
                                 .clickable { toggleImage() } // Adiciona a ação de clique
@@ -326,12 +330,58 @@ fun PrestadorCard(
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {
-                    Button(onClick = { /*TODO*/ }) {
+                    Button(onClick = { showGeleriaPrestador = true }) {
                         Text(text = "Ver galeria")
                     }
                 }
             }
         }
+    }
+
+    if (showGeleriaPrestador) {
+        AlertDialog(
+            onDismissRequest = { showGeleriaPrestador = false },
+            title = {
+                Text(
+                    text = "Galeria - Pedro",
+                    fontSize = 18.sp,
+                    style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                )
+            },
+            text = {
+                Column {
+                    LazyRow(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(160.dp),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        items(6) {
+                            Image(
+                                painter = painterResource(R.drawable.img_geral_default),
+                                contentDescription = "Imagem $it",
+                                modifier = Modifier
+                                    .padding(5.dp)
+                                    .size(150.dp)
+                            )
+                        }
+                    }
+                }
+            },
+            confirmButton = {
+            },
+            dismissButton = {
+                IconButton(onClick = { showGeleriaPrestador = false }) {
+                    Icon(
+                        imageVector = Icons.Filled.Close,
+                        contentDescription = "Fechar",
+                        tint = Color.Black
+                    )
+                }
+            }
+        )
+
     }
 
     if (showModalSuccessD) {
@@ -378,7 +428,6 @@ fun PrestadorCard(
         Log.d("EXIBIR", "CHAMOU O MODAL")
         AlertDialog(
             onDismissRequest = {
-                // Fechar o modal ao clicar fora
                 showModalError = false
             },
             title = { Text("Oops") },

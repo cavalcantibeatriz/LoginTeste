@@ -345,6 +345,8 @@ fun encontrePrestadores(
             NavBarContratante(sharedPreferencesHelper, navController, "Home")
         }
     }
+
+
 }
 
 fun Base64ToPainter(base64String: String): Painter? {

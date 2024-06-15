@@ -15,8 +15,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,9 +37,13 @@ import androidx.compose.ui.unit.sp
 import com.example.mobilefaztudo.R
 
 @Composable
-fun ContratanteNotificationCard(modifier: Modifier = Modifier) {
+fun ContratanteNotificationCard() {
+
+    var showModalSucesso by remember { mutableStateOf(false) }
+    var showModalErro by remember { mutableStateOf(false) }
+    var showModalEnvio by remember { mutableStateOf(false) }
         Box(
-            modifier = modifier
+            modifier = Modifier
                 .width(350.dp)
                 .background(
                     color = Color.White,
@@ -47,7 +57,7 @@ fun ContratanteNotificationCard(modifier: Modifier = Modifier) {
                 .padding(top = 20.dp, bottom = 17.dp),
             contentAlignment = Alignment.Center
         ) {
-            Row (modifier = modifier
+            Row (modifier = Modifier
                 .background(
                     color = Color.White,
                     shape = RoundedCornerShape(
@@ -59,12 +69,12 @@ fun ContratanteNotificationCard(modifier: Modifier = Modifier) {
                 ),
                 verticalAlignment = Alignment.CenterVertically
             ){
-                Image(modifier = modifier,
+                Image(modifier = Modifier,
                     painter = painterResource(id = R.drawable.rectangle_71__1_),
                     contentDescription = "Botao de Voltar"
                 )
-                Spacer(modifier = modifier.width(20.dp))
-                Column (modifier = modifier){
+                Spacer(modifier = Modifier.width(20.dp))
+                Column (modifier = Modifier){
                     Text(
                         text = "Bruna Ferraz",
                         fontWeight = FontWeight.Bold,
@@ -73,15 +83,15 @@ fun ContratanteNotificationCard(modifier: Modifier = Modifier) {
                     )
                     Spacer(modifier = Modifier.height(3.dp))
                     Text(
-                        text = "Faço por R$300,00",
-                        modifier = modifier
+                        text = "Aceitou seu interesse",
+                        modifier = Modifier
                             .width(180.dp)
                             .height(25.dp),
                         maxLines = Int.MAX_VALUE,
                         overflow = TextOverflow.Clip
                     )
                     Row (
-                        modifier = modifier
+                        modifier = Modifier
                             .padding(start = 190.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -91,21 +101,76 @@ fun ContratanteNotificationCard(modifier: Modifier = Modifier) {
                             modifier = Modifier
                                  // Ajuste o tamanho conforme necessário
                                 .clickable {
-                                    Direct()
+                                    showModalEnvio = true
                                 })
                     }
                 }
             }
         }
-    Spacer(modifier = modifier.height(8.dp))
+    Spacer(modifier = Modifier.height(8.dp))
 
-}
+    if (showModalEnvio){
+        AlertDialog(
+            onDismissRequest = {
+                // Fechar o modal ao clicar fora
+                showModalEnvio = false
+            },
+            title = { Text("Atenção!") },
+            text = { Text("Ao confirmar iremos liberar seu contato via e-mail para o contratante.") },
+            confirmButton = {
+                Button(onClick = {
+                    // Fechar o modal ao clicar no botão OK
+                    showModalEnvio = false
+                    showModalSucesso = true
+                }) {
+                    Text("Quero Confirmar")
+                }
+            },
+            dismissButton = {
+                Button(onClick = { showModalEnvio = false }) {
+                    Text(text = "Cancelar")
+                }
+            }
+        )
+    }
 
-@Preview
-@Composable
-fun ContratanteNotificationCardPreview(){
-    ContratanteNotificationCard()
-}
-fun Direct(){
+    if (showModalSucesso){
+        AlertDialog(
+            onDismissRequest = {
+                // Fechar o modal ao clicar fora
+                showModalSucesso = false
+            },
+            title = { Text("Eba!") },
+            text = { Text("Ação realizada com sucesso!") },
+            confirmButton = {
+                Button(onClick = {
+                    // Fechar o modal ao clicar no botão OK
+                    showModalSucesso = false
+                }) {
+                    Text("OK")
+                }
+            }
+        )
+    }
+
+    if(showModalErro){
+        AlertDialog(
+            onDismissRequest = {
+                // Fechar o modal ao clicar fora
+                showModalErro = false
+            },
+            title = { Text("Oops...") },
+            text = { Text("Parece que alguma coisa deu errado...") },
+            confirmButton = {
+                Button(onClick = {
+                    // Fechar o modal ao clicar no botão OK
+                    showModalErro = false
+                }) {
+                    Text("OK")
+                }
+            }
+        )
+    }
+
 
 }
