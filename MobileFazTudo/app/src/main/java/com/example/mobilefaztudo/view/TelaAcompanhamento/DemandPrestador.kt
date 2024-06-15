@@ -11,14 +11,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -30,28 +24,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.faztudo_mb.ui.theme.screens.components.BackgroundDemanda
-import com.example.faztudo_mb.ui.theme.screens.components.BackgroundPerfilContratante
-import com.example.faztudo_mb.ui.theme.screens.components.BackgroundPrestador
 import com.example.faztudo_mb.ui.theme.screens.components_new.DemandAbertaPrestador
 import com.example.faztudo_mb.ui.theme.screens.components_new.DemandFinished
 import com.example.faztudo_mb.ui.theme.screens.components_new.DemandInProgress
-import com.example.faztudo_mb.ui.theme.screens.components_new.DemandOpened
 import com.example.faztudo_mb.ui.theme.screens.components_new.TopBar
-import com.example.mobilefaztudo.R
 import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
-import com.example.mobilefaztudo.ui.theme.components_new.Frame17
-import com.example.mobilefaztudo.ui.theme.components_new.NavBar.NavBarContratante
 import com.example.mobilefaztudo.ui.theme.components_new.NavBar.NavBarPrestador
 import com.example.mobilefaztudo.viewModel.Prestador.ListDemandaAbertasViewModel
-import com.example.mobilefaztudo.viewModel.Prestador.ListDemandasUserViewModel
 import com.example.mobilefaztudo.viewModel.Prestador.ListDemandasViewModel
 
 @Composable
@@ -209,17 +194,6 @@ Log.d("AAA", "Ver o retorno ${listDemandas}")
         }
     }
 
-    if (exibirCriacaoDemanda) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color(color = 0x41000000)),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally // Centraliza horizontalmente
-        ) {
-            Frame17()
-        }
-    }
 }
 
 enum class FilterTipo{

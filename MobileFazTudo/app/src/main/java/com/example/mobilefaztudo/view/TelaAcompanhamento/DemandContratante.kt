@@ -1,6 +1,10 @@
 package com.example.mobilefaztudo.view.TelaAcompanhamento
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,15 +14,26 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -28,10 +43,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -42,7 +59,6 @@ import com.example.faztudo_mb.ui.theme.screens.components_new.DemandOpened
 import com.example.faztudo_mb.ui.theme.screens.components_new.TopBar
 import com.example.mobilefaztudo.R
 import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
-import com.example.mobilefaztudo.ui.theme.components_new.Frame17
 import com.example.mobilefaztudo.ui.theme.components_new.NavBar.NavBarContratante
 import com.example.mobilefaztudo.viewModel.Prestador.ListDemandasUserViewModel
 
@@ -52,6 +68,15 @@ fun DemandContratante(
     sharedPreferencesHelper: SharedPreferencesHelper,
     viewModel: ListDemandasUserViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
+    //NÃO APAGARRR
+    var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
+    val galleryLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        selectedImageUri = uri
+        // Aqui para lidar com a URI da imagem selecionada
+    }
+
     val listDemandas by viewModel.listDemandasUser.observeAsState(initial = emptyList())
     LaunchedEffect(Unit) {
         viewModel.listarDemandasUser()
@@ -69,6 +94,10 @@ fun DemandContratante(
     }
     var exibirCriacaoDemanda by remember { mutableStateOf(false) }
     var exibirFiltro by remember { mutableStateOf<FilterDemanda?>(null) }
+    var mensagemDemanda by remember { mutableStateOf("") }
+    var showModalSucesso by remember { mutableStateOf(false) }
+    var showModalErro by remember { mutableStateOf(false) }
+
 
     Box(
         modifier = Modifier
@@ -204,22 +233,186 @@ fun DemandContratante(
 
 
     if (exibirCriacaoDemanda) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color(color = 0x41000000)),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally // Centraliza horizontalmente
-        ) {
-            Frame17()
-        }
+        var selectedOption by remember { mutableStateOf("Selecione uma categoria") }
+        val options = listOf("Mecânica","Hidráulica","Limpeza", "Elétrica","Obras", "Todos")
+        var isDropdownExpanded by remember { mutableStateOf(false) }
+
+        AlertDialog(
+            onDismissRequest = { exibirCriacaoDemanda = false},
+            title = {
+                Text(
+                    text = "Criar nova demanda",
+                    fontSize = 18.sp,
+                    style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                )
+            },
+            text = {
+                Column {
+                    TextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = mensagemDemanda,
+                        onValueChange = {it -> mensagemDemanda = it},
+                        label = { Text("Descreva sua necessidade") }
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Box(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.Center
+                    ){
+                        DropdownMenu(
+                            modifier = Modifier
+                                .width(270.dp),
+                            expanded = isDropdownExpanded,
+                            onDismissRequest = { isDropdownExpanded = false }
+                        ){
+                            options.forEach { option ->
+                                DropdownMenuItem(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    onClick = {
+                                        selectedOption = option
+                                        isDropdownExpanded = false
+                                    },
+                                    text = { Text(option) }
+                                )
+                            }
+                        }
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(CircleShape)
+                                .background(color = Color(0xFFCDD3E0))
+                        ){
+                            Box(
+                                modifier = Modifier
+                                    .requiredWidth(width = 33.dp)
+                                    .requiredHeight(height = 32.dp)
+                                    .clip(shape = CircleShape)
+                                    .clickable {
+                                        isDropdownExpanded =
+                                            !isDropdownExpanded
+                                    }
+                                    .background(color = Color(0xff588aed))
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.ArrowDropDown,
+                                    contentDescription = "Dropdown Arrow",
+                                    tint = Color.Black,
+                                    modifier = Modifier
+                                        .align(alignment = Alignment.Center)
+                                        .clickable {
+                                            isDropdownExpanded =
+                                                !isDropdownExpanded // Alternar entre expandido e não expandido
+                                        }
+                                )
+                            }
+                            Text(
+                                text = selectedOption,
+                                color = Color.Black,
+                                textAlign = TextAlign.Center,
+                                style = MaterialTheme.typography.titleMedium,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .align(Alignment.CenterVertically)
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    Row (
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(CircleShape)
+                            .background(color = Color(0xFFCDD3E0))
+                    ){
+                        Box(
+                            modifier = Modifier
+                                .requiredWidth(width = 33.dp)
+                                .requiredHeight(height = 32.dp)
+                                .clip(shape = CircleShape)
+                                .clickable {
+                                    galleryLauncher.launch("image/*")
+                                }
+                                .background(color = Color(0xff588aed))
+                        ){
+                            Icon(
+                                imageVector = Icons.Default.Add,
+                                contentDescription = "Arrow - Down 2",
+                                tint = Color.Black,
+                                modifier = Modifier
+                                    .align(alignment = Alignment.Center)
+                            )
+                        }
+                        Text(
+                            text = "Adicione uma imagem",
+                            color = Color.Black,
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.titleMedium,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .align(Alignment.CenterVertically)
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(7.dp))
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = { showModalSucesso = true
+                exibirCriacaoDemanda = false
+                    }
+                ) {
+                    Text(text = "Confirmar")
+                }
+            },
+            dismissButton = {
+                Button(onClick = { exibirCriacaoDemanda = false }) {
+                    Text(text = "Cancelar")
+                }
+            }
+        )
+    }
+
+    if (showModalSucesso){
+        AlertDialog(
+            onDismissRequest = {
+                // Fechar o modal ao clicar fora
+                showModalSucesso = false
+            },
+            title = { Text("Eba!") },
+            text = { Text("Demanda criada com sucesso!") },
+            confirmButton = {
+                Button(onClick = {
+                    // Fechar o modal ao clicar no botão OK
+                    showModalSucesso = false
+                }) {
+                    Text("OK")
+                }
+            }
+        )
+    }
+
+    if (showModalErro){
+        AlertDialog(
+            onDismissRequest = {
+                // Fechar o modal ao clicar fora
+                showModalErro = false
+            },
+            title = { Text("Oops...") },
+            text = { Text("Parece que alguma coisa deu errado...") },
+            confirmButton = {
+                Button(onClick = {
+                    // Fechar o modal ao clicar no botão OK
+                    showModalErro = false
+                }) {
+                    Text("OK")
+                }
+            }
+        )
     }
 }
 enum class FilterDemanda {
     ANDAMENTO, CONCLUIDA, ABERTA,
 }
-
-
 
 @Composable
 fun FilterButton(text: String, isSelected: Boolean, onClick: () -> Unit) {

@@ -70,7 +70,7 @@ fun PrestadorNotificationCard(modifier: Modifier = Modifier) {
                 .requiredHeight(height = 39.dp)
         ) {
             Button(
-                onClick = { Negar() },
+                onClick = {},
                 colors = ButtonDefaults.buttonColors(Color(0xff992323)),
                 shape = RoundedCornerShape(bottomEnd = 20.dp, bottomStart = 20.dp),
                 modifier = Modifier
@@ -84,7 +84,7 @@ fun PrestadorNotificationCard(modifier: Modifier = Modifier) {
                 )
             }
             Button(
-                onClick = { Aceitar() },
+                onClick = {},
                 colors = ButtonDefaults.buttonColors(Color(0xff727272)),
                 shape = RoundedCornerShape(bottomEnd = 20.dp, bottomStart = 20.dp),
                 modifier = Modifier
@@ -107,10 +107,4 @@ fun PrestadorNotificationCard(modifier: Modifier = Modifier) {
 @Composable
 private fun Group19Preview() {
     PrestadorNotificationCard()
-}
-
-fun Negar() {
-}
-
-fun Aceitar() {
 }
