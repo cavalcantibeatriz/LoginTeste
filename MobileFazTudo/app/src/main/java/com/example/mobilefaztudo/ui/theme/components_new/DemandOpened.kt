@@ -99,7 +99,7 @@ fun DemandOpened(demanda: Demanda) {
                     .offset(x = 128.dp, y = 45.dp)
                     .width(210.dp)
             )
-            if (demanda.data === null) {
+            if (demanda.data == null || demanda.data == "") {
                 Image(
                     modifier = Modifier
                         .align(Alignment.TopStart)
@@ -107,7 +107,7 @@ fun DemandOpened(demanda: Demanda) {
                         .width(86.dp)
                         .height(93.dp)
                         .clip(RoundedCornerShape(10.dp)),
-                    painter = painterResource(id = R.drawable.rectangle_71__1_),
+                    painter = painterResource(id = R.drawable.img_geral_default),
                     contentDescription = "Botao de Voltar"
                 )
             } else {

@@ -274,10 +274,7 @@ fun CadastroContratanteEtapa2(
             ) {
                 Text("Continuar", style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold))
             }
-
-
         }
-
     }
 
     if (exibirCamposSenha) {
@@ -353,8 +350,6 @@ fun CadastroContratanteEtapa2(
                     )
                 )
             }
-
-
             Button(
                 onClick = {
                     Log.d("CADASTRO", "CLIQUEI NO BOTÃO")

@@ -86,7 +86,7 @@ fun TopBar(
                 text = { Text("Deseja mesmo encerrar sua sessão?") },
                 confirmButton = {
                     Button(onClick = {
-                        sharedPreferencesHelper.clear()
+//                        sharedPreferencesHelper.clear()
                         navController.navigate("login")
                         showModalSuccess = false
                     }) {

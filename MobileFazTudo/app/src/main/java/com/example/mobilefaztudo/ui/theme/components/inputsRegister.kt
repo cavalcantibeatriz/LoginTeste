@@ -105,9 +105,7 @@ fun ExampleUsage() {
             modifier = Modifier.weight(1f),
             value = "",
             onValueChange = {/* TODO: Handle value change */}
-
         )
-
     }
 }
 

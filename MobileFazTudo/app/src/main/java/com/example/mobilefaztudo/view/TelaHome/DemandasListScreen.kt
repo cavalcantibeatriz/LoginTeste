@@ -45,6 +45,7 @@ import com.example.mobilefaztudo.view.TelaAcompanhamento.FilterDemanda
 import com.example.mobilefaztudo.view.TelaAcompanhamento.FilterTipo
 import com.example.mobilefaztudo.viewModel.EnviarMensagensViewModel
 import com.example.mobilefaztudo.viewModel.Prestador.ListDemandasViewModel
+import kotlinx.coroutines.delay
 
 @Composable
 fun encontreDemandas(
@@ -55,7 +56,10 @@ fun encontreDemandas(
 ) {
     val listDemandas by viewModel.listDemandas.observeAsState(initial = emptyList())
     LaunchedEffect(Unit) {
-        viewModel.listarDemandas()
+        while (true) {
+            delay(1000)
+            viewModel.listarDemandas()
+        }
     }
 
     var exibirTela by remember { mutableStateOf(true) }

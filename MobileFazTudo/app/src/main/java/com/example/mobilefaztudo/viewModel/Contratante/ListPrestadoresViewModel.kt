@@ -19,7 +19,6 @@ class ListPrestadoresViewModel(
 
     fun listarPrestadores(){
         Log.d("LISTAR PRESTADORES", "CHAMOU A VIEWMODEL")
-
         viewModelScope.launch {
             try {
                 val authToken = sharedPreferencesHelper.getAuthToken()

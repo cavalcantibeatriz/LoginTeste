@@ -96,7 +96,7 @@ fun DemandFinished(demanda: Demanda) {
                     .offset(x = 128.dp, y = 45.dp)
                     .width(210.dp)
             )
-            if (demanda.data === null) {
+            if (demanda.data == null || demanda.data == "") {
                 Image(
                     modifier = Modifier
                         .align(Alignment.TopStart)

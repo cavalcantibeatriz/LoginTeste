@@ -98,7 +98,7 @@ fun DemandInProgress(demanda: Demanda) {
                     .width(210.dp)
             )
 
-            if (demanda.data === null) {
+            if (demanda.data == null || demanda.data == "") {
                 Image(
                     modifier = Modifier
                         .align(Alignment.TopStart)
