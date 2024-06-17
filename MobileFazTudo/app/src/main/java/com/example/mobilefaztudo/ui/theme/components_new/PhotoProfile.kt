@@ -1,6 +1,8 @@
 package com.example.mobilefaztudo.ui.theme.components_new
 
+import android.content.Context
 import android.net.Uri
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -17,6 +19,7 @@ import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -26,15 +29,18 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -42,21 +48,41 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import com.example.faztudo_mb.ui.theme.screens.components_new.Base64Image
 import com.example.mobilefaztudo.R
+import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
+import com.example.mobilefaztudo.viewModel.AtualizarPerfilViewModel
+import java.io.File
+import java.io.FileOutputStream
 
 @Composable
-fun PhotoProfile() {
-    //NÃO APAGARRR
-    var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
-    val galleryLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent()
-    ) { uri: Uri? ->
-        selectedImageUri = uri
-        // Aqui para lidar com a URI da imagem selecionada
+fun PhotoProfile(
+    navController: NavController,
+    sharedPreferencesHelper : SharedPreferencesHelper,
+    atualizarImgPerfilViewModel : AtualizarPerfilViewModel = viewModel(),
+    tipoPerfil: String
+) {
+    fun uriToFile(uri: Uri, context: Context): File {
+        val inputStream = context.contentResolver.openInputStream(uri)
+        val tempFile = File.createTempFile("temp_image", null, context.cacheDir)
+        val outputStream = FileOutputStream(tempFile)
+        inputStream?.use { input ->
+            outputStream.use { output ->
+                input.copyTo(output)
+            }
+        }
+        return tempFile
     }
+
+    var imgProfileAtual = sharedPreferencesHelper.getImgProfile()
+    var idUser = sharedPreferencesHelper.getIdUser()
+
     var showModalSucesso by remember { mutableStateOf(false) }
     var showModalErro by remember { mutableStateOf(false) }
-    var showEditFoto by remember { mutableStateOf(false)    }
+    var showEditFoto by remember { mutableStateOf(false) }
+
     Box(modifier = Modifier.background(Color.Transparent)) {
         Box(
             modifier = Modifier
@@ -65,12 +91,19 @@ fun PhotoProfile() {
                 .background(color = Color(0xffd9d9d9)),
             contentAlignment = Alignment.Center
         ) {
-            Image(
-                modifier = Modifier.fillMaxSize(),
-                painter = painterResource(id = R.drawable.rectangle_71__1_),
-                contentDescription = "Botão de Voltar",
-                contentScale = ContentScale.Crop
-            )
+            if (imgProfileAtual == null || imgProfileAtual == ""){
+                Image(
+                    modifier = Modifier.fillMaxSize(),
+                    painter = painterResource(id = R.drawable.rectangle_71__1_),
+                    contentDescription = "Botão de Voltar",
+                    contentScale = ContentScale.Crop
+                )
+            }else{
+                Base64Image(
+                    base64String = imgProfileAtual,
+                    modifier = Modifier.fillMaxSize(),
+                )
+            }
         }
         Image(
             modifier = Modifier
@@ -82,6 +115,18 @@ fun PhotoProfile() {
         )
     }
     if (showEditFoto){
+        val context = LocalContext.current
+        var fileAnexada by remember { mutableStateOf<File?>(null) }
+        Log.d("TESTE123", "${fileAnexada}")
+
+        val galleryLauncher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.GetContent()
+        ) { uri: Uri? ->
+            uri?.let {
+                fileAnexada = uriToFile(uri, context)
+            }
+        }
+
         AlertDialog(
             onDismissRequest = { showEditFoto = false},
             title = {
@@ -132,8 +177,31 @@ fun PhotoProfile() {
             },
             confirmButton = {
                 Button(
-                    onClick = { showModalSucesso = true
-                        showEditFoto = false
+                    onClick = {
+                        try {
+                            if (fileAnexada != null) {
+                                atualizarImgPerfilViewModel.atualizarImgPerfil(
+                                    idUser,
+                                    fileAnexada!!
+                                ) { onReslt ->
+                                    if (onReslt) {
+                                        Log.d("IMGPROFILE", "sucesso")
+                                        showModalSucesso = true
+                                        showEditFoto = false
+                                    } else {
+                                        Log.d("IMGPROFILE", "falha")
+                                        showModalErro = true
+                                        showEditFoto = false
+                                    }
+                                }
+                            }else{
+                                Log.d("IMGPROFILE", "Não anexou uma imagem")
+                                showModalErro = true
+                                showEditFoto = false
+                            }
+                        }catch (e:Exception){
+                            Log.d("IMGPROFILE", "Exception::$e")
+                        }
                     }
                 ) {
                     Text(text = "Confirmar")
@@ -157,8 +225,12 @@ fun PhotoProfile() {
             text = { Text("Imagem atualizada com sucesso!") },
             confirmButton = {
                 Button(onClick = {
-                    // Fechar o modal ao clicar no botão OK
                     showModalSucesso = false
+                    if (tipoPerfil == "P"){
+                            navController.navigate("PerfilPrestadorScreen")
+                    }else if(tipoPerfil == "C"){
+                        navController.navigate("PerfilContratanteScreen")
+                    }
                 }) {
                     Text("OK")
                 }

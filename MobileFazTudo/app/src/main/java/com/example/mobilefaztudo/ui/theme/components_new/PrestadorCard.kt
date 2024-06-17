@@ -464,7 +464,7 @@ fun Base64Image(base64String: String, modifier: Modifier = Modifier) {
         Image(
             modifier = modifier,
             painter = it,
-            contentDescription = "Imagem em base64"
+            contentDescription = "Imagem em base64",
         )
     } ?: run {}
 }

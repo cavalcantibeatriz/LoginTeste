@@ -97,7 +97,6 @@ fun DemandContratante(
         return tempFile
     }
 
-//    var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
     val context = LocalContext.current
     var fileAnexada by remember { mutableStateOf<File?>(null) }
 
@@ -277,7 +276,7 @@ fun DemandContratante(
         fun categoriaTransform(nome: String): Int {
             var categoriaSelecionada = 0
             if (nome == "Mecânica") { categoriaSelecionada = 1 }
-            if (nome == "Hidraulica") {categoriaSelecionada = 2 }
+            if (nome == "Hidráulica") {categoriaSelecionada = 2 }
             if (nome == "Limpeza") { categoriaSelecionada = 3 }
             if (nome == "Elétrica") { categoriaSelecionada = 4 }
             if (nome == "Obras") { categoriaSelecionada = 5 }

@@ -26,6 +26,10 @@ import com.example.mobilefaztudo.repository.PostarDemandaRepository
 import com.example.mobilefaztudo.repository.RegisterContractorRepository
 import com.example.mobilefaztudo.repository.RegisterProviderRepository
 import com.example.mobilefaztudo.repository.UpdateImgDemandaRepository
+import com.example.mobilefaztudo.repository.UpdateImgPerfilRepository
+import com.example.mobilefaztudo.repository.UpdateInfoContratanteRepository
+import com.example.mobilefaztudo.repository.UpdateInfoPrestadorRepository
+import com.example.mobilefaztudo.repository.UpdateSenhaRepository
 import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
 import com.example.mobilefaztudo.ui.theme.MobileFazTudoTheme
 import com.example.mobilefaztudo.view.LoginECadastro.CadastroContratanteEtapa2
@@ -43,7 +47,10 @@ import com.example.mobilefaztudo.view.TelasPerfil.PerfilPrestadorScreen
 import com.example.mobilefaztudo.view.TelaHome.encontreDemandas
 import com.example.mobilefaztudo.view.TelaHome.encontrePrestadores
 import com.example.mobilefaztudo.viewModel.AtrelarImagemDemandaViewModel
+import com.example.mobilefaztudo.viewModel.AtualizarPerfilViewModel
+import com.example.mobilefaztudo.viewModel.AtualizarSenhaViewModel
 import com.example.mobilefaztudo.viewModel.Contratante.AceitarInteresseViewModel
+import com.example.mobilefaztudo.viewModel.Contratante.AtualizarInfoContratanteViewModel
 import com.example.mobilefaztudo.viewModel.auth.CadastroContratanteViewModel
 import com.example.mobilefaztudo.viewModel.auth.CadastroPrestadorViewModel
 import com.example.mobilefaztudo.viewModel.Contratante.DesfavoritarViewModel
@@ -56,6 +63,7 @@ import com.example.mobilefaztudo.viewModel.EnviarMensagensViewModel
 import com.example.mobilefaztudo.viewModel.Contratante.NegarInteresseViewModel
 import com.example.mobilefaztudo.viewModel.NotificarInteresseViewModel
 import com.example.mobilefaztudo.viewModel.PostarDemandaViewModel
+import com.example.mobilefaztudo.viewModel.Prestador.AtualizarInfoPrestadorViewModel
 import com.example.mobilefaztudo.viewModel.Prestador.ListDemandaAbertasViewModel
 import com.example.mobilefaztudo.viewModel.Prestador.ListDemandasUserViewModel
 import com.example.mobilefaztudo.viewModel.auth.LoginViewModel
@@ -78,6 +86,11 @@ class MainActivity : ComponentActivity() {
     private lateinit var enviarEmailViewModel: EnviarEmailViewModel
     private lateinit var postarDemandaViewModel: PostarDemandaViewModel
     private lateinit var atrelarImagemDemandaViewModel : AtrelarImagemDemandaViewModel
+    private lateinit var atualizarImgPerfilViewModel : AtualizarPerfilViewModel
+    private lateinit var atualizarSenhaViewModel : AtualizarSenhaViewModel
+    private lateinit var atualizarInfoContratanteViewModel: AtualizarInfoContratanteViewModel
+    private lateinit var atualizarInfoPrestadorViewModel: AtualizarInfoPrestadorViewModel
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         val sharedPreferencesHelper = SharedPreferencesHelper(applicationContext)
@@ -133,6 +146,18 @@ class MainActivity : ComponentActivity() {
         val repositoryAtrelarImagemDemanda = UpdateImgDemandaRepository()
         atrelarImagemDemandaViewModel = AtrelarImagemDemandaViewModel(repositoryAtrelarImagemDemanda,sharedPreferencesHelper)
 
+        val repositoryAtualizarImgPerfil = UpdateImgPerfilRepository()
+        atualizarImgPerfilViewModel =
+            AtualizarPerfilViewModel(repositoryAtualizarImgPerfil, sharedPreferencesHelper)
+
+        val repositoryAtualizarSenha = UpdateSenhaRepository()
+        atualizarSenhaViewModel = AtualizarSenhaViewModel(repositoryAtualizarSenha, sharedPreferencesHelper)
+
+        val repositoryAtualizarInfoContratante = UpdateInfoContratanteRepository()
+        atualizarInfoContratanteViewModel = AtualizarInfoContratanteViewModel(repositoryAtualizarInfoContratante, sharedPreferencesHelper)
+
+        val repositoryAtualizarInfoPrestador = UpdateInfoPrestadorRepository()
+        atualizarInfoPrestadorViewModel = AtualizarInfoPrestadorViewModel(repositoryAtualizarInfoPrestador, sharedPreferencesHelper)
 
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -148,8 +173,8 @@ class MainActivity : ComponentActivity() {
                     composable(route = "encontrePrestadores") { encontrePrestadores(navController, listPrestadoresViewModel, sharedPreferencesHelper, favoritarViewModel, desfavoritarViewModel, listPrestadoresFavoritos) }
                     composable(route = "encontreDemandas") { encontreDemandas(navController, listDemandasViewModel, sharedPreferencesHelper, requestEnviarMensagem) }
                     composable(route = "encontreFavoritos") { FavoritosScreen(navController, listPrestadoresFavoritos, sharedPreferencesHelper, favoritarViewModel, desfavoritarViewModel, listPrestadoresFavoritos, listPrestadoresViewModel) }
-                    composable(route = "PerfilPrestadorScreen") { PerfilPrestadorScreen(navController, sharedPreferencesHelper) }
-                    composable(route = "PerfilContratanteScreen") { PerfilContratanteScreen(navController, sharedPreferencesHelper) }
+                    composable(route = "PerfilPrestadorScreen") { PerfilPrestadorScreen(navController, sharedPreferencesHelper, atualizarImgPerfilViewModel,atualizarSenhaViewModel,atualizarInfoPrestadorViewModel) }
+                    composable(route = "PerfilContratanteScreen") { PerfilContratanteScreen(navController, sharedPreferencesHelper, atualizarImgPerfilViewModel, listDemandasUserViewModel,atualizarSenhaViewModel, atualizarInfoContratanteViewModel) }
                     composable(route = "DemandContratante") { DemandContratante(navController, sharedPreferencesHelper,listDemandasUserViewModel, postarDemandaViewModel, atrelarImagemDemandaViewModel) }
                     composable(route = "DemandPrestador") { DemandPrestador(navController, sharedPreferencesHelper,listDemandasViewModel,listDemandaAbertaViewModel) }
                     composable(route = "NotificacoesContratanteScreen") { NotificacoesContratanteScreen(navController, sharedPreferencesHelper, listNotificarInteresseViewModel,negarInteresseViewModel, aceitarInteresseViewModel, enviarEmailViewModel) }

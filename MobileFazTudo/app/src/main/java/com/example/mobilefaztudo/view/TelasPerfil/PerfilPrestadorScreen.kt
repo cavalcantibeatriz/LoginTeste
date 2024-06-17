@@ -1,8 +1,11 @@
 package com.example.mobilefaztudo.view.TelasPerfil
 
 import android.net.Uri
+import android.os.Build
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -44,7 +47,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -59,6 +64,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.faztudo_mb.ui.theme.screens.components.BackgroundPerfilPrestador
 import com.example.faztudo_mb.ui.theme.screens.components_new.TopBar
@@ -66,35 +72,77 @@ import com.example.mobilefaztudo.R
 import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
 import com.example.mobilefaztudo.ui.theme.components_new.NavBar.NavBarPrestador
 import com.example.mobilefaztudo.ui.theme.components_new.PhotoProfile
+import com.example.mobilefaztudo.viewModel.AtualizarPerfilViewModel
+import com.example.mobilefaztudo.viewModel.AtualizarSenhaViewModel
+import com.example.mobilefaztudo.viewModel.Prestador.AtualizarInfoPrestadorViewModel
+import com.example.mobilefaztudo.viewModel.Prestador.ListDemandasUserViewModel
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PerfilPrestadorScreen(
-    navController: NavController, sharedPreferencesHelper: SharedPreferencesHelper
+    navController: NavController,
+    sharedPreferencesHelper: SharedPreferencesHelper,
+    atualizarImgPerfilViewModel : AtualizarPerfilViewModel = viewModel(),
+    atualizarSenhaViewModel: AtualizarSenhaViewModel = viewModel(),
+    atualizarInfoPrestadorViewModel: AtualizarInfoPrestadorViewModel= viewModel()
 ) {
-    //NÃO APAGARRR
-    var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
-    val galleryLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent()
-    ) { uri: Uri? ->
-        selectedImageUri = uri
-        // Aqui para lidar com a URI da imagem selecionada
-    }
-
     var showEditInfo by remember { mutableStateOf(false) }
     var showEditSenha by remember { mutableStateOf(false) }
     var showModalSucesso by remember { mutableStateOf(false) }
     var showModalErro by remember { mutableStateOf(false) }
+    var showModalValidSenha by remember { mutableStateOf(false) }
     var senha by remember { mutableStateOf("") }
     var confirmSenha by remember { mutableStateOf("") }
-    var rua by remember { mutableStateOf("") }
-    var logradouro by remember { mutableStateOf("") }
-    var cep by remember { mutableStateOf("") }
-    var estado by remember { mutableStateOf("") }
-    var telefone by remember { mutableStateOf("") }
-    var cidade by remember { mutableStateOf("") }
+
+    var pcep = sharedPreferencesHelper.getCep()
+    var pcity = sharedPreferencesHelper.getCity()
+    var pstate = sharedPreferencesHelper.getState()
+    var pphone = sharedPreferencesHelper.getPhone()
+    var plogradouro = sharedPreferencesHelper.getLogradouro()
+    var categoriaName = sharedPreferencesHelper.getCategoriaName()
+    var pcategoriaId = sharedPreferencesHelper.getCategoriaId()
+    var pcategoriaNome = sharedPreferencesHelper.getCategoriaName()
+
+
+    var cep by remember { mutableStateOf(pcep) }
+    var estado by remember { mutableStateOf(pstate) }
+    var logradouro by remember { mutableStateOf(plogradouro) }
+    var telefone by remember { mutableStateOf(pphone) }
+    var cidade by remember { mutableStateOf(pcity) }
+    var categoria by remember { mutableStateOf(pcategoriaNome) }
+    var categoriaId by remember { mutableStateOf(pcategoriaId) }
     var showEditGaleria by remember { mutableStateOf(false) }
     var showConfirmEditGaleria by remember { mutableStateOf(false) }
     var showAddGaleria by remember { mutableStateOf(false) }
+
+
+
+    var nomeSalvo = sharedPreferencesHelper.getNome()
+    var sobrenomeSalvo = sharedPreferencesHelper.getSobrenome()
+    val dtCadastroString = sharedPreferencesHelper.getDataCadastro() // "2024-05-20T00:55:40.892604"
+    val dtCadastro = LocalDateTime.parse(dtCadastroString, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+    val currentDate = LocalDateTime.now()
+    val daysDifference = ChronoUnit.DAYS.between(dtCadastro, currentDate)
+    val nameGeneric = "Usuário sem nome"
+    val message = when {
+        daysDifference == 0L -> "Entrou na plataforma hoje"
+        daysDifference == 1L -> "Entrou na plataforma ontem"
+        else -> "Entrou na plataforma há $daysDifference dias"
+    }
+
+    fun categoriaTransform(nome: String): Int {
+        var categoriaId = 0
+        if (nome == "Mecânica") { categoriaId = 1 }
+        if (nome == "Hidráulica") {categoriaId = 2 }
+        if (nome == "Limpeza") { categoriaId = 3 }
+        if (nome == "Elétrica") { categoriaId = 4 }
+        if (nome == "Obras") { categoriaId = 5 }
+        if (nome == "Todos") { categoriaId = 6 }
+        return categoriaId
+    }
 
     Box(
         modifier = Modifier
@@ -146,7 +194,7 @@ fun PerfilPrestadorScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                 ){
-                    PhotoProfile()
+                    PhotoProfile(navController,sharedPreferencesHelper,atualizarImgPerfilViewModel, "P")
                 }
                 Spacer(modifier = Modifier.height(20.dp))
                 Row(
@@ -155,14 +203,25 @@ fun PerfilPrestadorScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                 ){
-                    Text(
-                        text = "José Mário da Silva",
-                        fontSize = 25.sp,
-                        style = TextStyle(
-                            fontWeight = FontWeight.Medium,
-                            fontSize = 25.sp
+                    if (nomeSalvo != null && sobrenomeSalvo != null) {
+                        Text(
+                            text = "$nomeSalvo $sobrenomeSalvo",
+                            fontSize = 25.sp,
+                            style = TextStyle(
+                                fontWeight = FontWeight.Medium,
+                                fontSize = 25.sp
+                            )
                         )
-                    )
+                    }else{
+                        Text(
+                            text = nameGeneric,
+                            fontSize = 25.sp,
+                            style = TextStyle(
+                                fontWeight = FontWeight.Medium,
+                                fontSize = 25.sp
+                            )
+                        )
+                    }
                 }
                 Spacer(modifier = Modifier.height(10.dp))
                 Row(
@@ -172,7 +231,7 @@ fun PerfilPrestadorScreen(
                         .fillMaxWidth()
                 ){
                     Text(
-                        text = "Especialista em Elétrica",
+                        text = "Especialista em $categoriaName",
                         fontSize = 16.sp,
                         style = TextStyle(
                             fontWeight = FontWeight.Normal,
@@ -189,7 +248,7 @@ fun PerfilPrestadorScreen(
                         .fillMaxWidth()
                 ){
                     Text(
-                        text = "Entrou na plataforma há 3 dias",
+                        text = message,
                         fontSize = 13.sp,
                         style = TextStyle(
                             fontWeight = FontWeight.ExtraLight,
@@ -229,6 +288,14 @@ fun PerfilPrestadorScreen(
         val options = listOf("Mecânica","Hidráulica","Limpeza", "Elétrica","Obras", "Todos")
         var isDropdownExpanded by remember { mutableStateOf(false) }
 
+        Log.d("Teste123", "${cep}")
+        Log.d("Teste123", "${logradouro}")
+        Log.d("Teste123", "${cidade}")
+        Log.d("Teste123", "${telefone}")
+        Log.d("Teste123", "${estado}")
+        Log.d("Teste123", "${categoriaId}")
+        Log.d("Teste123", "${categoriaName}")
+
         AlertDialog(
             onDismissRequest = {
                 // Fechar o modal ao clicar fora
@@ -246,13 +313,6 @@ fun PerfilPrestadorScreen(
                         value = cep,
                         onValueChange = {it -> cep = it},
                         label = { Text("CEP") }
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    TextField(
-                        modifier = Modifier.fillMaxWidth(),
-                        value = rua,
-                        onValueChange = {it -> rua = it},
-                        label = { Text("Rua") }
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     TextField(
@@ -299,6 +359,8 @@ fun PerfilPrestadorScreen(
                                     onClick = {
                                         selectedOption = option
                                         isDropdownExpanded = false
+                                        categoriaName= option
+                                        categoriaId = categoriaTransform(option)
                                     },
                                     text = { Text(option) }
                                 )
@@ -309,8 +371,7 @@ fun PerfilPrestadorScreen(
                                 .fillMaxWidth()
                                 .clip(CircleShape)
                                 .clickable {
-                                    isDropdownExpanded =
-                                        !isDropdownExpanded
+                                    isDropdownExpanded =!isDropdownExpanded
                                 }
                                 .background(color = Color(0xFFCDD3E0))
                         ){
@@ -320,8 +381,7 @@ fun PerfilPrestadorScreen(
                                     .requiredHeight(height = 32.dp)
                                     .clip(shape = CircleShape)
                                     .clickable {
-                                        isDropdownExpanded =
-                                            !isDropdownExpanded
+                                        isDropdownExpanded = !isDropdownExpanded
                                     }
                                     .background(color = Color(0xff588aed))
                             ) {
@@ -332,8 +392,7 @@ fun PerfilPrestadorScreen(
                                     modifier = Modifier
                                         .align(alignment = Alignment.Center)
                                         .clickable {
-                                            isDropdownExpanded =
-                                                !isDropdownExpanded // Alternar entre expandido e não expandido
+                                            isDropdownExpanded = !isDropdownExpanded // Alternar entre expandido e não expandido
                                         }
                                 )
                             }
@@ -352,8 +411,23 @@ fun PerfilPrestadorScreen(
             },
             confirmButton = {
                 Button(onClick = {
-                    showEditInfo = false
-                    showModalSucesso = true
+                    try {
+                        atualizarInfoPrestadorViewModel.atualizarInformacoesPrestador(
+                            cep,logradouro,estado,cidade,telefone,categoriaId,categoriaName) { onResult ->
+                            if (onResult) {
+                                Log.d("EditInfo", "SUCESSO")
+                                showEditInfo = false
+                                showModalSucesso = true
+                            } else {
+                                Log.d("EditInfo", "FALHA")
+                                showEditInfo = false
+                                showModalErro = true
+                            }
+                        }
+                    }catch (e:Exception){
+                        Log.d("EditInfo", "Exception::$e")
+                        showModalErro = true
+                    }
                 }) {
                     Text("Salvar")
                 }
@@ -393,8 +467,27 @@ fun PerfilPrestadorScreen(
             },
             confirmButton = {
                 Button(onClick = {
-                    showEditSenha = false
-                    showModalSucesso = true
+                    try {
+                        if (senha == confirmSenha) {
+                            atualizarSenhaViewModel.atualizarSenha(senha) { onResult ->
+                                if (onResult) {
+                                    Log.d("RedefinirTela", "Sucesso")
+                                    showModalSucesso = true
+                                    showEditSenha = false
+                                } else {
+                                    Log.d("RedefinirTela", "falha")
+                                    showModalErro = true
+                                    showEditSenha = false
+                                }
+                            }
+                        }else{
+                            showModalValidSenha = true
+                        }
+                    }catch (e:Exception){
+                        Log.d("RedefinirTela", "Exception:::$e")
+                        showModalErro = true
+                        showEditSenha = false
+                    }
                 }) {
                     Text("Salvar")
                 }
@@ -481,7 +574,7 @@ fun PerfilPrestadorScreen(
                                 Image(
                                     modifier = Modifier
                                         .size(50.dp)
-                                        .clickable {showConfirmEditGaleria = true},
+                                        .clickable { showConfirmEditGaleria = true },
                                     painter = painterResource(id = R.drawable.group),
                                     contentDescription = "Imagem Menor",
                                     alignment = Alignment.TopEnd
@@ -554,7 +647,7 @@ fun PerfilPrestadorScreen(
                                 .requiredHeight(height = 32.dp)
                                 .clip(shape = CircleShape)
                                 .clickable {
-                                    galleryLauncher.launch("image/*")
+//                                    galleryLauncher.launch("image/*")
                                 }
                                 .background(color = Color(0xff588aed))
                         ){
@@ -591,6 +684,26 @@ fun PerfilPrestadorScreen(
             dismissButton = {
                 Button(onClick = { showAddGaleria = false }) {
                     Text(text = "Cancelar")
+                }
+            }
+        )
+    }
+
+    if (showModalValidSenha) {
+        AlertDialog(
+            onDismissRequest = {
+                // Fechar o modal ao clicar fora
+                showModalValidSenha = false
+            },
+            title = { Text("Oops...") },
+            text = { Text("Parece que suas senhas não coincidem :(") },
+            confirmButton = {
+                Button(onClick = {
+                    // Fechar o modal ao clicar no botão OK
+                    showModalValidSenha = false
+                    showEditSenha = true
+                }) {
+                    Text("OK")
                 }
             }
         )

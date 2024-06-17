@@ -15,6 +15,9 @@ import com.example.mobilefaztudo.api.UploadImage
 import com.example.mobilefaztudo.api.User
 import com.example.mobilefaztudo.api.formDataDemanda
 import com.example.mobilefaztudo.api.formDataEmail
+import com.example.mobilefaztudo.api.formInfoContratante
+import com.example.mobilefaztudo.api.formInfoPrestador
+import com.example.mobilefaztudo.api.formSenha
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
@@ -38,3 +41,7 @@ interface IGetNegarInteresseRepository{ suspend fun negarInteresse(authToken: St
 interface IEnviarEmailRepository{ suspend fun enviarEmail(authToken: String,@Body body : formDataEmail) :Response<Void> }
 interface IPostarDemandaRepository { suspend fun postarDemanda(authToken: String, @Path("idUser") idUser: Int, @Body body : formDataDemanda):Response<formDataDemanda> }
 interface IUpdateImgDemandaRepository{    suspend fun atrelarDemanda(authToken: String, @Path("idPost") idPost: Int, @Part file: MultipartBody.Part): Response<Unit> }
+interface IUpdateImgPerfilRepository{    suspend fun atualizarImgPerfil(authToken: String, @Path("idUser") idUser: Int, @Part file: MultipartBody.Part): Response<Unit> }
+interface IUpdateSenhaRepository{    suspend fun atualizarSenha(authToken: String, @Path("idUser") idUser: Int, @Body body: formSenha): Response<Unit> }
+interface IUpdateInfoPrestadorRepository{    suspend fun atualizarInformacoesPrestador(authToken: String, @Path("idUser") idUser: Int, @Body body: formInfoPrestador): Response<Unit> }
+interface IUpdateInfoContratanteRepository{    suspend fun atualizarInformacoesContratante(authToken: String, @Path("idUser") idUser: Int, @Body body: formInfoContratante): Response<Unit> }

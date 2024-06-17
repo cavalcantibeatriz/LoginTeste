@@ -1,10 +1,9 @@
 package com.example.mobilefaztudo.view.TelasPerfil
 
-import android.net.Uri
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
+import android.os.Build
+import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,63 +13,94 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeight
-import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.faztudo_mb.ui.theme.screens.components.BackgroundPerfilContratante
 import com.example.faztudo_mb.ui.theme.screens.components_new.TopBar
 import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
 import com.example.mobilefaztudo.ui.theme.components_new.NavBar.NavBarContratante
 import com.example.mobilefaztudo.ui.theme.components_new.PhotoProfile
+import com.example.mobilefaztudo.viewModel.AtualizarPerfilViewModel
+import com.example.mobilefaztudo.viewModel.AtualizarSenhaViewModel
+import com.example.mobilefaztudo.viewModel.Contratante.AtualizarInfoContratanteViewModel
+import com.example.mobilefaztudo.viewModel.Prestador.ListDemandasUserViewModel
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PerfilContratanteScreen(
-    navController: NavController, sharedPreferencesHelper: SharedPreferencesHelper
+    navController: NavController,
+    sharedPreferencesHelper: SharedPreferencesHelper,
+    atualizarImgPerfilViewModel: AtualizarPerfilViewModel = viewModel(),
+    listDemandasUserViewModel: ListDemandasUserViewModel = viewModel(),
+    atualizarSenhaViewModel: AtualizarSenhaViewModel = viewModel(),
+    atualizarInfoContratanteViewModel: AtualizarInfoContratanteViewModel= viewModel()
 ) {
-
     var showEditInfo by remember { mutableStateOf(false) }
     var showEditSenha by remember { mutableStateOf(false) }
     var showModalSucesso by remember { mutableStateOf(false) }
+    var showModalValidSenha by remember { mutableStateOf(false) }
     var showModalErro by remember { mutableStateOf(false) }
     var senha by remember { mutableStateOf("") }
     var confirmSenha by remember { mutableStateOf("") }
-    var rua by remember { mutableStateOf("") }
-    var logradouro by remember { mutableStateOf("") }
-    var cep by remember { mutableStateOf("") }
-    var estado by remember { mutableStateOf("") }
-    var telefone by remember { mutableStateOf("") }
-    var cidade by remember { mutableStateOf("") }
 
+    var pcep = sharedPreferencesHelper.getCep()
+    var pcity = sharedPreferencesHelper.getCity()
+    var pstate = sharedPreferencesHelper.getState()
+    var pphone = sharedPreferencesHelper.getPhone()
+    var plogradouro = sharedPreferencesHelper.getLogradouro()
+
+    var logradouro by remember { mutableStateOf(plogradouro) }
+    var cep by remember { mutableStateOf(pcep) }
+    var estado by remember { mutableStateOf(pstate) }
+    var telefone by remember { mutableStateOf(pphone) }
+    var cidade by remember { mutableStateOf(pcity) }
+
+    var nomeSalvo = sharedPreferencesHelper.getNome()
+    var sobrenomeSalvo = sharedPreferencesHelper.getSobrenome()
+    val dtCadastroString = sharedPreferencesHelper.getDataCadastro() // "2024-05-20T00:55:40.892604"
+    val dtCadastro = LocalDateTime.parse(dtCadastroString, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+    val currentDate = LocalDateTime.now()
+    val daysDifference = ChronoUnit.DAYS.between(dtCadastro, currentDate)
+    val nameGeneric = "Usuário sem nome"
+    val message = when {
+        daysDifference == 0L -> "Entrou na plataforma hoje"
+        daysDifference == 1L -> "Entrou na plataforma ontem"
+        else -> "Entrou na plataforma há $daysDifference dias"
+    }
+
+
+    val listDemandas by listDemandasUserViewModel.listDemandasUser.observeAsState(initial = emptyList())
+    LaunchedEffect(Unit) {
+        listDemandasUserViewModel.listarDemandasUser()
+    }
+    val numeroDemandas = listDemandas.size
 
     Box(
         modifier = Modifier
@@ -123,7 +153,12 @@ fun PerfilContratanteScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {
-                    PhotoProfile()
+                    PhotoProfile(
+                        navController,
+                        sharedPreferencesHelper,
+                        atualizarImgPerfilViewModel,
+                        "C"
+                    )
                 }
                 Spacer(modifier = Modifier.height(20.dp))
                 Row(
@@ -132,14 +167,25 @@ fun PerfilContratanteScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {
-                    Text(
-                        text = "Rose Mário da Silva",
-                        fontSize = 25.sp,
-                        style = TextStyle(
-                            fontWeight = FontWeight.Medium,
-                            fontSize = 25.sp
+                    if (nomeSalvo != null && sobrenomeSalvo != null) {
+                        Text(
+                            text = "$nomeSalvo $sobrenomeSalvo",
+                            fontSize = 25.sp,
+                            style = TextStyle(
+                                fontWeight = FontWeight.Medium,
+                                fontSize = 25.sp
+                            )
                         )
-                    )
+                    } else {
+                        Text(
+                            text = nameGeneric,
+                            fontSize = 25.sp,
+                            style = TextStyle(
+                                fontWeight = FontWeight.Medium,
+                                fontSize = 25.sp
+                            )
+                        )
+                    }
                 }
                 Spacer(modifier = Modifier.height(10.dp))
                 Row(
@@ -149,7 +195,7 @@ fun PerfilContratanteScreen(
                         .fillMaxWidth()
                 ) {
                     Text(
-                        text = "Demandas abertas - 5",
+                        text = "Demandas abertas - $numeroDemandas",
                         fontSize = 16.sp,
                         style = TextStyle(
                             fontWeight = FontWeight.Normal,
@@ -166,7 +212,7 @@ fun PerfilContratanteScreen(
                         .fillMaxWidth()
                 ) {
                     Text(
-                        text = "Entrou na plataforma há 3 dias",
+                        text = message,
                         fontSize = 13.sp,
                         style = TextStyle(
                             fontWeight = FontWeight.ExtraLight,
@@ -182,7 +228,7 @@ fun PerfilContratanteScreen(
                         .align(Alignment.CenterHorizontally),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Button(onClick = { showEditInfo = true}) {
+                    Button(onClick = { showEditInfo = true }) {
                         Text(text = "Editar informações")
                     }
                     Button(onClick = { showEditSenha = true }) {
@@ -198,7 +244,7 @@ fun PerfilContratanteScreen(
         }
     }
 
-    if (showEditInfo){
+    if (showEditInfo) {
         AlertDialog(
             onDismissRequest = {
                 // Fechar o modal ao clicar fora
@@ -208,52 +254,60 @@ fun PerfilContratanteScreen(
             text = {
                 Column {
 
-                TextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = cep,
-                    onValueChange = {it -> cep = it},
-                    label = { Text("CEP") }
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                TextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = rua,
-                    onValueChange = {it -> rua = it},
-                    label = { Text("Rua") }
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                TextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = logradouro,
-                    onValueChange = {it -> logradouro = it},
-                    label = { Text("Bairro") }
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                TextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = cidade,
-                    onValueChange = {it -> cidade = it},
-                    label = { Text("Cidade") }
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                TextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = estado,
-                    onValueChange = {it -> estado = it},
-                    label = { Text("Estado") }
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                TextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = telefone,
-                    onValueChange = {it -> telefone = it},
-                    label = { Text("Telefone") }
-                )}
+                    TextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = cep,
+                        onValueChange = { it -> cep = it },
+                        label = { Text("CEP") }
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    TextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = logradouro,
+                        onValueChange = { it -> logradouro = it },
+                        label = { Text("Bairro") }
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    TextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = cidade,
+                        onValueChange = { it -> cidade = it },
+                        label = { Text("Cidade") }
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    TextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = estado,
+                        onValueChange = { it -> estado = it },
+                        label = { Text("Estado") }
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    TextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = telefone,
+                        onValueChange = { it -> telefone = it },
+                        label = { Text("Telefone") }
+                    )
+                }
             },
             confirmButton = {
                 Button(onClick = {
-                    showEditInfo = false
-                    showModalSucesso = true
+                    try{
+                        atualizarInfoContratanteViewModel.atualizarInformacoesContratante(cep,logradouro,estado,cidade,telefone){onResult ->
+                            if (onResult){
+                                Log.d("EditInfo", "SUCESSO")
+                                showEditInfo = false
+                                showModalSucesso = true
+                            }else{
+                                Log.d("EditInfo", "FALHA")
+                                showEditInfo = false
+                                showModalErro = true
+                            }
+                        }
+                    }catch (e:Exception){
+                        Log.d("EditInfo", "Exception::$e")
+                        showModalErro = true
+                    }
                 }) {
                     Text("Salvar")
                 }
@@ -266,7 +320,7 @@ fun PerfilContratanteScreen(
         )
     }
 
-    if (showEditSenha){
+    if (showEditSenha) {
         AlertDialog(
             onDismissRequest = {
                 // Fechar o modal ao clicar fora
@@ -275,26 +329,45 @@ fun PerfilContratanteScreen(
             title = { Text("Edição de senha") },
             text = {
                 Column {
-                TextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = senha,
-                    onValueChange = {it -> senha = it},
-                    label = { Text("Senha") }
-                )
+                    TextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = senha,
+                        onValueChange = { it -> senha = it },
+                        label = { Text("Senha") }
+                    )
                     Spacer(modifier = Modifier.height(10.dp))
 
                     TextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = confirmSenha,
-                    onValueChange = {it -> confirmSenha = it},
-                    label = { Text("Confirme a senha") }
-                )
+                        modifier = Modifier.fillMaxWidth(),
+                        value = confirmSenha,
+                        onValueChange = { it -> confirmSenha = it },
+                        label = { Text("Confirme a senha") }
+                    )
                 }
-                   },
+            },
             confirmButton = {
                 Button(onClick = {
-                    showEditSenha = false
-                    showModalSucesso = true
+                    try {
+                        if (senha == confirmSenha) {
+                            atualizarSenhaViewModel.atualizarSenha(senha) { onResult ->
+                                if (onResult) {
+                                    Log.d("RedefinirTela", "Sucesso")
+                                    showModalSucesso = true
+                                    showEditSenha = false
+                                } else {
+                                    Log.d("RedefinirTela", "falha")
+                                    showModalErro = true
+                                    showEditSenha = false
+                                }
+                            }
+                        }else{
+                            showModalValidSenha = true
+                        }
+                    } catch (e: Exception) {
+                        Log.d("RedefinirTela", "Exception:::$e")
+                        showModalErro = true
+                        showEditSenha = false
+                    }
                 }) {
                     Text("Salvar")
                 }
@@ -307,7 +380,7 @@ fun PerfilContratanteScreen(
         )
     }
 
-    if (showModalSucesso){
+    if (showModalSucesso) {
         AlertDialog(
             onDismissRequest = {
                 // Fechar o modal ao clicar fora
@@ -326,7 +399,7 @@ fun PerfilContratanteScreen(
         )
     }
 
-    if (showModalErro){
+    if (showModalErro) {
         AlertDialog(
             onDismissRequest = {
                 // Fechar o modal ao clicar fora
@@ -338,6 +411,26 @@ fun PerfilContratanteScreen(
                 Button(onClick = {
                     // Fechar o modal ao clicar no botão OK
                     showModalErro = false
+                }) {
+                    Text("OK")
+                }
+            }
+        )
+    }
+
+    if (showModalValidSenha) {
+        AlertDialog(
+            onDismissRequest = {
+                // Fechar o modal ao clicar fora
+                showModalValidSenha = false
+            },
+            title = { Text("Oops...") },
+                text = { Text("Parece que suas senhas não coincidem :(") },
+            confirmButton = {
+                Button(onClick = {
+                    // Fechar o modal ao clicar no botão OK
+                    showModalValidSenha = false
+                    showEditSenha = true
                 }) {
                     Text("OK")
                 }

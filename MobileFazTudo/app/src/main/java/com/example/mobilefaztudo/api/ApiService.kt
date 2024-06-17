@@ -130,8 +130,53 @@ interface ApiService {
         @Part file: MultipartBody.Part
         ) : Response<Unit>
 
-}
+    @Multipart
+    @PATCH("/profile/update-image-profile/{idUser}")
+    suspend fun atualizarImgPerfil(
+        @Header("Authorization") authToken: String,
+        @Path("idUser") idUser: Int,
+        @Part file: MultipartBody.Part
+    ) : Response<Unit>
 
+    @PATCH("/profile/update-password/{idUser}")
+    suspend fun atualizarSenha(
+        @Header("Authorization") authToken: String,
+        @Path("idUser") idUser: Int,
+        @Body body: formSenha
+    ):Response<Unit>
+
+    @PATCH("/profile/update-contractor/{idUser}")
+    suspend fun atualizarInformacoesContratante(
+        @Header("Authorization") authToken: String,
+        @Path("idUser") idUser: Int,
+        @Body body: formInfoContratante
+    ):Response<Unit>
+
+    @PATCH("/profile/update-service-provider/{idUser}")
+    suspend fun atualizarInformacoesPrestador(
+        @Header("Authorization") authToken: String,
+        @Path("idUser") idUser: Int,
+        @Body body: formInfoPrestador
+    ):Response<Unit>
+}
+data class formInfoPrestador(
+    val cep: String,
+    val logradouro: String,
+    val state: String,
+    val city: String,
+    val phone: String,
+    val category: Category
+)
+data class formInfoContratante(
+    val cep: String,
+    val logradouro: String,
+    val state: String,
+    val city: String,
+    val phone: String
+)
+data class formSenha(
+    val senha: String
+)
 data class formDataDemanda(
     val id: Int,
     val fkContractor: Int,

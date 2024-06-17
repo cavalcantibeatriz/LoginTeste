@@ -6,6 +6,8 @@ import android.util.Log
 import com.example.mobilefaztudo.api.User
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import okhttp3.MultipartBody
+import java.io.File
 
 class SharedPreferencesHelper(context: Context) {
     private val sharedPreferences: SharedPreferences =
@@ -38,6 +40,8 @@ class SharedPreferencesHelper(context: Context) {
         sharedPreferences.edit().putString("role", user.role).apply()
         sharedPreferences.edit().putString("categoryJson", categoryJson).apply()
         sharedPreferences.edit().putString("categoryName", user.category?.name).apply()
+        user.category?.let { sharedPreferences.edit().putInt("categoryId", it.id).apply() }
+
     }
 
     fun getIdUser(): Int {
@@ -45,6 +49,35 @@ class SharedPreferencesHelper(context: Context) {
     }
     fun getNome(): String? {
         return sharedPreferences.getString("nome", "")
+    }
+    fun getDataCadastro():String?{
+        return sharedPreferences.getString("dt_cadastro", "")
+    }
+    fun getImgProfile(): String? {
+        return sharedPreferences.getString("image_profile", "")
+    }
+    fun getCep(): String {
+        return sharedPreferences.getString("cep", "") ?: ""
+    }
+
+    fun getLogradouro(): String{
+        return sharedPreferences.getString("logradouro", "") ?: ""
+    }
+    fun getState(): String{
+        return sharedPreferences.getString("state", "") ?: ""
+    }
+    fun getCity(): String{
+        return sharedPreferences.getString("city", "") ?: ""
+    }
+    fun getPhone(): String{
+        return sharedPreferences.getString("phone", "") ?: ""
+    }
+
+    fun getCategoriaName(): String{
+        return sharedPreferences.getString("categoryName", "") ?: ""
+    }
+    fun getCategoriaId(): Int{
+        return sharedPreferences.getInt("categoryId", 0) ?: 0
     }
     fun getSobrenome(): String? {
         return sharedPreferences.getString("sobrenome", "")
@@ -54,6 +87,10 @@ class SharedPreferencesHelper(context: Context) {
     }
     fun getTelefone(): String? {
         return sharedPreferences.getString("phone", "")
+    }
+
+    fun saveNovaImgPerfil(base64Image: String) {
+        sharedPreferences.edit().putString("image_profile", base64Image).apply()
     }
 
     fun saveUser(user: User) {

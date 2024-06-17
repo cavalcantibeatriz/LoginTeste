@@ -18,6 +18,9 @@ import com.example.mobilefaztudo.api.UploadImage
 import com.example.mobilefaztudo.api.User
 import com.example.mobilefaztudo.api.formDataDemanda
 import com.example.mobilefaztudo.api.formDataEmail
+import com.example.mobilefaztudo.api.formInfoContratante
+import com.example.mobilefaztudo.api.formInfoPrestador
+import com.example.mobilefaztudo.api.formSenha
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -190,4 +193,43 @@ class UpdateImgDemandaRepository : IUpdateImgDemandaRepository {
     }
 }
 
+class UpdateImgPerfilRepository : IUpdateImgPerfilRepository{
+    override suspend fun atualizarImgPerfil(
+        authToken: String,
+        idUser: Int,
+        file: MultipartBody.Part
+    ): Response<Unit> {
+        val api = RetrofitClient.getInstance()
+            .create(ApiService::class.java)
+        return api.atualizarImgPerfil("Bearer $authToken", idUser, file)
+    }
+}
+class UpdateSenhaRepository:IUpdateSenhaRepository{
+    override suspend fun atualizarSenha(
+        authToken: String,
+        idUser: Int,
+        body: formSenha
+    ): Response<Unit> {
+        val api = RetrofitClient.getInstance()
+            .create(ApiService::class.java)
+        return api.atualizarSenha("Bearer $authToken", idUser, body)
+    }
+}
 
+class UpdateInfoPrestadorRepository:IUpdateInfoPrestadorRepository{
+    override suspend fun atualizarInformacoesPrestador(authToken: String, idUser: Int, body: formInfoPrestador): Response<Unit> {
+        val api = RetrofitClient.getInstance()
+            .create(ApiService::class.java)
+        return api.atualizarInformacoesPrestador("Bearer $authToken", idUser, body)    }
+}
+
+class UpdateInfoContratanteRepository:IUpdateInfoContratanteRepository{
+    override suspend fun atualizarInformacoesContratante(
+        authToken: String,
+        idUser: Int,
+        body: formInfoContratante
+    ): Response<Unit> {
+        val api = RetrofitClient.getInstance()
+            .create(ApiService::class.java)
+        return api.atualizarInformacoesContratante("Bearer $authToken", idUser, body)    }
+}
