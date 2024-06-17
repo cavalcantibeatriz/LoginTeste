@@ -43,7 +43,12 @@ class SharedPreferencesHelper(context: Context) {
         user.category?.let { sharedPreferences.edit().putInt("categoryId", it.id).apply() }
 
     }
-
+    fun getDescricao(): String {
+        return sharedPreferences.getString("descricao", "")?: ""
+    }
+    fun saveDescricao(des:String) {
+        return sharedPreferences.edit().putString("descricao", des).apply()
+    }
     fun getIdUser(): Int {
         return sharedPreferences.getInt("id", 0)
     }

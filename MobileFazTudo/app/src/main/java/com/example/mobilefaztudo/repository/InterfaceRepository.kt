@@ -8,6 +8,7 @@ import com.example.mobilefaztudo.api.CadastroPrestadorBody
 import com.example.mobilefaztudo.api.CadastroPrestadorResponse
 import com.example.mobilefaztudo.api.Demanda
 import com.example.mobilefaztudo.api.DemandaInteresse
+import com.example.mobilefaztudo.api.ImagensResponse
 import com.example.mobilefaztudo.api.LoginRequestBody
 import com.example.mobilefaztudo.api.LoginResponse
 import com.example.mobilefaztudo.api.MensagemRequest
@@ -15,6 +16,7 @@ import com.example.mobilefaztudo.api.UploadImage
 import com.example.mobilefaztudo.api.User
 import com.example.mobilefaztudo.api.formDataDemanda
 import com.example.mobilefaztudo.api.formDataEmail
+import com.example.mobilefaztudo.api.formDescricao
 import com.example.mobilefaztudo.api.formInfoContratante
 import com.example.mobilefaztudo.api.formInfoPrestador
 import com.example.mobilefaztudo.api.formSenha
@@ -45,3 +47,9 @@ interface IUpdateImgPerfilRepository{    suspend fun atualizarImgPerfil(authToke
 interface IUpdateSenhaRepository{    suspend fun atualizarSenha(authToken: String, @Path("idUser") idUser: Int, @Body body: formSenha): Response<Unit> }
 interface IUpdateInfoPrestadorRepository{    suspend fun atualizarInformacoesPrestador(authToken: String, @Path("idUser") idUser: Int, @Body body: formInfoPrestador): Response<Unit> }
 interface IUpdateInfoContratanteRepository{    suspend fun atualizarInformacoesContratante(authToken: String, @Path("idUser") idUser: Int, @Body body: formInfoContratante): Response<Unit> }
+interface IDescricaoRepository{    suspend fun atualizarDescricao(authToken: String, @Path("idUser") idUser: Int, @Body body: formDescricao): Response<Unit> }
+
+interface IAnexarGaleriaRepository{    suspend fun anexarImagemGaleria(authToken: String, @Path("idUser") idUser: Int, @Part file: MultipartBody.Part): Response<Unit> }
+interface IGetGaleriaRepository{    suspend fun getGaleria(authToken: String, @Path("idUser") idUser: Int): Response<List<ImagensResponse>> }
+
+interface IDeleteGaleriaRepository{    suspend fun deleteGaleria(authToken: String, @Path("idImg") idImg: Int): Response<Unit> }

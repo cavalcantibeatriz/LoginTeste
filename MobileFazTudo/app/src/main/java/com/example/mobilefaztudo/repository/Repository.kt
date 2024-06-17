@@ -10,6 +10,7 @@ import com.example.mobilefaztudo.api.CadastroPrestadorBody
 import com.example.mobilefaztudo.api.CadastroPrestadorResponse
 import com.example.mobilefaztudo.api.Demanda
 import com.example.mobilefaztudo.api.DemandaInteresse
+import com.example.mobilefaztudo.api.ImagensResponse
 import com.example.mobilefaztudo.api.LoginRequestBody
 import com.example.mobilefaztudo.api.LoginResponse
 import com.example.mobilefaztudo.api.MensagemRequest
@@ -18,6 +19,7 @@ import com.example.mobilefaztudo.api.UploadImage
 import com.example.mobilefaztudo.api.User
 import com.example.mobilefaztudo.api.formDataDemanda
 import com.example.mobilefaztudo.api.formDataEmail
+import com.example.mobilefaztudo.api.formDescricao
 import com.example.mobilefaztudo.api.formInfoContratante
 import com.example.mobilefaztudo.api.formInfoPrestador
 import com.example.mobilefaztudo.api.formSenha
@@ -232,4 +234,35 @@ class UpdateInfoContratanteRepository:IUpdateInfoContratanteRepository{
         val api = RetrofitClient.getInstance()
             .create(ApiService::class.java)
         return api.atualizarInformacoesContratante("Bearer $authToken", idUser, body)    }
+}
+
+class DescricaoRepository:IDescricaoRepository{
+    override suspend fun atualizarDescricao(
+        authToken: String,
+        idUser: Int,
+        body: formDescricao
+    ): Response<Unit> {
+        val api = RetrofitClient.getInstance()
+            .create(ApiService::class.java)
+        return api.atualizarDescricao("Bearer $authToken", idUser, body)    }
+}
+class AnexarGaleriaRepository:IAnexarGaleriaRepository{
+    override suspend fun anexarImagemGaleria(authToken: String, idUser: Int, file: MultipartBody.Part): Response<Unit> {
+        val api = RetrofitClient.getInstance()
+            .create(ApiService::class.java)
+        return api.anexarImagemGaleria("Bearer $authToken", idUser,file)    }
+}
+
+class GetGaleriaRepository:IGetGaleriaRepository{
+    override suspend fun getGaleria(authToken: String, idUser: Int): Response<List<ImagensResponse>> {
+        val api = RetrofitClient.getInstance()
+            .create(ApiService::class.java)
+        return api.getGaleria("Bearer $authToken", idUser)
+    }
+}
+class DeleteGaleriaRepository:IDeleteGaleriaRepository{
+    override suspend fun deleteGaleria(authToken: String, idImg: Int): Response<Unit> {
+        val api = RetrofitClient.getInstance()
+            .create(ApiService::class.java)
+        return api.deleteGaleria("Bearer $authToken",idImg)    }
 }

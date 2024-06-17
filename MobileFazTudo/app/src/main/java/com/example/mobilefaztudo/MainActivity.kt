@@ -9,10 +9,14 @@ import androidx.annotation.RequiresApi
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.mobilefaztudo.repository.AnexarGaleriaRepository
 import com.example.mobilefaztudo.repository.DeleteFavorite
+import com.example.mobilefaztudo.repository.DeleteGaleriaRepository
+import com.example.mobilefaztudo.repository.DescricaoRepository
 import com.example.mobilefaztudo.repository.EnviarEmailRepository
 import com.example.mobilefaztudo.repository.EnviarMensagemRepository
 import com.example.mobilefaztudo.repository.GetAceitarInteresseRepository
+import com.example.mobilefaztudo.repository.GetGaleriaRepository
 import com.example.mobilefaztudo.repository.GetNegarInteresseRepository
 import com.example.mobilefaztudo.repository.ListDemandaAbertaRepository
 import com.example.mobilefaztudo.repository.ListDemandasRepository
@@ -46,10 +50,12 @@ import com.example.mobilefaztudo.view.TelasPerfil.PerfilContratanteScreen
 import com.example.mobilefaztudo.view.TelasPerfil.PerfilPrestadorScreen
 import com.example.mobilefaztudo.view.TelaHome.encontreDemandas
 import com.example.mobilefaztudo.view.TelaHome.encontrePrestadores
-import com.example.mobilefaztudo.viewModel.AtrelarImagemDemandaViewModel
-import com.example.mobilefaztudo.viewModel.AtualizarPerfilViewModel
-import com.example.mobilefaztudo.viewModel.AtualizarSenhaViewModel
+import com.example.mobilefaztudo.viewModel.Contratante.AtrelarImagemDemandaViewModel
+import com.example.mobilefaztudo.viewModel.Ambos.AtualizarPerfilViewModel
+import com.example.mobilefaztudo.viewModel.Ambos.AtualizarSenhaViewModel
+import com.example.mobilefaztudo.viewModel.Prestador.AnexarGaleriaViewModel
 import com.example.mobilefaztudo.viewModel.Contratante.AceitarInteresseViewModel
+import com.example.mobilefaztudo.viewModel.Contratante.AtualizarDescricaoViewModel
 import com.example.mobilefaztudo.viewModel.Contratante.AtualizarInfoContratanteViewModel
 import com.example.mobilefaztudo.viewModel.auth.CadastroContratanteViewModel
 import com.example.mobilefaztudo.viewModel.auth.CadastroPrestadorViewModel
@@ -62,8 +68,10 @@ import com.example.mobilefaztudo.viewModel.EnviarEmailViewModel
 import com.example.mobilefaztudo.viewModel.EnviarMensagensViewModel
 import com.example.mobilefaztudo.viewModel.Contratante.NegarInteresseViewModel
 import com.example.mobilefaztudo.viewModel.NotificarInteresseViewModel
-import com.example.mobilefaztudo.viewModel.PostarDemandaViewModel
+import com.example.mobilefaztudo.viewModel.Contratante.PostarDemandaViewModel
+import com.example.mobilefaztudo.viewModel.GetGaleriaViewModel
 import com.example.mobilefaztudo.viewModel.Prestador.AtualizarInfoPrestadorViewModel
+import com.example.mobilefaztudo.viewModel.Prestador.DeleteGaleriaViewModel
 import com.example.mobilefaztudo.viewModel.Prestador.ListDemandaAbertasViewModel
 import com.example.mobilefaztudo.viewModel.Prestador.ListDemandasUserViewModel
 import com.example.mobilefaztudo.viewModel.auth.LoginViewModel
@@ -90,6 +98,10 @@ class MainActivity : ComponentActivity() {
     private lateinit var atualizarSenhaViewModel : AtualizarSenhaViewModel
     private lateinit var atualizarInfoContratanteViewModel: AtualizarInfoContratanteViewModel
     private lateinit var atualizarInfoPrestadorViewModel: AtualizarInfoPrestadorViewModel
+    private lateinit var atualizarDescricaoViewModel: AtualizarDescricaoViewModel
+    private lateinit var anexarGaleriaViewModel : AnexarGaleriaViewModel
+    private lateinit var getGaleriaViewModel: GetGaleriaViewModel
+    private lateinit var deleteGaleriaViewModel: DeleteGaleriaViewModel
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -159,6 +171,18 @@ class MainActivity : ComponentActivity() {
         val repositoryAtualizarInfoPrestador = UpdateInfoPrestadorRepository()
         atualizarInfoPrestadorViewModel = AtualizarInfoPrestadorViewModel(repositoryAtualizarInfoPrestador, sharedPreferencesHelper)
 
+        val repositoryAtualizarDescricao = DescricaoRepository()
+        atualizarDescricaoViewModel = AtualizarDescricaoViewModel(repositoryAtualizarDescricao,sharedPreferencesHelper)
+
+        val repositoryGetGaleria = GetGaleriaRepository()
+        getGaleriaViewModel = GetGaleriaViewModel(repositoryGetGaleria,sharedPreferencesHelper)
+
+        val repositoryAnexarGaleria = AnexarGaleriaRepository()
+        anexarGaleriaViewModel= AnexarGaleriaViewModel(repositoryAnexarGaleria,sharedPreferencesHelper)
+
+        val repositoryDeleteGaleria = DeleteGaleriaRepository()
+        deleteGaleriaViewModel = DeleteGaleriaViewModel(repositoryDeleteGaleria,sharedPreferencesHelper)
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
@@ -173,7 +197,7 @@ class MainActivity : ComponentActivity() {
                     composable(route = "encontrePrestadores") { encontrePrestadores(navController, listPrestadoresViewModel, sharedPreferencesHelper, favoritarViewModel, desfavoritarViewModel, listPrestadoresFavoritos) }
                     composable(route = "encontreDemandas") { encontreDemandas(navController, listDemandasViewModel, sharedPreferencesHelper, requestEnviarMensagem) }
                     composable(route = "encontreFavoritos") { FavoritosScreen(navController, listPrestadoresFavoritos, sharedPreferencesHelper, favoritarViewModel, desfavoritarViewModel, listPrestadoresFavoritos, listPrestadoresViewModel) }
-                    composable(route = "PerfilPrestadorScreen") { PerfilPrestadorScreen(navController, sharedPreferencesHelper, atualizarImgPerfilViewModel,atualizarSenhaViewModel,atualizarInfoPrestadorViewModel) }
+                    composable(route = "PerfilPrestadorScreen") { PerfilPrestadorScreen(navController, sharedPreferencesHelper, atualizarImgPerfilViewModel,atualizarSenhaViewModel,atualizarInfoPrestadorViewModel, atualizarDescricaoViewModel,getGaleriaViewModel,anexarGaleriaViewModel,deleteGaleriaViewModel) }
                     composable(route = "PerfilContratanteScreen") { PerfilContratanteScreen(navController, sharedPreferencesHelper, atualizarImgPerfilViewModel, listDemandasUserViewModel,atualizarSenhaViewModel, atualizarInfoContratanteViewModel) }
                     composable(route = "DemandContratante") { DemandContratante(navController, sharedPreferencesHelper,listDemandasUserViewModel, postarDemandaViewModel, atrelarImagemDemandaViewModel) }
                     composable(route = "DemandPrestador") { DemandPrestador(navController, sharedPreferencesHelper,listDemandasViewModel,listDemandaAbertaViewModel) }

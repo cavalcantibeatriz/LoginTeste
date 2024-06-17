@@ -44,8 +44,8 @@ import com.example.faztudo_mb.ui.theme.screens.components_new.TopBar
 import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
 import com.example.mobilefaztudo.ui.theme.components_new.NavBar.NavBarContratante
 import com.example.mobilefaztudo.ui.theme.components_new.PhotoProfile
-import com.example.mobilefaztudo.viewModel.AtualizarPerfilViewModel
-import com.example.mobilefaztudo.viewModel.AtualizarSenhaViewModel
+import com.example.mobilefaztudo.viewModel.Ambos.AtualizarPerfilViewModel
+import com.example.mobilefaztudo.viewModel.Ambos.AtualizarSenhaViewModel
 import com.example.mobilefaztudo.viewModel.Contratante.AtualizarInfoContratanteViewModel
 import com.example.mobilefaztudo.viewModel.Prestador.ListDemandasUserViewModel
 import java.time.LocalDateTime
@@ -60,7 +60,7 @@ fun PerfilContratanteScreen(
     atualizarImgPerfilViewModel: AtualizarPerfilViewModel = viewModel(),
     listDemandasUserViewModel: ListDemandasUserViewModel = viewModel(),
     atualizarSenhaViewModel: AtualizarSenhaViewModel = viewModel(),
-    atualizarInfoContratanteViewModel: AtualizarInfoContratanteViewModel= viewModel()
+    atualizarInfoContratanteViewModel: AtualizarInfoContratanteViewModel= viewModel(),
 ) {
     var showEditInfo by remember { mutableStateOf(false) }
     var showEditSenha by remember { mutableStateOf(false) }

@@ -158,7 +158,36 @@ interface ApiService {
         @Path("idUser") idUser: Int,
         @Body body: formInfoPrestador
     ):Response<Unit>
+
+    @PATCH("/profile/update-description/{idUser}")
+    suspend fun atualizarDescricao(
+        @Header("Authorization") authToken: String,
+        @Path("idUser") idUser: Int,
+        @Body body: formDescricao
+    ):Response<Unit>
+
+    @Multipart
+    @POST("/images/upload/2/{idUser}")
+    suspend fun anexarImagemGaleria(
+        @Header("Authorization") authToken: String,
+        @Path("idUser") idUser: Int,
+        @Part file: MultipartBody.Part
+    ) : Response<Unit>
+
+    @GET("/images/get/{idUser}")
+    suspend fun getGaleria(
+        @Header("Authorization") authToken: String,
+        @Path("idUser") idUser: Int
+    ): Response<List<ImagensResponse>>
+
+    @DELETE("/images/{idImg}")
+    suspend fun deleteGaleria(
+        @Header("Authorization") authToken: String,
+        @Path("idImg") idUser: Int
+    ): Response<Unit>
+
 }
+
 data class formInfoPrestador(
     val cep: String,
     val logradouro: String,
@@ -177,6 +206,11 @@ data class formInfoContratante(
 data class formSenha(
     val senha: String
 )
+
+data class formDescricao(
+    val descricao: String
+)
+
 data class formDataDemanda(
     val id: Int,
     val fkContractor: Int,

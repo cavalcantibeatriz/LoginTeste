@@ -1,10 +1,9 @@
-package com.example.mobilefaztudo.viewModel
+package com.example.mobilefaztudo.viewModel.Ambos
 
 import android.util.Base64
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mobilefaztudo.repository.IUpdateImgDemandaRepository
 import com.example.mobilefaztudo.repository.IUpdateImgPerfilRepository
 import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
 import kotlinx.coroutines.launch

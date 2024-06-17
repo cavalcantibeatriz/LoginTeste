@@ -3,7 +3,6 @@ package com.example.mobilefaztudo.view.TelaAcompanhamento
 import android.content.Context
 import android.net.Uri
 import android.os.Build
-import android.provider.MediaStore
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -64,11 +63,10 @@ import com.example.faztudo_mb.ui.theme.screens.components_new.DemandInProgress
 import com.example.faztudo_mb.ui.theme.screens.components_new.DemandOpened
 import com.example.faztudo_mb.ui.theme.screens.components_new.TopBar
 import com.example.mobilefaztudo.R
-import com.example.mobilefaztudo.api.UploadImage
 import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
 import com.example.mobilefaztudo.ui.theme.components_new.NavBar.NavBarContratante
-import com.example.mobilefaztudo.viewModel.AtrelarImagemDemandaViewModel
-import com.example.mobilefaztudo.viewModel.PostarDemandaViewModel
+import com.example.mobilefaztudo.viewModel.Contratante.AtrelarImagemDemandaViewModel
+import com.example.mobilefaztudo.viewModel.Contratante.PostarDemandaViewModel
 import com.example.mobilefaztudo.viewModel.Prestador.ListDemandasUserViewModel
 import java.io.File
 import java.io.FileOutputStream
