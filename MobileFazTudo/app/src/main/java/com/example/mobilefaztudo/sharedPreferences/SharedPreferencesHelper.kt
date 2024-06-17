@@ -59,25 +59,46 @@ class SharedPreferencesHelper(context: Context) {
     fun getCep(): String {
         return sharedPreferences.getString("cep", "") ?: ""
     }
+    fun saveCep(cep: String) {
+        sharedPreferences.edit().putString("cep", cep).apply()
+    }
 
     fun getLogradouro(): String{
         return sharedPreferences.getString("logradouro", "") ?: ""
     }
+    fun saveLogradouro(logradouro: String) {
+        sharedPreferences.edit().putString("logradouro", logradouro).apply()
+    }
     fun getState(): String{
         return sharedPreferences.getString("state", "") ?: ""
+    }
+    fun saveState(state: String) {
+        sharedPreferences.edit().putString("state", state).apply()
     }
     fun getCity(): String{
         return sharedPreferences.getString("city", "") ?: ""
     }
+    fun saveCity(city: String) {
+        sharedPreferences.edit().putString("city", city).apply()
+    }
     fun getPhone(): String{
         return sharedPreferences.getString("phone", "") ?: ""
+    }
+    fun savePhone(phone: String) {
+        sharedPreferences.edit().putString("phone", phone).apply()
     }
 
     fun getCategoriaName(): String{
         return sharedPreferences.getString("categoryName", "") ?: ""
     }
+    fun saveCategoriaName(catName: String) {
+        sharedPreferences.edit().putString("categoryName", catName).apply()
+    }
     fun getCategoriaId(): Int{
         return sharedPreferences.getInt("categoryId", 0) ?: 0
+    }
+    fun saveCategoriaId(catId: Int) {
+        sharedPreferences.edit().putInt("categoryId", catId).apply()
     }
     fun getSobrenome(): String? {
         return sharedPreferences.getString("sobrenome", "")

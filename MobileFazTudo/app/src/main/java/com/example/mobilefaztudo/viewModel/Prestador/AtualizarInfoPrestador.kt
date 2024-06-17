@@ -24,6 +24,14 @@ class AtualizarInfoPrestadorViewModel(private val repository: IUpdateInfoPrestad
                 Log.d("Atualizar Infos", "Response: $response")
 
                 if (response.isSuccessful){
+                    sharedPreferencesHelper.saveCep(cep)
+                    sharedPreferencesHelper.saveCity(city)
+                    sharedPreferencesHelper.saveState(state)
+                    sharedPreferencesHelper.saveLogradouro(logradouro)
+                    sharedPreferencesHelper.savePhone(phone)
+                    sharedPreferencesHelper.saveCategoriaId(categoryId)
+                    sharedPreferencesHelper.saveCategoriaName(categoryName)
+
                     Log.d("Atualizar Infos", "SUCESSO")
                     onResult(true)
                 }else{

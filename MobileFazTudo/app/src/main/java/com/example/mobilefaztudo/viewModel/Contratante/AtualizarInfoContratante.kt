@@ -22,6 +22,12 @@ class AtualizarInfoContratanteViewModel(
                 Log.d("Atualizar Infos", "${formInfoContratante(cep,logradouro,state,city,phone)}")
 
                 if (response.isSuccessful){
+                    sharedPreferencesHelper.saveCep(cep)
+                    sharedPreferencesHelper.saveCity(city)
+                    sharedPreferencesHelper.saveState(state)
+                    sharedPreferencesHelper.saveLogradouro(logradouro)
+                    sharedPreferencesHelper.savePhone(phone)
+
                     Log.d("Atualizar Infos", "SUCESSO")
                     onResult(true)
                 }else{
