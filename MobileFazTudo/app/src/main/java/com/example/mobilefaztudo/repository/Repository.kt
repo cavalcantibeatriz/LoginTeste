@@ -1,5 +1,8 @@
 package com.example.mobilefaztudo.repository
 
+import android.content.Context
+import android.media.Image
+import android.net.Uri
 import com.example.mobilefaztudo.api.ApiService
 import com.example.mobilefaztudo.api.CadastroContratanteBody
 import com.example.mobilefaztudo.api.CadastroContratanteResponse
@@ -11,7 +14,14 @@ import com.example.mobilefaztudo.api.LoginRequestBody
 import com.example.mobilefaztudo.api.LoginResponse
 import com.example.mobilefaztudo.api.MensagemRequest
 import com.example.mobilefaztudo.api.RetrofitClient
+import com.example.mobilefaztudo.api.UploadImage
 import com.example.mobilefaztudo.api.User
+import com.example.mobilefaztudo.api.formDataDemanda
+import com.example.mobilefaztudo.api.formDataEmail
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 
 class LoginRepository : ILoginRepository {
@@ -123,3 +133,61 @@ class ListDemandaAbertaRepository : IListDemandaAberta {
         return api.listDemandaAberta("Bearer $authToken")
     }
 }
+
+class ListNotificarInteresseRepository : IListNotificarInteresseRepository {
+    override suspend fun listNotificarInteresse(authToken: String): Response<List<DemandaInteresse>> {
+        val api = RetrofitClient.getInstance()
+            .create(ApiService::class.java)
+        return api.listNotificarInteresse("Bearer $authToken")
+    }
+}
+
+class GetAceitarInteresseRepository : IGetAceitarInteresseRepository {
+    override suspend fun aceitarInteresse(authToken: String, idItem: Int): Response<Void> {
+        val api = RetrofitClient.getInstance()
+            .create(ApiService::class.java)
+        return api.aceitarInteresse("Bearer $authToken", idItem)
+    }
+}
+
+class GetNegarInteresseRepository : IGetNegarInteresseRepository {
+    override suspend fun negarInteresse(authToken: String, idItem: Int): Response<Void> {
+        val api = RetrofitClient.getInstance()
+            .create(ApiService::class.java)
+        return api.negarInteresse("Bearer $authToken", idItem)
+    }
+}
+
+class EnviarEmailRepository : IEnviarEmailRepository {
+    override suspend fun enviarEmail(authToken: String, body: formDataEmail): Response<Void> {
+        val api = RetrofitClient.getInstance()
+            .create(ApiService::class.java)
+        return api.enviarEmail("Bearer $authToken", body)
+    }
+}
+
+class PostarDemandaRepository : IPostarDemandaRepository {
+    override suspend fun postarDemanda(
+        authToken: String,
+        idUser: Int,
+        body: formDataDemanda
+    ): Response<formDataDemanda> {
+        val api = RetrofitClient.getInstance()
+            .create(ApiService::class.java)
+        return api.postDemanda("Bearer $authToken", idUser, body)
+    }
+}
+
+class UpdateImgDemandaRepository : IUpdateImgDemandaRepository {
+    override suspend fun atrelarDemanda(
+        authToken: String,
+        idPost: Int,
+        file: MultipartBody.Part
+    ): Response<Unit> {
+        val api = RetrofitClient.getInstance()
+            .create(ApiService::class.java)
+        return api.atrelarDemanda("Bearer $authToken", idPost, file)
+    }
+}
+
+

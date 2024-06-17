@@ -43,6 +43,19 @@ class SharedPreferencesHelper(context: Context) {
     fun getIdUser(): Int {
         return sharedPreferences.getInt("id", 0)
     }
+    fun getNome(): String? {
+        return sharedPreferences.getString("nome", "")
+    }
+    fun getSobrenome(): String? {
+        return sharedPreferences.getString("sobrenome", "")
+    }
+    fun getEmail(): String? {
+        return sharedPreferences.getString("email", "")
+    }
+    fun getTelefone(): String? {
+        return sharedPreferences.getString("phone", "")
+    }
+
     fun saveUser(user: User) {
         val userJson = Gson().toJson(user)
         sharedPreferences.edit().putString("JSON", userJson).apply()

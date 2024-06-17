@@ -1,23 +1,31 @@
 package com.example.mobilefaztudo
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.mobilefaztudo.repository.DeleteFavorite
+import com.example.mobilefaztudo.repository.EnviarEmailRepository
 import com.example.mobilefaztudo.repository.EnviarMensagemRepository
+import com.example.mobilefaztudo.repository.GetAceitarInteresseRepository
+import com.example.mobilefaztudo.repository.GetNegarInteresseRepository
 import com.example.mobilefaztudo.repository.ListDemandaAbertaRepository
 import com.example.mobilefaztudo.repository.ListDemandasRepository
 import com.example.mobilefaztudo.repository.ListDemandasUser
+import com.example.mobilefaztudo.repository.ListNotificarInteresseRepository
 import com.example.mobilefaztudo.repository.ListProviders
 import com.example.mobilefaztudo.repository.ListProvidersFavorite
 import com.example.mobilefaztudo.repository.LoginRepository
 import com.example.mobilefaztudo.repository.PostFavorite
+import com.example.mobilefaztudo.repository.PostarDemandaRepository
 import com.example.mobilefaztudo.repository.RegisterContractorRepository
 import com.example.mobilefaztudo.repository.RegisterProviderRepository
+import com.example.mobilefaztudo.repository.UpdateImgDemandaRepository
 import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
 import com.example.mobilefaztudo.ui.theme.MobileFazTudoTheme
 import com.example.mobilefaztudo.view.LoginECadastro.CadastroContratanteEtapa2
@@ -34,6 +42,8 @@ import com.example.mobilefaztudo.view.TelasPerfil.PerfilContratanteScreen
 import com.example.mobilefaztudo.view.TelasPerfil.PerfilPrestadorScreen
 import com.example.mobilefaztudo.view.TelaHome.encontreDemandas
 import com.example.mobilefaztudo.view.TelaHome.encontrePrestadores
+import com.example.mobilefaztudo.viewModel.AtrelarImagemDemandaViewModel
+import com.example.mobilefaztudo.viewModel.Contratante.AceitarInteresseViewModel
 import com.example.mobilefaztudo.viewModel.auth.CadastroContratanteViewModel
 import com.example.mobilefaztudo.viewModel.auth.CadastroPrestadorViewModel
 import com.example.mobilefaztudo.viewModel.Contratante.DesfavoritarViewModel
@@ -41,7 +51,11 @@ import com.example.mobilefaztudo.viewModel.Contratante.FavoritarViewModel
 import com.example.mobilefaztudo.viewModel.Prestador.ListDemandasViewModel
 import com.example.mobilefaztudo.viewModel.Contratante.ListFavoriteViewModel
 import com.example.mobilefaztudo.viewModel.Contratante.ListPrestadoresViewModel
+import com.example.mobilefaztudo.viewModel.EnviarEmailViewModel
 import com.example.mobilefaztudo.viewModel.EnviarMensagensViewModel
+import com.example.mobilefaztudo.viewModel.Contratante.NegarInteresseViewModel
+import com.example.mobilefaztudo.viewModel.NotificarInteresseViewModel
+import com.example.mobilefaztudo.viewModel.PostarDemandaViewModel
 import com.example.mobilefaztudo.viewModel.Prestador.ListDemandaAbertasViewModel
 import com.example.mobilefaztudo.viewModel.Prestador.ListDemandasUserViewModel
 import com.example.mobilefaztudo.viewModel.auth.LoginViewModel
@@ -58,10 +72,17 @@ class MainActivity : ComponentActivity() {
     private lateinit var listDemandasUserViewModel: ListDemandasUserViewModel
     private lateinit var listDemandaAbertaViewModel : ListDemandaAbertasViewModel
     private lateinit var requestEnviarMensagem : EnviarMensagensViewModel
+    private lateinit var listNotificarInteresseViewModel: NotificarInteresseViewModel
+    private lateinit var negarInteresseViewModel: NegarInteresseViewModel
+    private lateinit var aceitarInteresseViewModel: AceitarInteresseViewModel
+    private lateinit var enviarEmailViewModel: EnviarEmailViewModel
+    private lateinit var postarDemandaViewModel: PostarDemandaViewModel
+    private lateinit var atrelarImagemDemandaViewModel : AtrelarImagemDemandaViewModel
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
-        val repositoryL = LoginRepository()
         val sharedPreferencesHelper = SharedPreferencesHelper(applicationContext)
 
+        val repositoryL = LoginRepository()
         loginViewModel = LoginViewModel(repositoryL, sharedPreferencesHelper)
 
         val repositoryC = RegisterContractorRepository()
@@ -94,6 +115,25 @@ class MainActivity : ComponentActivity() {
         val repositoryEnviarMensagem = EnviarMensagemRepository()
         requestEnviarMensagem = EnviarMensagensViewModel(repositoryEnviarMensagem,sharedPreferencesHelper)
 
+        val repositoryListNotificar = ListNotificarInteresseRepository()
+        listNotificarInteresseViewModel = NotificarInteresseViewModel(repositoryListNotificar, sharedPreferencesHelper)
+
+        val repositoryNegarInteresse = GetNegarInteresseRepository()
+        negarInteresseViewModel = NegarInteresseViewModel(repositoryNegarInteresse,sharedPreferencesHelper)
+
+        val repositoryAceitarInteresse = GetAceitarInteresseRepository()
+        aceitarInteresseViewModel = AceitarInteresseViewModel(repositoryAceitarInteresse, sharedPreferencesHelper)
+
+        val repositoryEnviarEmail = EnviarEmailRepository()
+        enviarEmailViewModel = EnviarEmailViewModel(repositoryEnviarEmail,sharedPreferencesHelper)
+
+        val repositoryPostarDemanda = PostarDemandaRepository()
+        postarDemandaViewModel = PostarDemandaViewModel(repositoryPostarDemanda,sharedPreferencesHelper)
+
+        val repositoryAtrelarImagemDemanda = UpdateImgDemandaRepository()
+        atrelarImagemDemandaViewModel = AtrelarImagemDemandaViewModel(repositoryAtrelarImagemDemanda,sharedPreferencesHelper)
+
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
@@ -102,69 +142,18 @@ class MainActivity : ComponentActivity() {
                 NavHost(navController = navController, startDestination = "splash") {
                     composable(route = "login") { LoginScreen(loginViewModel, navController) }
                     composable(route = "cadastro1") { CadastroScreenEtapa1(navController) }
-                    composable(route = "cadastro2C") {
-                        CadastroContratanteEtapa2(
-                            contratanteViewModel,
-                            navController
-                        )
-                    }
-                    composable(route = "cadastro2P") {
-                        CadastroPrestadorEtapa2(
-                            prestadorViewModel,
-                            navController
-                        )
-                    }
+                    composable(route = "cadastro2C") { CadastroContratanteEtapa2(contratanteViewModel, navController) }
+                    composable(route = "cadastro2P") { CadastroPrestadorEtapa2(prestadorViewModel, navController) }
                     composable(route = "splash") { SplashScreen(navController) }
-
-                    composable(route = "encontrePrestadores") {
-                        encontrePrestadores(
-                            navController,
-                            listPrestadoresViewModel,
-                            sharedPreferencesHelper,
-                            favoritarViewModel,
-                            desfavoritarViewModel,
-                            listPrestadoresFavoritos
-                        )
-                    }
-                    composable(route = "encontreDemandas") {
-                        encontreDemandas(
-                            navController,
-                            listDemandasViewModel,
-                            sharedPreferencesHelper,
-                            requestEnviarMensagem
-                        )
-                    }
-                    composable(route = "encontreFavoritos") {
-                        FavoritosScreen(
-                            navController,
-                            listPrestadoresFavoritos,
-                            sharedPreferencesHelper,
-                            favoritarViewModel,
-                            desfavoritarViewModel,
-                            listPrestadoresFavoritos,
-                            listPrestadoresViewModel
-                        )
-                    }
-                    composable(route = "PerfilPrestadorScreen") {
-                        PerfilPrestadorScreen(navController, sharedPreferencesHelper)
-                    }
-
-                    composable(route = "PerfilContratanteScreen") {
-                        PerfilContratanteScreen(navController, sharedPreferencesHelper)
-                    }
-                    composable(route = "DemandContratante") {
-                        DemandContratante(navController, sharedPreferencesHelper,listDemandasUserViewModel)
-                    }
-                    composable(route = "DemandPrestador") {
-                        DemandPrestador(navController, sharedPreferencesHelper,listDemandasViewModel,listDemandaAbertaViewModel)
-                    }
-                    composable(route = "NotificacoesContratanteScreen") {
-                        NotificacoesContratanteScreen(navController, sharedPreferencesHelper)
-                    }
-                    composable(route = "NotificacoesPrestadorScreen") {
-                        NotificacoesPrestadorScreen(navController, sharedPreferencesHelper)
-                    }
-
+                    composable(route = "encontrePrestadores") { encontrePrestadores(navController, listPrestadoresViewModel, sharedPreferencesHelper, favoritarViewModel, desfavoritarViewModel, listPrestadoresFavoritos) }
+                    composable(route = "encontreDemandas") { encontreDemandas(navController, listDemandasViewModel, sharedPreferencesHelper, requestEnviarMensagem) }
+                    composable(route = "encontreFavoritos") { FavoritosScreen(navController, listPrestadoresFavoritos, sharedPreferencesHelper, favoritarViewModel, desfavoritarViewModel, listPrestadoresFavoritos, listPrestadoresViewModel) }
+                    composable(route = "PerfilPrestadorScreen") { PerfilPrestadorScreen(navController, sharedPreferencesHelper) }
+                    composable(route = "PerfilContratanteScreen") { PerfilContratanteScreen(navController, sharedPreferencesHelper) }
+                    composable(route = "DemandContratante") { DemandContratante(navController, sharedPreferencesHelper,listDemandasUserViewModel, postarDemandaViewModel, atrelarImagemDemandaViewModel) }
+                    composable(route = "DemandPrestador") { DemandPrestador(navController, sharedPreferencesHelper,listDemandasViewModel,listDemandaAbertaViewModel) }
+                    composable(route = "NotificacoesContratanteScreen") { NotificacoesContratanteScreen(navController, sharedPreferencesHelper, listNotificarInteresseViewModel,negarInteresseViewModel, aceitarInteresseViewModel, enviarEmailViewModel) }
+                    composable(route = "NotificacoesPrestadorScreen") { NotificacoesPrestadorScreen(navController, sharedPreferencesHelper, listNotificarInteresseViewModel,enviarEmailViewModel) }
                 }
             }
         }
