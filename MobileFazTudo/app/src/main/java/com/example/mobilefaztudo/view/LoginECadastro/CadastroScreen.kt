@@ -160,7 +160,6 @@ fun CadastroContratanteEtapa2(
     else
         painterResource(id = R.drawable.visibility_off)
 
-
     var showModalSuccess by remember { mutableStateOf(false) }
     var showModalError by remember { mutableStateOf(false) }
     var exibirCamposSenha by remember { mutableStateOf(false) }
@@ -287,10 +286,7 @@ fun CadastroContratanteEtapa2(
             ) {
                 Text("Continuar", style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold))
             }
-
-
         }
-
     }
 
     if (exibirCamposSenha) {
@@ -336,6 +332,7 @@ fun CadastroContratanteEtapa2(
                     .padding(vertical = 8.dp),
                 value = senha,
                 onValueChange = { senha = it },
+
                 trailingIcon = {
                     IconButton(onClick = {
                         if (showPassword) {
@@ -349,141 +346,123 @@ fun CadastroContratanteEtapa2(
                             contentDescription = "Visibility"
                         )
                     }
-
                 },
-               visualTransformation = if (showPassword) VisualTransformation.None
-               else PasswordVisualTransformation())
-        }
+                visualTransformation = if (showPassword) VisualTransformation.None
+                else PasswordVisualTransformation()
+            )
 
+            InputPasswordVisibility(
+                icon = Icons.Default.Lock,
+                placeholder = "Confirmar senha",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                value = confirmarSenha,
+                onValueChange = { confirmarSenha = it },
 
-
-        InputPasswordVisibility(
-            icon = Icons.Default.Lock,
-            placeholder = "Senha",
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp),
-            value = senha,
-            onValueChange = { confirmarSenha = it },
-            trailingIcon = {
-                IconButton(onClick = {
-                    if (showPassword) {
-                        showPassword = false
-                    } else
-                        showPassword = true
-                })
-                {
-                    Icon(
-                        painter = icon,
-                        contentDescription = "Visibility"
-                    )
-                }
-
-            },
-            visualTransformation = if (showPassword) VisualTransformation.None
-            else PasswordVisualTransformation())
-        Spacer(modifier = Modifier.height(5.dp))
-        Box(
-            modifier = Modifier
-                .height(290.dp)
+                trailingIcon = {
+                    IconButton(onClick = {
+                        if (showPassword) {
+                            showPassword = false
+                        } else
+                            showPassword = true
+                    })
+                    {
+                        Icon(
+                            painter = icon,
+                            contentDescription = "Visibility"
+                        )
+                    }
+                },
+                visualTransformation = if (showPassword) VisualTransformation.None
+                else PasswordVisualTransformation()
+            )
+            Spacer(modifier = Modifier.height(5 .dp))
+            Box(
+                modifier = Modifier
+                    .height(290.dp)
 //                    .border(2.dp, Color.Red)  // Adiciona uma borda cinza de 1 dp ao redor do Box
 //                    .padding(3.dp),  // Adiciona um padding interno para que o texto não fique colado na borda
-        ) {
-            Text(
-                text = "A senha deve conter letras, números e caracteres especiais!\n\n- Evite sequências númericas\n- Evite sua data de nascimento\n- Evite seu telefone",
-                modifier = Modifier
-                    .height(150.dp),
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Light,
-                    color = Color.White,
-                    fontStyle = FontStyle.Italic,
-                    textAlign = TextAlign.Left
+            ){
+                Text(
+                    text =  "A senha deve conter letras, números e caracteres especiais!\n\n- Evite sequências númericas\n- Evite sua data de nascimento\n- Evite seu telefone",
+                    modifier = Modifier
+                        .height(150.dp),
+                    style = TextStyle(
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Light,
+                        color = Color.White,
+                        fontStyle = FontStyle.Italic,
+                        textAlign = TextAlign.Left
+                    )
                 )
-            )
-        }
-
-
-        Button(
-            onClick = {
-                Log.d("CADASTRO", "CLIQUEI NO BOTÃO")
-                cadastroContratanteViewModel.registerContractor(
-                    name,
-                    lastName,
-                    cpf,
-                    dt_nascimento,
-                    cep,
-                    logradouro,
-                    state,
-                    city,
-                    phone,
-                    email,
-                    senha,
-                    proUser
-                ) { onResult ->
-                    if (onResult) {
-                        showModalSuccess = true
-                    } else {
-                        showModalError = true
+            }
+            Button(
+                onClick = {
+                    Log.d("CADASTRO", "CLIQUEI NO BOTÃO")
+                    cadastroContratanteViewModel.registerContractor(name, lastName,cpf,dt_nascimento,cep,logradouro,state,city,phone,email,senha,proUser) { onResult ->
+                        if (onResult) {
+                            showModalSuccess = true
+                        } else {
+                            showModalError = true
+                        }
                     }
-                }
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(100.dp)
-                .padding(vertical = 25.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = laranjaBtn,
-                contentColor = Color.White
-            )
-        ) {
-            Text("Cadastrar", style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold))
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(100.dp)
+                    .padding(vertical = 25.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = laranjaBtn,
+                    contentColor = Color.White
+                )
+            ) {
+                Text("Cadastrar", style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold))
+            }
         }
+
+    }
+    if (showModalSuccess) {
+        Log.d("CADASTRO", "CHAMOU O MODAL")
+        AlertDialog(
+            onDismissRequest = {
+                // Fechar o modal ao clicar fora
+                showModalSuccess = false
+            },
+            title = { Text("Eba!") },
+            text = { Text("Parece que seu cadastro foi realizado com sucesso!\n\nVamos te direcionar para o login!") },
+            confirmButton = {
+                Button(onClick = {
+                    // Fechar o modal ao clicar no botão OK
+                    showModalSuccess = false
+                    navController.navigate("login")
+                }) {
+                    Text("OK")
+                }
+            }
+        )
     }
 
-
-
-if (showModalSuccess) {
-    Log.d("CADASTRO", "CHAMOU O MODAL")
-    AlertDialog(
-        onDismissRequest = {
-            // Fechar o modal ao clicar fora
-            showModalSuccess = false
-        },
-        title = { Text("Eba!") },
-        text = { Text("Parece que seu cadastro foi realizado com sucesso!\n\nVamos te direcionar para o login!") },
-        confirmButton = {
-            Button(onClick = {
-                // Fechar o modal ao clicar no botão OK
+    if (showModalError) {
+        Log.d("CADASTRO", "CHAMOU O MODAL")
+        AlertDialog(
+            onDismissRequest = {
+                // Fechar o modal ao clicar fora
                 showModalSuccess = false
-                navController.navigate("login")
-            }) {
-                Text("OK")
+            },
+            title = { Text("Oops") },
+            text = { Text("Epa! Parece que houve algum erro ao te cadastrar :(\n\nTente novamente em alguns instantes.") },
+            confirmButton = {
+                Button(onClick = {
+                    // Fechar o modal ao clicar no botão OK
+                    showModalSuccess = false
+                    navController.navigate("cadastro1")
+                }) {
+                    Text("OK")
+                }
             }
-        }
-    )
-}
-
-if (showModalError) {
-    Log.d("CADASTRO", "CHAMOU O MODAL")
-    AlertDialog(
-        onDismissRequest = {
-            // Fechar o modal ao clicar fora
-            showModalSuccess = false
-        },
-        title = { Text("Oops") },
-        text = { Text("Epa! Parece que houve algum erro ao te cadastrar :(\n\nTente novamente em alguns instantes.") },
-        confirmButton = {
-            Button(onClick = {
-                // Fechar o modal ao clicar no botão OK
-                showModalSuccess = false
-                navController.navigate("cadastro1")
-            }) {
-                Text("OK")
-            }
-        }
-    )
-}
+        )
+    }
 
 }
 
@@ -511,10 +490,7 @@ fun CadastroPrestadorEtapa2(
     var exibirCamposIniciais by remember { mutableStateOf(false) }
     var exibirCategorias by remember { mutableStateOf(true) }
 
-    Log.d(
-        "CADASTRO",
-        "Dados a serem enviados::: $name, $lastName, $email, $cpf, $cep, $dt_nascimento, $logradouro, $city, $state, $phone, $senha, $category"
-    )
+    Log.d("CADASTRO", "Dados a serem enviados::: $name, $lastName, $email, $cpf, $cep, $dt_nascimento, $logradouro, $city, $state, $phone, $senha, $category")
     Log.d("CADASTRO", "SELECTED_CATEGORY::: $category")
 
     var showModalSuccess by remember { mutableStateOf(false) }
@@ -528,7 +504,7 @@ fun CadastroPrestadorEtapa2(
     val buttonColor = if (isClicked) Color.Green else Color(0xFFF1A58D)
 
     val buttons = listOf("Mecânica", "Hidráulica", "Limpeza", "Elétrica", "Obras", "Todos")
-    val buttonStates = remember { mutableStateListOf(false, false, false, false, false, false) }
+    val buttonStates = remember { mutableStateListOf(false, false, false,false,false,false) }
 
 
     if (exibirCategorias) {
@@ -577,18 +553,13 @@ fun CadastroPrestadorEtapa2(
                     verticalArrangement = Arrangement.SpaceBetween  // Espaçamento entre os botões
                 ) {
                     Button(
-                        onClick = {
-                            category = Category(id = 1, name = "Mecânica"); buttonStates[0] =
-                            !buttonStates[0]
-                        },
+                        onClick = { category = Category(id = 1, name = "Mecânica"); buttonStates[0] = !buttonStates[0] },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(2.dp)
                             .height(40.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = if (buttonStates[0]) Color(0xFFF1A58D) else Color(
-                                0xFFE08A84
-                            ),  // Cor do botão que muda ao clicar
+                            containerColor = if (buttonStates[0])Color(0xFFF1A58D) else Color(0xFFE08A84),  // Cor do botão que muda ao clicar
                             contentColor = Color.Black     // Cor do texto
                         )
                     ) {
@@ -600,18 +571,13 @@ fun CadastroPrestadorEtapa2(
                         )
                     }
                     Button(
-                        onClick = {
-                            category = Category(id = 2, name = "Hidráulica"); buttonStates[1] =
-                            !buttonStates[1]
-                        },
+                        onClick = { category=Category(id = 2, name = "Hidráulica"); buttonStates[1] = !buttonStates[1]},
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(2.dp)
                             .height(40.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = if (buttonStates[1]) Color(0xFFF1A58D) else Color(
-                                0xFFE08A84
-                            ), // Cor laranja
+                            containerColor = if (buttonStates[1])Color(0xFFF1A58D) else Color(0xFFE08A84), // Cor laranja
                             contentColor = Color.Black          // Cor do texto
                         )
                     ) {
@@ -623,18 +589,12 @@ fun CadastroPrestadorEtapa2(
                         )
                     }
                     Button(
-                        onClick = {
-                            category = Category(id = 3, name = "Limpeza");buttonStates[2] =
-                            !buttonStates[2]
-                        },
+                        onClick = { category=Category(id = 3, name = "Limpeza");buttonStates[2] = !buttonStates[2]},
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(2.dp)
+                            .fillMaxWidth().padding(2.dp)
                             .height(40.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = if (buttonStates[2]) Color(0xFFF1A58D) else Color(
-                                0xFFE08A84
-                            ), // Cor laranja
+                            containerColor = if (buttonStates[2]) Color(0xFFF1A58D) else Color(0xFFE08A84), // Cor laranja
                             contentColor = Color.Black          // Cor do texto
                         )
                     ) {
@@ -647,18 +607,12 @@ fun CadastroPrestadorEtapa2(
                         )
                     }
                     Button(
-                        onClick = {
-                            category = Category(id = 4, name = "Elétrica");buttonStates[3] =
-                            !buttonStates[3]
-                        },
+                        onClick = { category=Category(id = 4, name = "Elétrica");buttonStates[3] = !buttonStates[3]},
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(2.dp)
+                            .fillMaxWidth().padding(2.dp)
                             .height(40.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = if (buttonStates[3]) Color(0xFFF1A58D) else Color(
-                                0xFFE08A84
-                            ), // Cor laranja
+                            containerColor = if (buttonStates[3]) Color(0xFFF1A58D) else Color(0xFFE08A84), // Cor laranja
                             contentColor = Color.Black          // Cor do texto
                         )
                     ) {
@@ -671,18 +625,12 @@ fun CadastroPrestadorEtapa2(
                         )
                     }
                     Button(
-                        onClick = {
-                            category = Category(id = 5, name = "Obras");buttonStates[4] =
-                            !buttonStates[4]
-                        },
+                        onClick = { category=Category(id = 5, name = "Obras");buttonStates[4] = !buttonStates[4]},
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(2.dp)
+                            .fillMaxWidth().padding(2.dp)
                             .height(40.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = if (buttonStates[4]) Color(0xFFF1A58D) else Color(
-                                0xFFE08A84
-                            ), // Cor laranja
+                            containerColor = if (buttonStates[4]) Color(0xFFF1A58D) else Color(0xFFE08A84), // Cor laranja
                             contentColor = Color.Black          // Cor do texto
                         )
                     ) {
@@ -695,18 +643,12 @@ fun CadastroPrestadorEtapa2(
                         )
                     }
                     Button(
-                        onClick = {
-                            category = Category(id = 6, name = "Todos");buttonStates[5] =
-                            !buttonStates[5]
-                        },
+                        onClick = { category=Category(id = 6, name = "Todos");buttonStates[5] = !buttonStates[5] },
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(2.dp)
+                            .fillMaxWidth().padding(2.dp)
                             .height(40.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = if (buttonStates[5]) Color(0xFFF1A58D) else Color(
-                                0xFFE08A84
-                            ), // Cor laranja
+                            containerColor = if (buttonStates[5]) Color(0xFFF1A58D) else Color(0xFFE08A84), // Cor laranja
                             contentColor = Color.Black          // Cor do texto
                         )
                     ) {
@@ -862,7 +804,7 @@ fun CadastroPrestadorEtapa2(
         }
     }
 
-    if (exibirCamposSenha) {
+    if (exibirCamposSenha){
         BackgroundRegister(backgroundImageResId = imagem)
         Column(
             modifier = Modifier
@@ -919,9 +861,9 @@ fun CadastroPrestadorEtapa2(
             Box(
                 modifier = Modifier
                     .height(290.dp)
-            ) {
+            ){
                 Text(
-                    text = "A senha deve conter letras, números e caracteres especiais!\n\n- Evite sequências númericas\n- Evite sua data de nascimento\n- Evite seu telefone",
+                    text =  "A senha deve conter letras, números e caracteres especiais!\n\n- Evite sequências númericas\n- Evite sua data de nascimento\n- Evite seu telefone",
                     modifier = Modifier
                         .height(150.dp),
                     style = TextStyle(

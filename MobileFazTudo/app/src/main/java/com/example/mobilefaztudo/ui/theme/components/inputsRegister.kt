@@ -117,39 +117,35 @@ fun InputPasswordVisibility(
     trailingIcon: @Composable () -> Unit,
     visualTransformation: VisualTransformation = VisualTransformation.None,
 ) {
-    Row(
-        modifier = modifier
-            .height(IntrinsicSize.Min)
-            .fillMaxWidth(),
-        verticalAlignment = Alignment.Bottom
-    ) {
-        BasicTextField(
-            value = value,
-            onValueChange = onValueChange,
-            textStyle = TextStyle(
-                fontSize = 16.sp,
-                color = Color.White
-            ),
+    Column(modifier = modifier) {
+        Row(
             modifier = Modifier
-                .weight(1f)
-                .padding(end = 8.dp)
-                .height(IntrinsicSize.Min),
-
-
-            decorationBox = { innerTextField ->
-                Row(
-                    verticalAlignment = Alignment.Bottom
-                ) {
-                    Icon(
-                        imageVector = icon,
-                        contentDescription = null,
-                        tint = Color.White,
-                        modifier = Modifier.padding(end = 8.dp)
-                    )
-                    Box(
-                        modifier = Modifier.weight(1f),
-                        contentAlignment = Alignment.BottomStart
-                    ) {
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = Color.White,
+                modifier = Modifier.padding(end = 8.dp)
+            )
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(end = 8.dp),
+                contentAlignment = Alignment.CenterStart
+            ) {
+                BasicTextField(
+                    value = value,
+                    onValueChange = onValueChange,
+                    textStyle = TextStyle(
+                        fontSize = 16.sp,
+                        color = Color.White
+                    ),
+                    modifier = Modifier.fillMaxWidth(),
+                    visualTransformation = visualTransformation,
+                    decorationBox = { innerTextField ->
                         if (value.isEmpty()) {
                             Text(
                                 text = placeholder,
@@ -161,23 +157,25 @@ fun InputPasswordVisibility(
                         }
                         innerTextField()
                     }
-                }
+                )
             }
-        )
-    }
-    Canvas(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(1.dp)
-    ) {
-        drawLine(
-            color = Color.White,
-            start = Offset(0f, size.height),
-            end = Offset(size.width, size.height),
-            strokeWidth = 3f,
-        )
+            trailingIcon()
+        }
+        Canvas(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+        ) {
+            drawLine(
+                color = Color.White,
+                start = Offset(0f, size.height),
+                end = Offset(size.width, size.height),
+                strokeWidth = 1f,
+            )
+        }
     }
 }
+
 
 @Composable
 fun ExampleUsage(
