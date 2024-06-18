@@ -6,6 +6,8 @@ import android.util.Log
 import com.example.mobilefaztudo.api.User
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import okhttp3.MultipartBody
+import java.io.File
 
 class SharedPreferencesHelper(context: Context) {
     private val sharedPreferences: SharedPreferences =
@@ -38,11 +40,85 @@ class SharedPreferencesHelper(context: Context) {
         sharedPreferences.edit().putString("role", user.role).apply()
         sharedPreferences.edit().putString("categoryJson", categoryJson).apply()
         sharedPreferences.edit().putString("categoryName", user.category?.name).apply()
-    }
+        user.category?.let { sharedPreferences.edit().putInt("categoryId", it.id).apply() }
 
+    }
+    fun getDescricao(): String {
+        return sharedPreferences.getString("descricao", "")?: ""
+    }
+    fun saveDescricao(des:String) {
+        return sharedPreferences.edit().putString("descricao", des).apply()
+    }
     fun getIdUser(): Int {
         return sharedPreferences.getInt("id", 0)
     }
+    fun getNome(): String? {
+        return sharedPreferences.getString("nome", "")
+    }
+    fun getDataCadastro():String?{
+        return sharedPreferences.getString("dt_cadastro", "")
+    }
+    fun getImgProfile(): String? {
+        return sharedPreferences.getString("image_profile", "")
+    }
+    fun getCep(): String {
+        return sharedPreferences.getString("cep", "") ?: ""
+    }
+    fun saveCep(cep: String) {
+        sharedPreferences.edit().putString("cep", cep).apply()
+    }
+
+    fun getLogradouro(): String{
+        return sharedPreferences.getString("logradouro", "") ?: ""
+    }
+    fun saveLogradouro(logradouro: String) {
+        sharedPreferences.edit().putString("logradouro", logradouro).apply()
+    }
+    fun getState(): String{
+        return sharedPreferences.getString("state", "") ?: ""
+    }
+    fun saveState(state: String) {
+        sharedPreferences.edit().putString("state", state).apply()
+    }
+    fun getCity(): String{
+        return sharedPreferences.getString("city", "") ?: ""
+    }
+    fun saveCity(city: String) {
+        sharedPreferences.edit().putString("city", city).apply()
+    }
+    fun getPhone(): String{
+        return sharedPreferences.getString("phone", "") ?: ""
+    }
+    fun savePhone(phone: String) {
+        sharedPreferences.edit().putString("phone", phone).apply()
+    }
+
+    fun getCategoriaName(): String{
+        return sharedPreferences.getString("categoryName", "") ?: ""
+    }
+    fun saveCategoriaName(catName: String) {
+        sharedPreferences.edit().putString("categoryName", catName).apply()
+    }
+    fun getCategoriaId(): Int{
+        return sharedPreferences.getInt("categoryId", 0) ?: 0
+    }
+    fun saveCategoriaId(catId: Int) {
+        sharedPreferences.edit().putInt("categoryId", catId).apply()
+    }
+    fun getSobrenome(): String? {
+        return sharedPreferences.getString("sobrenome", "")
+    }
+    fun getEmail(): String? {
+        return sharedPreferences.getString("email", "")
+    }
+    fun getTelefone(): String? {
+        return sharedPreferences.getString("phone", "")
+    }
+
+    fun saveNovaImgPerfil(base64Image: String) {
+        sharedPreferences.edit().putString("image_profile", base64Image).apply()
+    }
+
     fun saveUser(user: User) {
         val userJson = Gson().toJson(user)
         sharedPreferences.edit().putString("JSON", userJson).apply()

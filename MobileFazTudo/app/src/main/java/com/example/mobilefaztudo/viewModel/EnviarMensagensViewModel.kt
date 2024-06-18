@@ -13,7 +13,7 @@ class EnviarMensagensViewModel (
     private val sharedPreferencesHelper: SharedPreferencesHelper)
     :ViewModel(){
     fun enviarMensagem(idDemanda: Int, body: MensagemRequest, onResult: (Boolean) -> Unit){
-        Log.d("MENSAGEM", "CHAMOU A VIEWMODEL fav")
+        Log.d("MENSAGEM", "CHAMOU A VIEWMODEL")
         viewModelScope.launch {
             try{
                 val idUser = sharedPreferencesHelper.getIdUser()
@@ -24,7 +24,7 @@ class EnviarMensagensViewModel (
                     Log.d("MENSAGEM", "SUCESSO")
                 }else{
                     onResult(false)
-                    Log.d("MENSAGEM", "SUCESSO")
+                    Log.d("MENSAGEM", "FALHA")
                 }
             }catch (e : Exception){
                 onResult(false)

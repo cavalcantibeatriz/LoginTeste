@@ -9,7 +9,9 @@ import com.example.mobilefaztudo.api.LoginRequestBody
 import com.example.mobilefaztudo.sharedPreferences.SharedPreferencesHelper
 import kotlinx.coroutines.launch
 
-class LoginViewModel (private val repository: ILoginRepository, private val sharedPreferencesHelper: SharedPreferencesHelper): ViewModel() {
+class LoginViewModel (
+    private val repository: ILoginRepository,
+    private val sharedPreferencesHelper: SharedPreferencesHelper): ViewModel() {
 
      fun login(email: String, senha: String, onResult: (Boolean,Category?) -> Unit) {
         Log.d("LOGIN", "CHAMOU A VIEWMODEL")
