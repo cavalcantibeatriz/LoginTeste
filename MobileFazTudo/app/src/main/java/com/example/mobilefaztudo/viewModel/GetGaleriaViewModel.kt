@@ -14,12 +14,11 @@ class GetGaleriaViewModel(
     private val sharedPreferencesHelper: SharedPreferencesHelper
 ) :ViewModel(){
     val listImagesGaleria = MutableLiveData<List<ImagensResponse>>()
-    fun getGaleria(){
+    fun getGaleria(idUser : Int){
         Log.d("LISTAR IMAGENS GALERIA", "CHAMOU A VIEWMODEL")
         viewModelScope.launch {
             try {
                 val authToken = sharedPreferencesHelper.getAuthToken()
-                val idUser = sharedPreferencesHelper.getIdUser()
                 val response = repository.getGaleria(authToken,idUser)
                 if (response.isSuccessful){
                     Log.d("LISTAR IMAGENS GALERIA", "SUCESSO")
@@ -31,5 +30,9 @@ class GetGaleriaViewModel(
                 Log.d("LISTAR IMAGENS GALERIA", "Exception::$e")
             }
         }
+    }
+
+    fun clearGaleria(){
+        listImagesGaleria.value = emptyList()
     }
 }

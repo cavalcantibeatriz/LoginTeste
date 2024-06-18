@@ -1,5 +1,6 @@
 package com.example.faztudo_mb.ui.theme.screens.components_new
 
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
 import android.util.Log
@@ -59,6 +60,7 @@ import com.example.mobilefaztudo.viewModel.Contratante.DesfavoritarViewModel
 import com.example.mobilefaztudo.viewModel.Contratante.FavoritarViewModel
 import com.example.mobilefaztudo.viewModel.Contratante.ListFavoriteViewModel
 import com.example.mobilefaztudo.viewModel.Contratante.ListPrestadoresViewModel
+import com.example.mobilefaztudo.viewModel.GetGaleriaViewModel
 import java.io.ByteArrayInputStream
 
 
@@ -71,7 +73,8 @@ fun PrestadorCard(
     desfavoritarViewModel: DesfavoritarViewModel = viewModel(),
     sharedPreferencesHelper: SharedPreferencesHelper,
     listPrestadoresFavoritos: ListFavoriteViewModel = viewModel(),
-    listPrestadores: ListPrestadoresViewModel = viewModel()
+    listPrestadores: ListPrestadoresViewModel = viewModel(),
+    getGaleriaViewModel: GetGaleriaViewModel = viewModel()
 ) {
     val (currentImage, setCurrentImage) = remember { mutableStateOf(R.drawable.image_56) }
     val (currentImage2, setCurrentImage2) = remember { mutableStateOf(R.drawable.image_72) }
@@ -86,13 +89,23 @@ fun PrestadorCard(
     var coracaoAtivo by remember { mutableStateOf(false) }
     var favoritosSet by remember { mutableStateOf(HashSet<Int>()) }
 
-    val listFavoritos by listPrestadoresFavoritos.listPrestadoresFavorite.observeAsState(
-        initial = emptyList()
-    )
+    val listImagesGaleria by getGaleriaViewModel.listImagesGaleria.observeAsState(initial = emptyList())
+
+    val listFavoritos by listPrestadoresFavoritos.listPrestadoresFavorite.observeAsState(initial = emptyList())
+
     LaunchedEffect(key1 = listFavoritos) {
         favoritosSet.clear()
         favoritosSet.addAll(listFavoritos.map { favoritos -> favoritos.id })
         coracaoAtivo = favoritosSet.contains(prestador.id)
+    }
+    var idUserPrestadores by remember { mutableStateOf(0) }
+    Log.d("IdPrestador", "$idUserPrestadores")
+
+    LaunchedEffect (idUserPrestadores){
+        if (idUserPrestadores != 0) {
+            getGaleriaViewModel.clearGaleria()
+            getGaleriaViewModel.getGaleria(idUserPrestadores)
+        }
     }
 
     fun toggleImage() {
@@ -194,6 +207,7 @@ fun PrestadorCard(
                         Spacer(modifier = modifier.width(10.dp))
                         Image(
                             modifier = Modifier.clickable {
+                                idUserPrestadores = prestador.id
                                 if (!showPerfilPrestador) {
                                     showPerfilPrestador = true
                                 } else {
@@ -330,7 +344,9 @@ fun PrestadorCard(
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {
-                    Button(onClick = { showGeleriaPrestador = true }) {
+                    Button(onClick = {
+                        idUserPrestadores = prestador.id
+                        showGeleriaPrestador = true }) {
                         Text(text = "Ver galeria")
                     }
                 }
@@ -339,32 +355,43 @@ fun PrestadorCard(
     }
 
     if (showGeleriaPrestador) {
+        fun decodeBase64ToBitmap(base64Str: String): Bitmap {
+            val decodedBytes = Base64.decode(base64Str, Base64.DEFAULT)
+            return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+        }
+
         AlertDialog(
             onDismissRequest = { showGeleriaPrestador = false },
             title = {
                 Text(
-                    text = "Galeria - Pedro",
+                    text = "Galeria - ${prestador.name}",
                     fontSize = 18.sp,
                     style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 18.sp)
                 )
             },
             text = {
                 Column {
-                    LazyRow(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(160.dp),
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        items(6) {
-                            Image(
-                                painter = painterResource(R.drawable.img_geral_default),
-                                contentDescription = "Imagem $it",
-                                modifier = Modifier
-                                    .padding(5.dp)
-                                    .size(150.dp)
-                            )
+                    if (listImagesGaleria.size == 0|| listImagesGaleria.isEmpty()) {
+                        Text("Este usuário ainda não tem nenhuma foto na galeria")
+                    }else {
+                        LazyRow(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(160.dp),
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            items(listImagesGaleria.size) {index ->
+                                val imagemResponse = listImagesGaleria[index]
+                                val bitmap = decodeBase64ToBitmap(imagemResponse.base64Data)
+                                Image(
+                                    painter = BitmapPainter(bitmap.asImageBitmap()),
+                                    contentDescription = "Imagem $index",
+                                    modifier = Modifier
+                                        .padding(5.dp)
+                                        .size(150.dp)
+                                )
+                            }
                         }
                     }
                 }
