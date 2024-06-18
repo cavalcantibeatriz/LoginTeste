@@ -23,6 +23,8 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -37,12 +39,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.faztudo_mb.ui.theme.screens.components.BackgroundRegister
+import com.example.faztudo_mb.ui.theme.screens.components.InputPasswordVisibility
 import com.example.faztudo_mb.ui.theme.screens.components.InputWithIcon
 import com.example.faztudo_mb.ui.theme.screens.components.imagem
 import com.example.mobilefaztudo.R
@@ -147,6 +152,13 @@ fun CadastroContratanteEtapa2(
     var senha by remember { mutableStateOf("") }
     var confirmarSenha by remember { mutableStateOf("") }
     var proUser by remember { mutableStateOf(false) }
+
+    var showPassword by remember { mutableStateOf(false) }
+
+    var icon = if (showPassword)
+        painterResource(id = R.drawable.visualizar_1)
+    else
+        painterResource(id = R.drawable.visibility_off)
 
     var showModalSuccess by remember { mutableStateOf(false) }
     var showModalError by remember { mutableStateOf(false) }
@@ -312,23 +324,58 @@ fun CadastroContratanteEtapa2(
                 )
             )
             Spacer(modifier = Modifier.height(10.dp))
-            InputWithIcon(
+            InputPasswordVisibility(
                 icon = Icons.Default.Lock,
                 placeholder = "Senha",
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp),
                 value = senha,
-                onValueChange = { senha = it }
+                onValueChange = { senha = it },
+
+                trailingIcon = {
+                    IconButton(onClick = {
+                        if (showPassword) {
+                            showPassword = false
+                        } else
+                            showPassword = true
+                    })
+                    {
+                        Icon(
+                            painter = icon,
+                            contentDescription = "Visibility"
+                        )
+                    }
+                },
+                visualTransformation = if (showPassword) VisualTransformation.None
+                else PasswordVisualTransformation()
             )
-            InputWithIcon(
+
+            InputPasswordVisibility(
                 icon = Icons.Default.Lock,
-                placeholder = "Confirme a senha",
+                placeholder = "Confirmar senha",
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp),
                 value = confirmarSenha,
-                onValueChange = { confirmarSenha = it}
+                onValueChange = { confirmarSenha = it },
+
+                trailingIcon = {
+                    IconButton(onClick = {
+                        if (showPassword) {
+                            showPassword = false
+                        } else
+                            showPassword = true
+                    })
+                    {
+                        Icon(
+                            painter = icon,
+                            contentDescription = "Visibility"
+                        )
+                    }
+                },
+                visualTransformation = if (showPassword) VisualTransformation.None
+                else PasswordVisualTransformation()
             )
             Spacer(modifier = Modifier.height(5 .dp))
             Box(
@@ -507,7 +554,7 @@ fun CadastroPrestadorEtapa2(
                 ) {
                     Button(
                         onClick = { category = Category(id = 1, name = "Mecânica"); buttonStates[0] = !buttonStates[0] },
-                         modifier = Modifier
+                        modifier = Modifier
                             .fillMaxWidth()
                             .padding(2.dp)
                             .height(40.dp),

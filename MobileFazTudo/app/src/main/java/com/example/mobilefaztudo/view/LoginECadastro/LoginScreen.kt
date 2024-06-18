@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -26,6 +28,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -38,9 +42,18 @@ import com.example.mobilefaztudo.ui.theme.salmaoRosadoBtn
 import com.example.mobilefaztudo.viewModel.auth.LoginViewModel
 
 @Composable
-fun LoginScreen(loginViewModel: LoginViewModel = viewModel(), navController: NavController) {
+fun LoginScreen(
+    loginViewModel: LoginViewModel = viewModel(), navController: NavController
+) {
     var email by remember { mutableStateOf("") }
     var senha by remember { mutableStateOf("") }
+    var showPassword by remember { mutableStateOf(false) }
+
+    var icon = if (showPassword)
+        painterResource(id = R.drawable.visualizar_1)
+    else
+        painterResource(id = R.drawable.visibility_off)
+
     Log.d("LOGIN", "$email + $senha")
     var showModalSuccess by remember { mutableStateOf(false) }
     var showModalError by remember { mutableStateOf(false) }
@@ -68,7 +81,7 @@ fun LoginScreen(loginViewModel: LoginViewModel = viewModel(), navController: Nav
             label = { Text("Email") },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp)
+                .padding(vertical = 8.dp),
         )
         TextField(
             value = senha,
@@ -76,19 +89,39 @@ fun LoginScreen(loginViewModel: LoginViewModel = viewModel(), navController: Nav
             label = { Text("Senha") },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp)
+                .padding(vertical = 8.dp),
+
+            trailingIcon = {
+                IconButton(onClick = {
+                    if (showPassword) {
+                        showPassword = false
+                    } else
+                        showPassword = true
+                })
+                {
+                    Icon(
+                        painter = icon,
+                        contentDescription = "Visibility"
+                    )
+                }
+
+            },
+            visualTransformation = if (showPassword) VisualTransformation.None
+            else PasswordVisualTransformation()
+
         )
+
         Button(
             onClick = {
                 Log.d("LOGIN", "CLIQUEI NO BOTÃO")
                 loginViewModel.login(email, senha) { onResult, category ->
                     if (onResult) {
-                        if (category?.name == null ){
+                        if (category?.name == null) {
                             showModalSuccess = true
                             //navegar
                             Log.d("LOGIN", "redirecionar contratante")
                             navController.navigate("encontrePrestadores")
-                        }else{
+                        } else {
                             showModalSuccess = true
                             //navegar
                             Log.d("LOGIN", "redirecionar prestador")
@@ -166,3 +199,4 @@ fun LoginScreen(loginViewModel: LoginViewModel = viewModel(), navController: Nav
         )
     }
 }
+
