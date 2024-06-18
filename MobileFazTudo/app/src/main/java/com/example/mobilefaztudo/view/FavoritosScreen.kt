@@ -36,17 +36,19 @@ import com.example.mobilefaztudo.viewModel.Contratante.DesfavoritarViewModel
 import com.example.mobilefaztudo.viewModel.Contratante.FavoritarViewModel
 import com.example.mobilefaztudo.viewModel.Contratante.ListFavoriteViewModel
 import com.example.mobilefaztudo.viewModel.Contratante.ListPrestadoresViewModel
+import com.example.mobilefaztudo.viewModel.GetGaleriaViewModel
 import kotlinx.coroutines.delay
 
 @Composable
 fun FavoritosScreen(
     navController: NavController,
-    viewModel: ListFavoriteViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+    viewModel: ListFavoriteViewModel = viewModel(),
     sharedPreferencesHelper: SharedPreferencesHelper,
-    favoritarViewModel: FavoritarViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
-    desfavoritarViewModel: DesfavoritarViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
-    listPrestadoresFavoritos: ListFavoriteViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
-    listPrestadores: ListPrestadoresViewModel = viewModel()
+    favoritarViewModel: FavoritarViewModel = viewModel(),
+    desfavoritarViewModel: DesfavoritarViewModel = viewModel(),
+    listPrestadoresFavoritos: ListFavoriteViewModel = viewModel(),
+    listPrestadores: ListPrestadoresViewModel = viewModel(),
+    getGaleriaViewModel: GetGaleriaViewModel = viewModel()
 ) {
     val listPrestadoresFavoritados by viewModel.listPrestadoresFavorite.observeAsState(initial = emptyList())
 
@@ -115,7 +117,8 @@ fun FavoritosScreen(
                                     desfavoritarViewModel = desfavoritarViewModel,
                                     sharedPreferencesHelper = sharedPreferencesHelper,
                                     listPrestadoresFavoritos = listPrestadoresFavoritos,
-                                    listPrestadores = listPrestadores
+                                    listPrestadores = listPrestadores,
+                                    getGaleriaViewModel = getGaleriaViewModel
                                 )
                                 Spacer(modifier = Modifier.padding(10.dp))
                             }

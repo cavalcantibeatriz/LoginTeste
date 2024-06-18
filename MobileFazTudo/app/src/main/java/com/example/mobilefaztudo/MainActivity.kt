@@ -194,9 +194,9 @@ class MainActivity : ComponentActivity() {
                     composable(route = "cadastro2C") { CadastroContratanteEtapa2(contratanteViewModel, navController) }
                     composable(route = "cadastro2P") { CadastroPrestadorEtapa2(prestadorViewModel, navController) }
                     composable(route = "splash") { SplashScreen(navController) }
-                    composable(route = "encontrePrestadores") { encontrePrestadores(navController, listPrestadoresViewModel, sharedPreferencesHelper, favoritarViewModel, desfavoritarViewModel, listPrestadoresFavoritos) }
+                    composable(route = "encontrePrestadores") { encontrePrestadores(navController, listPrestadoresViewModel, sharedPreferencesHelper, favoritarViewModel, desfavoritarViewModel, listPrestadoresFavoritos,getGaleriaViewModel) }
                     composable(route = "encontreDemandas") { encontreDemandas(navController, listDemandasViewModel, sharedPreferencesHelper, requestEnviarMensagem) }
-                    composable(route = "encontreFavoritos") { FavoritosScreen(navController, listPrestadoresFavoritos, sharedPreferencesHelper, favoritarViewModel, desfavoritarViewModel, listPrestadoresFavoritos, listPrestadoresViewModel) }
+                    composable(route = "encontreFavoritos") { FavoritosScreen(navController, listPrestadoresFavoritos, sharedPreferencesHelper, favoritarViewModel, desfavoritarViewModel, listPrestadoresFavoritos, listPrestadoresViewModel,getGaleriaViewModel) }
                     composable(route = "PerfilPrestadorScreen") { PerfilPrestadorScreen(navController, sharedPreferencesHelper, atualizarImgPerfilViewModel,atualizarSenhaViewModel,atualizarInfoPrestadorViewModel, atualizarDescricaoViewModel,getGaleriaViewModel,anexarGaleriaViewModel,deleteGaleriaViewModel) }
                     composable(route = "PerfilContratanteScreen") { PerfilContratanteScreen(navController, sharedPreferencesHelper, atualizarImgPerfilViewModel, listDemandasUserViewModel,atualizarSenhaViewModel, atualizarInfoContratanteViewModel) }
                     composable(route = "DemandContratante") { DemandContratante(navController, sharedPreferencesHelper,listDemandasUserViewModel, postarDemandaViewModel, atrelarImagemDemandaViewModel) }

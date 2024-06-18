@@ -169,8 +169,10 @@ fun PerfilPrestadorScreen(
     }
 
     val listImagesGaleria by getGaleriaViewModel.listImagesGaleria.observeAsState(listOf())
+    val idUser = sharedPreferencesHelper.getIdUser()
+
     LaunchedEffect(Unit) {
-        getGaleriaViewModel.getGaleria()
+        getGaleriaViewModel.getGaleria(idUser)
     }
 
     Box(
@@ -662,13 +664,9 @@ fun PerfilPrestadorScreen(
         }
 
         AlertDialog(
-            onDismissRequest = {
-                // Fechar o modal ao clicar fora
-                showEditGaleria = false
-            },
+            onDismissRequest = { showEditGaleria = false },
             title = { Text("Galeria - Pedro") },
             text = {
-
                 Column(
                     modifier = Modifier
                         .fillMaxSize()

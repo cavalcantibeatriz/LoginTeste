@@ -53,6 +53,7 @@ import com.example.mobilefaztudo.viewModel.Contratante.DesfavoritarViewModel
 import com.example.mobilefaztudo.viewModel.Contratante.FavoritarViewModel
 import com.example.mobilefaztudo.viewModel.Contratante.ListFavoriteViewModel
 import com.example.mobilefaztudo.viewModel.Contratante.ListPrestadoresViewModel
+import com.example.mobilefaztudo.viewModel.GetGaleriaViewModel
 import kotlinx.coroutines.delay
 import java.io.ByteArrayInputStream
 
@@ -63,9 +64,11 @@ fun encontrePrestadores(
     sharedPreferencesHelper: SharedPreferencesHelper,
     favoritarViewModel: FavoritarViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
     desfavoritarViewModel: DesfavoritarViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
-    listPrestadoresFavoritos: ListFavoriteViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    listPrestadoresFavoritos: ListFavoriteViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+    getGaleriaViewModel: GetGaleriaViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
     val listPrestadores by viewModel.listPrestadores.observeAsState(initial = emptyList())
+
     var exibirFiltro by remember { mutableStateOf<FilterTipo?>(null) }
 
     val prestadoresMecanica = listPrestadores.filter { prestador ->
@@ -217,7 +220,8 @@ fun encontrePrestadores(
                                                 desfavoritarViewModel = desfavoritarViewModel,
                                                 sharedPreferencesHelper = sharedPreferencesHelper,
                                                 listPrestadoresFavoritos = listPrestadoresFavoritos,
-                                                listPrestadores = viewModel
+                                                listPrestadores = viewModel,
+                                                getGaleriaViewModel = getGaleriaViewModel
                                             )
                                             Spacer(modifier = Modifier.padding(10.dp))
                                         }
@@ -236,7 +240,9 @@ fun encontrePrestadores(
                                                 desfavoritarViewModel = desfavoritarViewModel,
                                                 sharedPreferencesHelper = sharedPreferencesHelper,
                                                 listPrestadoresFavoritos = listPrestadoresFavoritos,
-                                                listPrestadores = viewModel
+                                                listPrestadores = viewModel,
+                                                getGaleriaViewModel = getGaleriaViewModel
+
                                             )
                                             Spacer(modifier = Modifier.padding(10.dp))
                                         }
@@ -256,7 +262,8 @@ fun encontrePrestadores(
                                                 desfavoritarViewModel = desfavoritarViewModel,
                                                 sharedPreferencesHelper = sharedPreferencesHelper,
                                                 listPrestadoresFavoritos = listPrestadoresFavoritos,
-                                                listPrestadores = viewModel
+                                                listPrestadores = viewModel,
+                                                getGaleriaViewModel = getGaleriaViewModel
                                             )
                                             Spacer(modifier = Modifier.padding(10.dp))
                                         }
@@ -276,7 +283,9 @@ fun encontrePrestadores(
                                                 desfavoritarViewModel = desfavoritarViewModel,
                                                 sharedPreferencesHelper = sharedPreferencesHelper,
                                                 listPrestadoresFavoritos = listPrestadoresFavoritos,
-                                                listPrestadores = viewModel
+                                                listPrestadores = viewModel,
+                                                getGaleriaViewModel = getGaleriaViewModel
+
                                             )
                                             Spacer(modifier = Modifier.padding(10.dp))
                                         }
@@ -296,7 +305,9 @@ fun encontrePrestadores(
                                                 desfavoritarViewModel = desfavoritarViewModel,
                                                 sharedPreferencesHelper = sharedPreferencesHelper,
                                                 listPrestadoresFavoritos = listPrestadoresFavoritos,
-                                                listPrestadores = viewModel
+                                                listPrestadores = viewModel,
+                                                getGaleriaViewModel = getGaleriaViewModel
+
                                             )
                                             Spacer(modifier = Modifier.padding(10.dp))
                                         }
@@ -316,7 +327,9 @@ fun encontrePrestadores(
                                                 desfavoritarViewModel = desfavoritarViewModel,
                                                 sharedPreferencesHelper = sharedPreferencesHelper,
                                                 listPrestadoresFavoritos = listPrestadoresFavoritos,
-                                                listPrestadores = viewModel
+                                                listPrestadores = viewModel,
+                                                getGaleriaViewModel = getGaleriaViewModel
+
                                             )
                                             Spacer(modifier = Modifier.padding(10.dp))
                                         }
@@ -332,7 +345,9 @@ fun encontrePrestadores(
                                             desfavoritarViewModel = desfavoritarViewModel,
                                             sharedPreferencesHelper = sharedPreferencesHelper,
                                             listPrestadoresFavoritos = listPrestadoresFavoritos,
-                                            listPrestadores = viewModel
+                                            listPrestadores = viewModel,
+                                            getGaleriaViewModel = getGaleriaViewModel
+
                                         )
                                         Spacer(modifier = Modifier.padding(10.dp))
                                     }
